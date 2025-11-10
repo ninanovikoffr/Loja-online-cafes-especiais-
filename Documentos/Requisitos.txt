@@ -1,0 +1,250 @@
+👥 RELAÇÃO DE USUÁRIOS DO SISTEMA
+
+Foram identificados três tipos de usuários: Visitante, Cliente e Administrador.
+
+Visitante
+
+Usuário não autenticado no sistema.
+
+Funcionalidades:
+
+Visualizar catálogo de cafés disponíveis.
+
+Filtrar cafés por categoria (grãos, cápsulas, kits).
+
+Visualizar detalhes de produtos.
+
+Criar conta (email/senha ou conta Google).
+
+Fazer login.
+
+Cliente
+
+Usuário autenticado no sistema, com acesso a sua conta, carrinho e pedidos.
+
+Funcionalidades:
+
+Conta e endereços
+
+Criar conta / autenticação via Google.
+
+Login com email/senha (JWT Token).
+
+Atualizar dados pessoais (nome, email, senha).
+
+Cadastrar, editar e remover endereços.
+
+Integração com ViaCEP para preenchimento automático de endereço.
+
+Logout.
+
+Produtos e carrinho
+
+Visualizar catálogo e detalhes de produtos.
+
+Adicionar itens ao carrinho.
+
+Alterar quantidade ou remover produtos.
+
+Estoque validado automaticamente.
+
+Definir endereço de entrega no checkout.
+
+Confirmar compra (gera pedido no sistema).
+
+Pedidos
+
+Visualizar pedidos ativos (em andamento).
+
+Visualizar pedidos entregues (histórico).
+
+Administrador
+
+Usuário responsável por gerenciar produtos e pedidos.
+
+Funcionalidades:
+
+Produtos
+
+Listar todos os produtos.
+
+Cadastrar novos produtos.
+
+Atualizar informações.
+
+Excluir produtos.
+
+Pedidos
+
+Listar todos os pedidos.
+
+Atualizar status (aguardando, em preparo, enviado, entregue, cancelado).
+
+Excluir pedidos.
+
+Clientes e endereços
+
+Visualizar clientes e endereços cadastrados.
+
+Logout.
+
+🖥️ DESCRIÇÃO DA INTERFACE COM O USUÁRIO
+I_Login
+
+Campos: email e senha.
+
+Botão “Entrar”.
+
+Opção “Entrar com Google”.
+
+Link para “Criar nova conta”.
+
+I_Cadastro
+
+Campos: nome, email, senha.
+
+Opção de cadastro via Google.
+
+I_CatálogoProdutos
+
+Lista de cafés (nome, preço, imagem).
+
+Filtro por categoria.
+
+Botão “Adicionar ao carrinho”.
+
+I_Carrinho
+
+Produtos adicionados.
+
+Alterar quantidade / remover itens.
+
+Total recalculado automaticamente.
+
+Botão “Finalizar compra”.
+
+Definição de endereço de entrega (com busca ViaCEP).
+
+I_Pedidos
+
+Cliente: lista separada em “Ativos” e “Entregues”.
+
+Administrador: lista de todos os pedidos, com opção de alterar status/excluir.
+
+I_AdminProdutos
+
+Lista de produtos.
+
+Botões: Cadastrar, Editar, Excluir.
+
+I_AdminPedidos
+
+Lista de pedidos.
+
+Alteração de status ou exclusão.
+
+📌 MAPA DE CASOS DE USO
+Visitante
+
+Navegar no catálogo.
+
+Filtrar/buscar produtos.
+
+Ver detalhes.
+
+Criar conta / login.
+
+(Bloqueio) Tentar adicionar ao carrinho redireciona para login.
+
+Cliente
+
+Atualizar conta.
+
+Cadastrar/editar/remover endereços (ViaCEP).
+
+Visualizar catálogo.
+
+Gerenciar carrinho.
+
+Finalizar compra → gerar pedido.
+
+Acompanhar pedidos ativos/histórico.
+
+Logout.
+
+Administrador
+
+Gerenciar produtos (CRUD).
+
+Gerenciar pedidos (listar, atualizar status, excluir).
+
+Visualizar clientes e endereços.
+
+Logout.
+
+🔄 FLUXOS ESSENCIAIS
+Fluxo 1 – Cadastro/Login
+
+Visitante acessa “Criar conta”.
+
+Preenche dados ou autentica com Google.
+
+Sistema cria conta.
+
+Login gera JWT Token.
+
+Fluxo 2 – Adicionar produto ao carrinho
+
+Cliente abre página de produto.
+
+Seleciona quantidade.
+
+Adiciona ao carrinho.
+
+Sistema valida estoque e inclui item.
+
+Fluxo 3 – Gerenciar carrinho
+
+Cliente acessa carrinho.
+
+Aumenta/diminui ou remove itens.
+
+Sistema recalcula total.
+
+Fluxo 4 – Checkout
+
+Cliente clica “Finalizar compra”.
+
+Seleciona ou cadastra endereço (com busca ViaCEP).
+
+Confirma compra.
+
+Sistema cria pedido com status “Aguardando” e limpa carrinho.
+
+Fluxo 5 – Acompanhar pedidos
+
+Cliente: acessa “Meus pedidos” e vê Ativos/Entregues.
+
+Admin: acessa “Pedidos (Admin)”, altera status ou exclui.
+
+Fluxo 6 – Administrar produtos
+
+Admin acessa “Produtos”.
+
+Pode cadastrar, editar ou excluir.
+
+⚖️ REGRAS E RESTRIÇÕES IMPORTANTES
+
+Visitante não pode adicionar ao carrinho.
+
+Cliente pode ter múltiplos endereços (um é padrão).
+
+Endereços validados via API ViaCEP.
+
+Estoque validado em adição ao carrinho e checkout.
+
+Pedido só é criado com endereço válido selecionado.
+
+Apenas administradores podem alterar/excluir produtos e pedidos.
+
+Login pode ser feito via Google OAuth2.
