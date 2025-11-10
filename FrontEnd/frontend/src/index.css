@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;600;700&display=swap');
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'M PLUS 2', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #000;
+}
+
+input, button, textarea, select {
+  font-family: inherit;
+  border-color: transparent;
+  
+}
+

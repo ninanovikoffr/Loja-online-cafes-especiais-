@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap');
+
+.tela_inicial {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 80px; /* altura da navbar */
+}
+
+
+/*----------------SEÇÃO DO TÍTULO----------------*/
+.fundo_titulo {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.fundo_imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  display: block;
+}
+
+.titulo_terroir {
+  position: absolute;
+  top: 50%;                  
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  font-family: 'Geologica';
+  font-size: 5.5rem;
+  font-weight: 400;
+  color: #FFF8F2;
+
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+
+/*----------------SEÇÃO DOS POPULARES----------------*/
+.populares {
+  width: 100%;
+  background-color: #fff;
+  padding: 60px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título "Populares" */
+.populares_text {
+  font-size: 2.7rem;
+  font-weight: 600;
+  color: #412913;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Container das três colunas */
+.colunas_populares {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 90px;
+  flex-wrap: wrap; /* permite quebrar em telas menores */
+}
+
+/* Cada card individual */
+.secao {
+  background-color: #E8E7E7;
+  border-radius: 20px;
+  width: 280px;
+  padding: 25px 20px 35px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 10px 15px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.secao:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Nome do café */
+.cafes_text {
+  font-size: 1.9rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+  font-weight: 400;
+  line-height: 46px;
+  text-align: center;
+  color: #412913;
+}
+
+/* Imagem do café */
+.foto_cafe {
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Botão "Comprar" */
+.botao_comprar {
+  background-color: #7a5434;
+  width: 80%;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.botao_comprar:hover {
+  background-color: #5b3c25;
+}
+
+/*----------------SEÇÃO DE CATEGORIAS----------------*/
+
+.categorias {
+    width: 100%;
+    /* Cor de fundo baseada na imagem que você enviou */
+    background-color: #D4C4B8; 
+    padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título "Explore por categorias" */
+.categorias_text {
+    font-size: 2.7rem;
+    font-weight: 500; /* Um pouco mais leve que o 'Populares' */
+    color: #392115; /* Usando a cor escura da navbar para contraste */
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* Container das três colunas (similar a .colunas_populares) */
+.colunas_categorias {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 40px;
+    flex-wrap: wrap; 
+    max-width: 1200px; /* Limita a largura para centralizar bem */
+    
+}
+
+/* Cada card individual */
+.card_categoria {
+    position: relative;
+    min-width: 370px; /* Tamanho fixo para replicar o layout */
+    min-height: 570px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.card_categoria:hover {
+    transform: translateY(-5px);
+}
+
+/* Imagem de fundo do card */
+.foto_categoria {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Caixa de informação com o texto */
+.info_categoria {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 10px 15px 0px;
+    
+    z-index: 2; /* Garante que o texto fique acima da imagem */
+    
+    /* Gradiente para a tarja escura na parte de baixo da imagem */
+    background: #D9D9D970;
+    color: white;
+    text-align: right;
+}
+
+/* Título do Card (Ex: Cápsulas de café) */
+.titulo_card {
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+    color: #392115;
+
+}
+
+/* Descrição (Ex: Praticidade e sabor...) */
+.descricao_card {
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+    .colunas_categorias {
+        gap: 30px;
+    }
+    .card_categoria {
+        width: 280px;
+    }
+}
+
+@media (max-width: 900px) {
+    .categorias_text {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 650px) {
+    .colunas_categorias {
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+    .card_categoria {
+        width: 90%; /* Ocupa a maior parte da largura */
+        min-height: 300px;
+    }
+}
+
+/*---------------- BOTÃO FLUTUANTE DO CARRINHO ----------------*/
+
+.botao_flutuante {
+    position: fixed;
+    bottom: 70px; 
+    right: 40px; 
+    z-index: 1010; 
+
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    
+    background-color: #392115; 
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); 
+    cursor: pointer;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.botao_flutuante:hover {
+    transform: scale(1.05); 
+    background-color: #5b3c25;
+}
+
+.botao_flutuante img {
+    width: 60%;
+    height: 60%;
+}
+
+@media (max-width: 768px) {
+    .botao_flutuante {
+        width: 70px;
+        height: 70px;
+        right: 20px;
+        top: 120px;
+    }
+}
+
+
+/*Resposnsividade*/
+
+@media (max-width: 900px) {
+  .colunas_populares {
+    gap: 30px;
+  }
+
+  .secao {
+    width: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .populares_text {
+    font-size: 2rem;
+  }
+
+  .colunas_populares {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+}
