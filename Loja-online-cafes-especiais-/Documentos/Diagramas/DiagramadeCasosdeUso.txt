@@ -1,0 +1,51 @@
+@startuml
+left to right direction
+
+actor Visitante
+actor Cliente
+actor Administrador
+
+rectangle "E-commerce de Cafés Especiais" {
+
+  (Visualizar catálogo) as VC
+  (Filtrar produtos) as FP
+  (Ver detalhes de produto) as VD
+  (Criar conta) as CC
+  (Login) as LI
+
+  (Gerenciar conta) as GC
+  (Gerenciar endereços) as GE
+  (Logout) as LO
+  (Adicionar ao carrinho) as AC
+  (Gerenciar carrinho) as GCA
+  (Finalizar compra) as FC
+  (Visualizar pedidos) as VP
+
+  (Gerenciar produtos) as GP
+  (Gerenciar pedidos) as GPE
+  (Visualizar clientes e endereços) as VCE
+
+  Visitante --> VC
+  Visitante --> FP
+  Visitante --> VD
+  Visitante --> CC
+  Visitante --> LI
+
+  Cliente --> GC
+  Cliente --> GE
+  Cliente --> LO
+  Cliente --> VC
+  Cliente --> FP
+  Cliente --> VD
+  Cliente --> AC
+  Cliente --> GCA
+  Cliente --> FC
+  Cliente --> VP
+
+  Administrador --> GP
+  Administrador --> GPE
+  Administrador --> VCE
+  Administrador --> LO
+}
+
+@enduml
