@@ -38,6 +38,36 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 
 ---
 
+## 🧭 Regras e Padrões de Uso do Git
+
+1. **Uso do Repositório:**  
+   O projeto será desenvolvido em uma única branch principal (`main`), sem criação de outras branches.  
+   Todos os integrantes devem sempre **dar pull antes de editar** e **commit + push após finalizar** suas alterações.
+
+2. **Padrão de Commits:**  
+   As mensagens de commit devem ser curtas e claras, indicando exatamente o que foi feito.  
+   Exemplos:  
+   - `feat: adiciona tela de login`  
+   - `fix: corrige erro no cálculo de preço`  
+   - `docs: adiciona diagrama de casos de uso`  
+
+3. **Organização das Pastas:**  
+   - **BackEnd/** → código do servidor, banco de dados e lógica de negócio.  
+   - **FrontEnd/** → páginas, estilos e scripts da interface.  
+   - **Documentos/** → relatórios, diagramas e toda a documentação do projeto.  
+   - **README.md** → resumo e instruções do projeto.  
+
+4. **Boas Práticas com o Git:**  
+   - Sempre atualizar o repositório antes de começar a editar (`Pull origin`).  
+   - Fazer commits frequentes e bem descritos.  
+   - Evitar subir arquivos desnecessários ou grandes (como `.zip`, `.exe`, pastas `node_modules` etc).  
+   - Revisar as alterações antes de fazer o push.  
+
+5. **Arquivo `.gitignore`:**  
+   Criamos um arquivo `.gitignore` na raiz do projeto para impedir que arquivos desnecessários sejam enviados ao repositório.  
+
+
+
 ## 💾 **Arquitetura do Sistema**
 
 O sistema segue uma arquitetura **Full Stack**, composta por:
