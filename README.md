@@ -14,7 +14,7 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 |-----------------|-----------------------|
 | **Visitante** | Navegar pelo catálogo, visualizar detalhes e criar conta. |
 | **Cliente** | Gerenciar conta, endereços, carrinho e pedidos. |
-| **Administrador** | Gerenciar produtos, pedidos e clientes. |
+| **Administrador** | Gerenciar produtos e pedidos. O Administrador também é cliente. |
 
 ---
 
@@ -22,7 +22,6 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 
 ### 🔹 Visitante
 - Visualizar catálogo e detalhes dos cafés.
-- Filtrar produtos por categoria (grãos, cápsulas, kits).
 - Criar conta (e-mail/senha ou Google).
 
 ### 🔹 Cliente
@@ -30,12 +29,12 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 - CRUD de endereços com integração ViaCEP.
 - Adição/remoção de itens no carrinho.
 - Checkout e geração de pedidos.
-- Acompanhamento de pedidos ativos e entregues.
+- Sair da sua conta.
 
 ### 🔹 Administrador
+- Todas as funcionalidades de cliente.
 - CRUD de produtos.
 - Atualização de status de pedidos (aguardando, enviado, entregue etc).
-- Gerenciamento de clientes e endereços.
 
 ---
 
@@ -165,19 +164,19 @@ Professor Responsável: *Antônio*
 ---
 
 ## 🖼️ **Design e Protótipos**
-O design foi desenvolvido no **Figma**, contemplando:  
+O design foi desenvolvido no **Figma**, contemplando: 
 - Tela de login/cadastro  
 - Catálogo de produtos  
 - Carrinho e checkout  
-- Painel de pedidos  
-- Páginas administrativas  
+- Painel de edição de endereços   
+- Tela de administrador 
 
 🔗 **Protótipo oficial:** [Acessar no Figma](https://www.figma.com/design/YRmCSWIV94Sm94X0SqDSXe/Projeto?node-id=0-1&p=f&t=tPH0TYHDsv4IJ3qk-0)
 
 ---
 
 ## 📚 **Versão**
-`v1.0.0` – Primeira release (Sprint 0 concluída).  
+`V0.1` – Primeira release (Sprint 1 concluída).  
 Inclui setup do backend, banco de dados com Flyway, autenticação JWT e base do frontend cm parte da primeira tela feita.
 
 ---
