@@ -1,0 +1,18 @@
+@startuml
+node "Servidor Web" {
+  component "Aplicação Web (Frontend)" as WebApp
+  component "Aplicação Backend (Servidor)" as BackendApp
+}
+
+node "Servidor de Banco de Dados" {
+  component "Banco de Dados (MySQL)" as DB
+}
+
+node "Cliente" {
+  component "Navegador" as Browser
+}
+
+WebApp --> BackendApp : envia requisições HTTP
+BackendApp --> DB : acessa dados
+Browser --> WebApp : requisição de páginas e dados
+@enduml

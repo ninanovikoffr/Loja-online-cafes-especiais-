@@ -28,32 +28,63 @@ public class ProdutoService {
         return produtoRepository.findById(id).map(this::toResponse);
     }
 
-    public ProdutoResponseDTO salvar(ProdutoRequestDTO produtoRequestDTO) {
+    public ProdutoResponseDTO salvar(ProdutoRequestDTO dto) {
         ProdutoModel model = ProdutoModel.builder()
-                .nome(produtoRequestDTO.getNome())
-                .descricao(produtoRequestDTO.getDescricao())
-                .preco(new Preco(produtoRequestDTO.getPreco()))
-                .estoque(produtoRequestDTO.getEstoque())
-                .categoria(produtoRequestDTO.getCategoria())
-                .imagemUrl(produtoRequestDTO.getImagemUrl())
+                .nome(dto.getNome())
+                .descricao(dto.getDescricao())
+                .preco(new Preco(dto.getPreco()))
+                .estoque(dto.getEstoque())
+                .categoria(dto.getCategoria())
+                .imagemUrl(dto.getImagemUrl())
                 .build();
 
         return toResponse(produtoRepository.save(model));
     }
 
+    public ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO dto) {
+        ProdutoModel existente = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        existente.setNome(dto.getNome());
+        existente.setDescricao(dto.getDescricao());
+        existente.setPreco(new Preco(dto.getPreco()));
+        existente.setEstoque(dto.getEstoque());
+        existente.setCategoria(dto.getCategoria());
+        existente.setImagemUrl(dto.getImagemUrl());
+
+        return toResponse(produtoRepository.save(existente));
+    }
+
+    public ProdutoResponseDTO atualizarParcial(Long id, ProdutoRequestDTO dto) {
+        ProdutoModel existente = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        if (dto.getNome() != null) existente.setNome(dto.getNome());
+        if (dto.getDescricao() != null) existente.setDescricao(dto.getDescricao());
+        if (dto.getPreco() != null) existente.setPreco(new Preco(dto.getPreco()));
+        if (dto.getEstoque() != null) existente.setEstoque(dto.getEstoque());
+        if (dto.getCategoria() != null) existente.setCategoria(dto.getCategoria());
+        if (dto.getImagemUrl() != null) existente.setImagemUrl(dto.getImagemUrl());
+
+        return toResponse(produtoRepository.save(existente));
+    }
+
     public void deletar(Long id) {
+        if (!produtoRepository.existsById(id)) {
+            throw new RuntimeException("Produto não encontrado");
+        }
         produtoRepository.deleteById(id);
     }
 
-    private ProdutoResponseDTO toResponse(ProdutoModel produtoModel) {
+    private ProdutoResponseDTO toResponse(ProdutoModel model) {
         return ProdutoResponseDTO.builder()
-                .idProduto(produtoModel.getIdProduto())
-                .nome(produtoModel.getNome())
-                .descricao(produtoModel.getDescricao())
-                .preco(produtoModel.getPreco().getValue())
-                .estoque(produtoModel.getEstoque())
-                .categoria(produtoModel.getCategoria())
-                .imagemUrl(produtoModel.getImagemUrl())
+                .idProduto(model.getIdProduto())
+                .nome(model.getNome())
+                .descricao(model.getDescricao())
+                .preco(model.getPreco().getValue())
+                .estoque(model.getEstoque())
+                .categoria(model.getCategoria())
+                .imagemUrl(model.getImagemUrl())
                 .build();
     }
 }
