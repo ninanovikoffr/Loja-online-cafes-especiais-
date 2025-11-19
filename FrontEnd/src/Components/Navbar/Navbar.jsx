@@ -11,7 +11,7 @@ export function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar__left">
-        <img src={perfil_icon} className="navbar__icon" alt="Perfil" />
+        <img src={perfil_icon} className="navbar__icon" href="/Pages/Tela_admin/Tela_admin" alt="Perfil" />
         <button className="navbar__login">Entrar</button>
       </div>
 
