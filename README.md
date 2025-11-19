@@ -14,7 +14,7 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 |-----------------|-----------------------|
 | **Visitante** | Navegar pelo catálogo, visualizar detalhes e criar conta. |
 | **Cliente** | Gerenciar conta, endereços, carrinho e pedidos. |
-| **Administrador** | Gerenciar produtos, pedidos e clientes. |
+| **Administrador** | Gerenciar produtos e pedidos. O Administrador também é cliente. |
 
 ---
 
@@ -22,7 +22,6 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 
 ### 🔹 Visitante
 - Visualizar catálogo e detalhes dos cafés.
-- Filtrar produtos por categoria (grãos, cápsulas, kits).
 - Criar conta (e-mail/senha ou Google).
 
 ### 🔹 Cliente
@@ -30,14 +29,44 @@ O sistema conta com **módulo de backend (API REST)** desenvolvido em **Spring B
 - CRUD de endereços com integração ViaCEP.
 - Adição/remoção de itens no carrinho.
 - Checkout e geração de pedidos.
-- Acompanhamento de pedidos ativos e entregues.
+- Sair da sua conta.
 
 ### 🔹 Administrador
+- Todas as funcionalidades de cliente.
 - CRUD de produtos.
 - Atualização de status de pedidos (aguardando, enviado, entregue etc).
-- Gerenciamento de clientes e endereços.
 
 ---
+
+## 🧭 Regras e Padrões de Uso do Git
+
+1. **Uso do Repositório:**  
+   O projeto será desenvolvido em uma única branch principal (`main`), sem criação de outras branches.  
+   Todos os integrantes devem sempre **dar pull antes de editar** e **commit + push após finalizar** suas alterações.
+
+2. **Padrão de Commits:**  
+   As mensagens de commit devem ser curtas e claras, indicando exatamente o que foi feito.  
+   Exemplos:  
+   - `feat: adiciona tela de login`  
+   - `fix: corrige erro no cálculo de preço`  
+   - `docs: adiciona diagrama de casos de uso`  
+
+3. **Organização das Pastas:**  
+   - **BackEnd/** → código do servidor, banco de dados e lógica de negócio.  
+   - **FrontEnd/** → páginas, estilos e scripts da interface.  
+   - **Documentos/** → relatórios, diagramas e toda a documentação do projeto.  
+   - **README.md** → resumo e instruções do projeto.  
+
+4. **Boas Práticas com o Git:**  
+   - Sempre atualizar o repositório antes de começar a editar (`Pull origin`).  
+   - Fazer commits frequentes e bem descritos.  
+   - Evitar subir arquivos desnecessários ou grandes (como `.zip`, `.exe`, pastas `node_modules` etc).  
+   - Revisar as alterações antes de fazer o push.  
+
+5. **Arquivo `.gitignore`:**  
+   Criamos um arquivo `.gitignore` na raiz do projeto para impedir que arquivos desnecessários sejam enviados ao repositório.  
+
+
 
 ## 💾 **Arquitetura do Sistema**
 
@@ -165,19 +194,19 @@ Professor Responsável: *Antônio*
 ---
 
 ## 🖼️ **Design e Protótipos**
-O design foi desenvolvido no **Figma**, contemplando:  
+O design foi desenvolvido no **Figma**, contemplando: 
 - Tela de login/cadastro  
 - Catálogo de produtos  
 - Carrinho e checkout  
-- Painel de pedidos  
-- Páginas administrativas  
+- Painel de edição de endereços   
+- Tela de administrador 
 
 🔗 **Protótipo oficial:** [Acessar no Figma](https://www.figma.com/design/YRmCSWIV94Sm94X0SqDSXe/Projeto?node-id=0-1&p=f&t=tPH0TYHDsv4IJ3qk-0)
 
 ---
 
 ## 📚 **Versão**
-`v1.0.0` – Primeira release (Sprint 0 concluída).  
+`V0.1` – Primeira release (Sprint 1 concluída).  
 Inclui setup do backend, banco de dados com Flyway, autenticação JWT e base do frontend cm parte da primeira tela feita.
 
 ---
