@@ -30,11 +30,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 100px 80px 30px 40px;
-    margin-top: -80px; /* Puxa o conteúdo para cima, ficando mais alinhado com o protótipo */
+    margin-top: 40px;
+    margin-left:30px; /* Puxa o conteúdo para cima, ficando mais alinhado com o protótipo */
 }
 
 .olaAdmin {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 64px;
     color: var(--color-text-light);
     margin: 0;
@@ -51,8 +52,8 @@
     align-items: center;
     gap: 15px; /* Aumentei o gap entre o texto e a seta */
     padding: 10px 0;
-    margin-top: -30px; 
-    font-weight: 500;
+    margin-top: -10px; 
+    font-weight: 300;
 }
 .sairbotao svg {
     font-size: 30px;
@@ -82,7 +83,8 @@
 
 .titulo_coluna {
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 400;
+    margin-top:2px;
     margin-bottom: 25px; /* Espaçamento mais próximo */
     text-align: left;
 }
