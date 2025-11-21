@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logoGrande from "../../assets/logomarrom.svg";
 import fotocafes from "../../assets/fotologin.svg";
 import logogoogle from "../../assets/google.svg";
-import { Input } from "../../Components/Input/Input";
+import Input from "../../Components/Input/Input";
 
 import "./Tela_login.css";
 
