@@ -20,17 +20,25 @@ function Tela_login(){
                 </div>
                 <div className="partemenorlogin">
                     <p className="fazerlogin">Fazer Login</p>
-                    <Input label="E-mail:" type="email" />
-                    <Input label="Senha:" type="senha" />
+                    <Input label="E-mail:" type="email" placeholder="seu@email.com" />
+                    <Input label="Senha:" type="senha" placeholder="Digite sua senha" />
+
                     <div className="esqueceuasenha">
-                        <p></p>
-                        
+                        <p style={{margin:0}}>Esqueceu sua senha?</p>
+                        <a href="#" style={{marginLeft:16,textDecoration:'underline',color:'#7a5a46'}}>Recuperar senha</a>
                     </div>
-                    <button className="botaoentrar"/>
-                    <p className="ou"></p>
-                    <button className="entrargooglelogin"/>
-                    <p className="jatem"></p>
-                    
+
+                    <button className="botaoentrar">Entrar</button>
+
+                    <p className="ou">ou</p>
+
+                    <button className="entrargooglelogin">
+                        <img src={logogoogle} alt="google" style={{width:20,height:20,marginRight:8}}/>
+                        Entrar com o google
+                    </button>
+
+                    <p className="jatem">Ainda não tem uma conta? <a href="#" className="registre">Registre-se</a></p>
+
                 </div>
             </div>
 
