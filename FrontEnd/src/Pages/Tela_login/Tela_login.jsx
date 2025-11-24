@@ -17,7 +17,6 @@ function Tela_login(){
                 <div className="nomelogo">
                     <img src={logoGrande}/>
                     <h1 className="tituloterroir">TERROIR</h1>
-
                 </div>
                 <div className="partemenorlogin">
                     <p className="fazerlogin"></p>
@@ -25,9 +24,13 @@ function Tela_login(){
                     <Input label="Senha:" type="senha" />
                     <div className="esqueceuasenha">
                         <p></p>
-                        
-
+                        <url></url>
                     </div>
+                    <button className="botaoentrar"/>
+                    <p className="ou"></p>
+                    <button className="entrargooglelogin"/>
+                    <p className="jatem"></p>
+                    <url></url>
                 </div>
             </div>
 
