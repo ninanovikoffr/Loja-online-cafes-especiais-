@@ -19,18 +19,18 @@ function Tela_login(){
                     <h1 className="tituloterroir">TERROIR</h1>
                 </div>
                 <div className="partemenorlogin">
-                    <p className="fazerlogin"></p>
+                    <p className="fazerlogin">Fazer Login</p>
                     <Input label="E-mail:" type="email" />
                     <Input label="Senha:" type="senha" />
                     <div className="esqueceuasenha">
                         <p></p>
-                        <url></url>
+                        
                     </div>
                     <button className="botaoentrar"/>
                     <p className="ou"></p>
                     <button className="entrargooglelogin"/>
                     <p className="jatem"></p>
-                    <url></url>
+                    
                 </div>
             </div>
 
