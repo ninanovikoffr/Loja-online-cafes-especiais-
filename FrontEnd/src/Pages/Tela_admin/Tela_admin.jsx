@@ -5,7 +5,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Navbar } from '../../Components/Navbar/Navbar';
 
-import perfil_admin from "../../assets/perfil_icon.svg"; 
+import perfil_admin from "../../assets/Foto_admin.svg"; 
 
 import "./Tela_admin.css";
 
@@ -50,14 +50,30 @@ const pedidosMock = [
     { id: '123464', status: 'Aberto' },
 ];
 
-
 function Tela_admin() {
+
+    const [preco, setPreco] = useState('');
+
+    // Função para formatar o preço
+    const formatarPreco = (value) => {
+        let valor = value.replace(/\D/g, '');
+        if (valor.length > 2) {
+            valor = 'R$' + valor.slice(0, valor.length - 2) + ',' + valor.slice(valor.length - 2);
+        } else {
+            valor = 'R$' + valor;
+        }
+        return valor;
+    };
+
+    const handlePrecoChange = (e) => {
+        const formattedValue = formatarPreco(e.target.value);
+        setPreco(formattedValue);
+    };
     
     return (
         <div className="tela_admin">
             <Navbar /> 
 
-            {/* Cabeçalho da página Admin */}
             <div className="tituloadmin">
                 <p className="olaAdmin">Olá Admin!</p>
                 <button className="sairbotao">
@@ -77,37 +93,95 @@ function Tela_admin() {
                             <label>Descrição</label>
                             <textarea/>
 
-                            
-                            <label>Imagem</label>
-                            <input type="file" accept="image/*"/>
-                            <label className="botaoImagem"><FaPlusCircle />Escolher Arquivo</label>
-                            <span id="fileName">Nenhum arquivo escolhido</span>
+                           <form>
+                                <label>Imagem</label>
+                                <input type="file" id="imagem" accept="image/*" />
+                                <label htmlFor="imagem" className="botaoImagem">
+                                    <FaPlusCircle /> Escolher Arquivo
+                                </label>
+                                <span id="fileName">Nenhum arquivo escolhido</span>
+                            </form>
+
+                            <label for="opcao">Categoria</label>
+                            <select id="opcao" name="opcao">
+                                <option value="opcao1">Cafés especiais</option>
+                                <option value="opcao2">Kits de café</option>
+                                <option value="opcao3">Cápsulas de café</option>
+                            </select>
+
+                            <label for="preco">Preço</label>
+                            <input 
+                                type="text" 
+                                id="preco" 
+                                name="preco" 
+                                placeholder="R$0,00" 
+                                value={preco}
+                                onChange={handlePrecoChange}
+                                maxlength="10"
+                            />
                         </form>
+                        <button className='botaoSalvar' style={{marginBottom: '-10px'}}>Salvar</button>
 
-
-
-                    </div>
-                </div>
-                
-
-                <div className='coluna'>
-                    <div className='secaoAdmin'>
-                        <div>Adicionar Produto</div>
-                        <hr class="linhaHorizontal"/>
-                        
-                    </div>
-
-                    <div className='secaoAdmin'>
-                        <div>Adicionar Produto</div>
-                        <hr class="linhaHorizontal"/>
-                        
                     </div>
                 </div>
                 
                 <div className='coluna'>
                     <div className='secaoAdmin'>
-                        <div>Adicionar Produto</div>
+                        <div>Produtos</div>
                         <hr class="linhaHorizontal"/>
+                        <div className="listas">
+                            {produtosMock.map(produto => (
+                            <div key={produto.id} className="itemLista">
+                                <span>{produto.nome}</span>
+                                <div className="acoes">
+                                <FaEye />
+                                <FaEdit />
+                                <FaTrash />
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className='secaoAdmin'>
+                        <div>Pedidos</div>
+                        <hr class="linhaHorizontal"/>
+                        <div className="listas">
+                            {pedidosMock.map(pedido => (
+                            <div key={pedido.id} className="itemLista">
+                                <span>{pedido.id}</span>
+                                <span>{pedido.status}</span>
+                                <div className="acoes">
+                                <FaEye />
+                                <FaEdit />
+                                <FaTrash />
+                                </div>
+                            </div>
+                            ))}
+                        </div>  
+                        
+                    </div>
+                </div>
+                
+                <div className='coluna'>
+                    <div className='secaoAdmin'>
+                        <div>Editar Perfil</div>
+                        <hr class="linhaHorizontal"/>
+                        <img className="perfilImagem" src={perfil_admin}/>
+                        <form>
+                            <label>Nome</label>
+                            <input type="text"/>
+
+                            <label>E-mail</label>
+                            <input type="email"/>
+                            <a className= "links" href="redefinir_senha">Redefinir senha</a>
+
+                            <label>Endereços</label>
+                            <textarea/>
+
+                            <button className='botaoSalvar'>Salvar</button>
+                            <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
+                        </form>
 
 
                     </div>
