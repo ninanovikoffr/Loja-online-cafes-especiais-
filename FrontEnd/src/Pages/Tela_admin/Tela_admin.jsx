@@ -1,47 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaEye, FaTrash, FaEdit } from 'react-icons/fa'; 
-import { FaArrowRight } from 'react-icons/fa';
-import { FaPlusCircle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaEye, FaTrash, FaEdit, FaArrowRight, FaPlusCircle } from 'react-icons/fa';
 import { Navbar } from '../../Components/Navbar/Navbar';
 import axios from 'axios';
-import Notification from './Notification';
 import perfil_admin from "../../assets/Foto_admin.svg";
 import "./Tela_admin.css";
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const produto = {
-        nome,
-        descricao,
-        categoria,
-        preco: preco.replace('R$', '').replace(',', '.'), // Convertendo preço para formato numérico
-        imagem: imagem ? imagem.name : null, // Enviar o nome do arquivo ou URL da imagem
-    };
-
-    axios.post('http://localhost:8080/produtos', produto)
-        .then((response) => {
-            console.log('Produto criado com sucesso:', response.data);
-            setNotification({
-                message: 'Produto criado com sucesso!',
-                type: 'success',
-            });
-        })
-        .catch((error) => {
-            console.error('Erro ao criar produto:', error);
-            setNotification({
-                message: 'Erro ao criar o produto!',
-                type: 'error',
-            });
-        });
-};
-
-const [nome, setNome] = useState('');
-const [descricao, setDescricao] = useState('');
-const [categoria, setCategoria] = useState('');
-const [imagem, setImagem] = useState(null); // Para armazenar a imagem
-const [preco, setPreco] = useState('');
 
 const produtosMock = [
     { id: 1, nome: 'Café Gourmet Baunilha' },
@@ -85,8 +47,12 @@ const pedidosMock = [
 ];
 
 function Tela_admin() {
-
+    const [nome, setNome] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [categoria, setCategoria] = useState('');
+    const [imagem, setImagem] = useState(null);
     const [preco, setPreco] = useState('');
+    const [notification, setNotification] = useState(null);
 
     // Função para formatar o preço
     const formatarPreco = (value) => {
@@ -103,10 +69,37 @@ function Tela_admin() {
         const formattedValue = formatarPreco(e.target.value);
         setPreco(formattedValue);
     };
-    
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const produto = {
+            nome,
+            descricao,
+            categoria,
+            preco: preco.replace('R$', '').replace(',', '.'),
+            imagem: imagem ? imagem.name : null,
+        };
+
+        axios.post('http://localhost:8080/produtos', produto)
+            .then((response) => {
+                console.log('Produto criado com sucesso:', response.data);
+                setNotification({ message: 'Produto criado com sucesso!', type: 'success' });
+                setNome('');
+                setDescricao('');
+                setCategoria('');
+                setImagem(null);
+                setPreco('');
+            })
+            .catch((error) => {
+                console.error('Erro ao criar produto:', error);
+                setNotification({ message: 'Erro ao criar o produto!', type: 'error' });
+            });
+    };
+
     return (
         <div className="tela_admin">
-            <Navbar /> 
+            <Navbar />
 
             <div className="tituloadmin">
                 <p className="olaAdmin">Olá Admin!</p>
@@ -119,7 +112,7 @@ function Tela_admin() {
                 <div className='coluna'>
                     <div className='secaoAdmin'>
                         <div>Adicionar Produto</div>
-                        <hr class="linhaHorizontal"/>
+                        <hr className="linhaHorizontal"/>
                         <form onSubmit={handleSubmit}>
                             <label>Nome</label>
                             <input type="text" value={nome} onChange={(e) => setNome(e.target.value)}/>
@@ -127,23 +120,23 @@ function Tela_admin() {
                             <label>Descrição</label>
                             <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
 
-                           <form>
+                            <div>
                                 <label>Imagem</label>
                                 <input type="file" id="imagem" accept="image/*" onChange={(e) => setImagem(e.target.files[0])}/>
                                 <label htmlFor="imagem" className="botaoImagem">
                                     <FaPlusCircle /> Escolher Arquivo
                                 </label>
                                 <span id="fileName">{imagem ? imagem.name : 'Nenhum arquivo escolhido'}</span>
-                            </form>
+                            </div>
 
-                            <label for="opcao">Categoria</label>
+                            <label htmlFor="opcao">Categoria</label>
                             <select id="opcao" name="opcao" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                                 <option value="opcao1">Cafés especiais</option>
                                 <option value="opcao2">Kits de café</option>
                                 <option value="opcao3">Cápsulas de café</option>
                             </select>
 
-                            <label for="preco">Preço</label>
+                            <label htmlFor="preco">Preço</label>
                             <input 
                                 type="text" 
                                 id="preco" 
@@ -151,10 +144,11 @@ function Tela_admin() {
                                 placeholder="R$0,00" 
                                 value={preco}
                                 onChange={handlePrecoChange}
-                                maxlength="10"
+                                maxLength={10}
                             />
+
+                            <button className='botaoSalvar' type="submit">Salvar</button>
                         </form>
-                        <button className='botaoSalvar' type="submit"  style={{marginBottom: '-10px'}}>Salvar</button>
 
                     </div>
                 </div>
@@ -162,7 +156,7 @@ function Tela_admin() {
                 <div className='coluna'>
                     <div className='secaoAdmin'>
                         <div>Produtos</div>
-                        <hr class="linhaHorizontal"/>
+                        <hr className="linhaHorizontal"/>
                         <div className="listas">
                             {produtosMock.map(produto => (
                             <div key={produto.id} className="itemLista">
@@ -179,7 +173,7 @@ function Tela_admin() {
 
                     <div className='secaoAdmin'>
                         <div>Pedidos</div>
-                        <hr class="linhaHorizontal"/>
+                        <hr className="linhaHorizontal"/>
                         <div className="listas">
                             {pedidosMock.map(pedido => (
                             <div key={pedido.id} className="itemLista">
@@ -200,8 +194,8 @@ function Tela_admin() {
                 <div className='coluna'>
                     <div className='secaoAdmin'>
                         <div>Editar Perfil</div>
-                        <hr class="linhaHorizontal"/>
-                        <img className="perfilImagem" src={perfil_admin}/>
+                        <hr className="linhaHorizontal"/>
+                        <img className="perfilImagem" src={perfil_admin} alt="perfil"/>
                         <form>
                             <label>Nome</label>
                             <input type="text"/>
@@ -211,7 +205,7 @@ function Tela_admin() {
                             <a className= "links" href="redefinir_senha">Redefinir senha</a>
 
                             <label>Endereços</label>
-                            <textarea/>
+                            <textarea />
 
                             <button className='botaoSalvar'>Salvar</button>
                             <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
@@ -224,11 +218,13 @@ function Tela_admin() {
 
             </div>
 
-                
-
+            {notification && (
+                <div className={`notificacao ${notification.type}`}>
+                    {notification.message}
+                </div>
+            )}
 
         </div>
-                    
     );
 }
 
