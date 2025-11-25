@@ -28,7 +28,7 @@
 .nomelogo {
      display:flex;
      margin-top: -43px;
-     margin-left: 0px;
+     margin-left: 40px;
 
 }
 
@@ -90,40 +90,64 @@
     color:#fff;
     border:none;
     border-radius:29px;
-    font-size:32px;
     cursor:pointer;
-    margin: 10px 0 10px 0;
     width: 198px;
     height: 64px;
+    margin-top:30px;
+    box-shadow: 0px 2px 4.5px rgba(0, 0, 0, 0.25);
     
 }
 
-.botaoentrar p {
-    
+.botaoentrartexto{
+    font-family: 'M PLUS 2', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin-top: 6px;
 }
 
 .ou{
+    font-family: 'M PLUS 2', sans-serif;
     font-size: 32px;
+    font-weight: 400;
     margin:8px 0 8px 0;
-    color:#6b5a50;
+    color:#51361E;
+    margin-bottom: 20px;
+    margin-top:10px;
+}
+
+.classegooglelogin{
+    margin-left:10px;
 }
 
 .entrargooglelogin{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:6px;
     background:#fff;
     border:1px solid rgba(57,33,21,0.08);
-    padding:8px 12px;
-    border-radius:20px;
+    padding:13px ;
+    border-radius:40px;
     cursor:pointer;
+    width: 310px;
+    height: 60px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #412913;
+    box-shadow: 0 2px 6px rgba(57,33,21,0.06);
 }
 
-.jatem{
-    margin-top:14px;
-    font-size:14px;
-    color:#6b5a50;
+.naotem{
+    margin-top:27px;
+    font-size:24px;
+    color:#51361E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+
 }
+
+
 
 .jatem .registre{ color:#7a5a46; text-decoration:underline }
 

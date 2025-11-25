@@ -28,16 +28,16 @@ function Tela_login(){
                         <a href="#" style={{marginLeft:16,textDecoration:'underline',color:'#7a5a46'}}>Recuperar senha</a>
                     </div>
 
-                    <button className="botaoentrar">Entrar</button>
+                    <button className="botaoentrar"><p className="botaoentrartexto">Entrar</p></button>
 
                     <p className="ou">ou</p>
 
                     <button className="entrargooglelogin">
-                        <img src={logogoogle} alt="google" style={{width:20,height:20,marginRight:8}}/>
-                        Entrar com o google
+                        <p className="classegooglelogin">Entrar com o google</p>
+                        <img src={logogoogle} alt="google" style={{width:43,height:43}}/>
                     </button>
 
-                    <p className="jatem">Ainda não tem uma conta? <a href="#" className="registre">Registre-se</a></p>
+                    <p className="naotem">Ainda não tem uma conta? <a href="#" className="registre" style={{textDecoration:'underline',color:'#51361E'}} >Registre-se</a></p>
 
                 </div>
             </div>

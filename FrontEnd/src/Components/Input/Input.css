@@ -25,8 +25,10 @@
     background: #ffffff;
     box-shadow: 0 2px 6px rgba(57,33,21,0.06);
     outline: none;
-    font-size: 16px;
+    font-size: 24px;
     color: #222;
+    padding-left: 23px;
+    padding-right: 23px;
 }
 
 .inputmolde::placeholder{ color: rgba(34,34,34,0.35) }
