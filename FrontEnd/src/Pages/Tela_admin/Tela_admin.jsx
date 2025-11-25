@@ -4,10 +4,44 @@ import { FaEye, FaTrash, FaEdit } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Navbar } from '../../Components/Navbar/Navbar';
-
-import perfil_admin from "../../assets/Foto_admin.svg"; 
-
+import axios from 'axios';
+import Notification from './Notification';
+import perfil_admin from "../../assets/Foto_admin.svg";
 import "./Tela_admin.css";
+
+const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const produto = {
+        nome,
+        descricao,
+        categoria,
+        preco: preco.replace('R$', '').replace(',', '.'), // Convertendo preço para formato numérico
+        imagem: imagem ? imagem.name : null, // Enviar o nome do arquivo ou URL da imagem
+    };
+
+    axios.post('http://localhost:8080/produtos', produto)
+        .then((response) => {
+            console.log('Produto criado com sucesso:', response.data);
+            setNotification({
+                message: 'Produto criado com sucesso!',
+                type: 'success',
+            });
+        })
+        .catch((error) => {
+            console.error('Erro ao criar produto:', error);
+            setNotification({
+                message: 'Erro ao criar o produto!',
+                type: 'error',
+            });
+        });
+};
+
+const [nome, setNome] = useState('');
+const [descricao, setDescricao] = useState('');
+const [categoria, setCategoria] = useState('');
+const [imagem, setImagem] = useState(null); // Para armazenar a imagem
+const [preco, setPreco] = useState('');
 
 const produtosMock = [
     { id: 1, nome: 'Café Gourmet Baunilha' },
@@ -86,24 +120,24 @@ function Tela_admin() {
                     <div className='secaoAdmin'>
                         <div>Adicionar Produto</div>
                         <hr class="linhaHorizontal"/>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <label>Nome</label>
-                            <input type="text"/>
+                            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)}/>
 
                             <label>Descrição</label>
-                            <textarea/>
+                            <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
 
                            <form>
                                 <label>Imagem</label>
-                                <input type="file" id="imagem" accept="image/*" />
+                                <input type="file" id="imagem" accept="image/*" onChange={(e) => setImagem(e.target.files[0])}/>
                                 <label htmlFor="imagem" className="botaoImagem">
                                     <FaPlusCircle /> Escolher Arquivo
                                 </label>
-                                <span id="fileName">Nenhum arquivo escolhido</span>
+                                <span id="fileName">{imagem ? imagem.name : 'Nenhum arquivo escolhido'}</span>
                             </form>
 
                             <label for="opcao">Categoria</label>
-                            <select id="opcao" name="opcao">
+                            <select id="opcao" name="opcao" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                                 <option value="opcao1">Cafés especiais</option>
                                 <option value="opcao2">Kits de café</option>
                                 <option value="opcao3">Cápsulas de café</option>
@@ -120,7 +154,7 @@ function Tela_admin() {
                                 maxlength="10"
                             />
                         </form>
-                        <button className='botaoSalvar' style={{marginBottom: '-10px'}}>Salvar</button>
+                        <button className='botaoSalvar' type="submit"  style={{marginBottom: '-10px'}}>Salvar</button>
 
                     </div>
                 </div>
