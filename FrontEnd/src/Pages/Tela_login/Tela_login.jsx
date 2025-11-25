@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom'; 
 import logoGrande from "../../assets/logomarrom.svg";
 import fotocafes from "../../assets/fotologin.svg";
 import logogoogle from "../../assets/google.svg";
@@ -37,7 +37,7 @@ function Tela_login(){
                         <img src={logogoogle} alt="google" style={{width:43,height:43}}/>
                     </button>
 
-                    <p className="naotem">Ainda não tem uma conta? <a href="#" className="registre" style={{textDecoration:'underline',color:'#51361E'}} >Registre-se</a></p>
+                    <p className="naotem">Ainda não tem uma conta? <Link to="/registrar" className="registre" style={{textDecoration:'underline',color:'#51361E'}}>Registre-se</Link></p>
 
                 </div>
             </div>

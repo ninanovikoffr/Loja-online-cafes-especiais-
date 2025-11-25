@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom'; 
 import logoGrandereg from "../../assets/logomarrom.svg";
 import fotoreg from "../../assets/FotoRegistrar.svg";
 import logogooglereg from "../../assets/google.svg";
@@ -34,7 +34,7 @@ function Tela_registrar(){
                         <img src={logogooglereg} alt="google" style={{width:43,height:43}}/>
                     </button>
 
-                    <p className="jatem">Já tem uma conta? <a href="#" className="fazerloginreg" style={{textDecoration:'underline',color:'#51361E'}} >Fazer Login</a></p>
+                    <p className="jatem">Já tem uma conta? <Link to="/login" className="fazerloginreg" style={{textDecoration:'underline',color:'#51361E'}}>Fazer Login</Link></p>
 
                 </div>
             </div>
