@@ -8,6 +8,7 @@ import Input from "../../Components/Input/Input";
 import "./Tela_login.css";
 
 function Tela_login(){
+    const navigate = useNavigate();
     return(
         <div className="telalogin">
             <div className="imagemlogin">
@@ -28,7 +29,7 @@ function Tela_login(){
                         <a href="#" style={{marginLeft:16,textDecoration:'underline',color:'#7a5a46'}}>Recuperar senha</a>
                     </div>
 
-                    <button className="botaoentrar"><p className="botaoentrartexto">Entrar</p></button>
+                    <button className="botaoentrar" type="button" onClick={() => navigate('/admin')}><p className="botaoentrartexto">Entrar</p></button>
 
                     <p className="ou">ou</p>
 

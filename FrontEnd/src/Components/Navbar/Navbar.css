@@ -55,6 +55,7 @@
   font-size: 1.3rem;
   cursor: pointer;
   text-align: center;
+  text-decoration: none; /* remove underline for link-styled button */
 }
 
 /* Container da busca */

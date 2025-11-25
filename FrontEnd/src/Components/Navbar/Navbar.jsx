@@ -6,13 +6,14 @@ import logo from "../../assets/Logo.svg";
 import perfil_icon from "../../assets/Perfil_icon.svg";
 
 import { FaBars, FaSearch } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar__left">
         <img src={perfil_icon} className="navbar__icon" href="/Pages/Tela_admin/Tela_admin" alt="Perfil" />
-        <button className="navbar__login">Entrar</button>
+        <Link to="/login" className="navbar__login">Entrar</Link>
       </div>
 
       <div className="navbar__center">

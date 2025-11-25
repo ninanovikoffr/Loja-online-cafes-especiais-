@@ -9,6 +9,7 @@ import "./Tela_registrar.css";
 
 
 function Tela_registrar(){
+    const navigate = useNavigate();
     return(
         <div className="telaregistrar">
             <div className="imagemregistrar">
@@ -25,7 +26,7 @@ function Tela_registrar(){
                     <Input  label="Senha:" type="senha" placeholder="Digite sua senha" />
                     <Input  label="Confirmar senha:" type="senha" placeholder="Confirme sua senha" />
 
-                    <button className="botaocriar"><p className="botaocriartexto">Criar Conta</p></button>
+                    <button className="botaocriar" type="button" onClick={() => navigate('/')}><p className="botaocriartexto">Criar Conta</p></button>
 
                     <p className="oureg">ou</p>
 
