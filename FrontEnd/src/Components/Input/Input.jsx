@@ -7,7 +7,7 @@ function Input({ label, type = "text", placeholder = "" }) {
     return (
         <div className="componenteinput">
             {label && <p className="campo">{label}</p>}
-            <input className="inputmolde" type={htmlType} placeholder={placeholder} />
+            <input className="inputmolde" type={htmlType}  />
         </div>
     );
 }

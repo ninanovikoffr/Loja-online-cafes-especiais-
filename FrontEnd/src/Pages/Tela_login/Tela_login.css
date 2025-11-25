@@ -65,36 +65,45 @@
 .fazerlogin {
     font-family: 'M PLUS 2', sans-serif;
     margin: 4px 0 20px 0;
+    margin-bottom: 50px;
     color:#51361E;
     color:#51361E;
     font-size: 50px !important;
     font-weight: 600 !important;
+
 }
 
 .esqueceuasenha{
-    width:100%;
+    width:78%;
     display:flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
+    margin-top: -5px;
     margin-bottom: 14px;
     padding: 0 8%;
-    font-size: 13px;
+    font-size: 20px;
     color: #6b5a50;
 }
 
 .botaoentrar{
-    background:#7a5a46;
+    background:#7F5F42;
     color:#fff;
     border:none;
-    padding:10px 38px;
-    border-radius:22px;
-    font-size:16px;
+    border-radius:29px;
+    font-size:32px;
     cursor:pointer;
     margin: 10px 0 10px 0;
+    width: 198px;
+    height: 64px;
+    
+}
+
+.botaoentrar p {
+    
 }
 
 .ou{
+    font-size: 32px;
     margin:8px 0 8px 0;
     color:#6b5a50;
 }
@@ -123,5 +132,5 @@
     .imagemlogin{ flex: none }
     .imagemlogin img{ height:200px }
     .partelogin{ padding: 18px }
-    .partemenorlogin{ width:100%; }
+    
 }
