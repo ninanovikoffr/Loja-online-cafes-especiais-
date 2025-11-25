@@ -1,19 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap');
 
-/* Variáveis de Cores (Mantidas para consistência) */
-:root {
-    --color-background-dark: #3D2D23; 
-    --color-column-bg: #EEE2D6; 
-    --color-text-dark: #3D2D23; 
-    --color-text-light: #D9D9D9; 
-    --color-button-primary: #5A3F31; 
-    --color-button-secondary: #D9D9D9; 
-    --color-border: #A39B92; 
-    --color-status-aberto: #FFE082; 
-    --color-status-finalizado: #B9D6B3; 
-    --color-input-border: #D1C4B5; /* Cor mais clara para bordas de inputs */
-}
-
 /* Base e Fundo */
 .tela_admin {
     min-height: 100vh;
@@ -36,212 +22,135 @@
 
 .olaAdmin {
     font-weight: 400;
-    font-size: 64px;
-    color: var(--color-text-light);
+    font-size: 54px;
+    color:  #EEE2D6;
     margin: 0;
 }
 
 .sairbotao {
-    /* Ajuste de estilo para ficar mais próximo da imagem */
     background-color: transparent;
     border: none;
-    font-size: 30px;
-    color: #EEE2D6; /* Cor específica do protótipo */
+    font-size: 25px;
+    color: #EEE2D6;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 15px; /* Aumentei o gap entre o texto e a seta */
-    padding: 10px 0;
+    gap: 10px;
     margin-top: -10px; 
     font-weight: 300;
 }
 .sairbotao svg {
-    font-size: 30px;
+    font-size: 325;
 }
 
-/* Estrutura Principal de Colunas (Implementação do Tamanho Igual) */
-.quadradogrande {
-    display: flex;
-    gap: 30px;
-    justify-content: center; 
-    padding: 0 40px 50px 40px; 
-    align-items: stretch; /* ESSENCIAL: Faz com que todas as colunas tenham a mesma altura */
-}
-
-/* Estilo Base para Todas as Colunas (Altura Removida, Confiança no Flexbox) */
-.addproduto,
-.segundacoluna,
-.editarPerfil {
-    background-color: var(--color-column-bg);
-    border-radius: 20px;
-    padding: 30px 40px;
-    box-sizing: border-box;
-    color: var(--color-text-dark);
-    height: auto; /* Deixa o flexbox controlar a altura */
-    min-height: 700px; /* Garante uma altura base para esticar */
-}
-
-.titulo_coluna {
-    font-size: 28px;
-    font-weight: 400;
-    margin-top:2px;
-    margin-bottom: 25px; /* Espaçamento mais próximo */
-    text-align: left;
-}
-
-/* --- Coluna 1: Adicionar Produto --- */
-.addproduto {
-    width: 380px; 
-    display: flex; 
-    flex-direction: column;
-}
-
-.inputsaddprod {
-    flex-grow: 1; 
-    
-}
-
-.inputsaddprod > div {
-    margin-bottom: 20px;
-}
-
-.inputsaddprod p {
-    font-size: 18px;
-    font-weight: 500; /* Peso da fonte ajustado */
-    margin: 0 0 5px 0;
-}
-
-.inputprod {
-    width: 100%;
-    height: 45px;
-    border: 1px solid var(--color-input-border); /* Borda mais clara */
-    border-radius: 0; /* Sem borda arredondada */
-    padding: 0 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    background-color: white; 
-}
-
-.btn_salvar_produto {
-    width: 100%;
-    background-color: var(--color-button-primary);
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 10px 0; /* Ajustei o padding para ser mais baixo */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 30px; /* Espaço maior antes do botão */
-}
-
-/* --- Coluna 2: Produtos e Pedidos (Implementação do Scroll) --- */
-.segundacoluna {
-    width: 450px; 
-    display: flex;
-    flex-direction: column;
-    padding: 30px 30px; 
-    /* Permite que o Flexbox divida o espaço restante */
-}
-
-.produtoslista,
-.pedidoslista {
-    flex-grow: 1; /* Faz com que as duas seções dividam o espaço verticalmente */
-    flex-shrink: 0;
-    padding: 15px; 
-    background-color: white; 
-    border-radius: 10px;
-    border: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Necessário para Flexbox com overflow */
-    margin-bottom: 30px; /* Espaçamento entre os blocos */
-}
-.pedidoslista {
-    margin-bottom: 0;
-}
-
-.titulo_coluna_interna {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    margin-top: 0;
-    text-align: left;
-}
-
-/* Contêiner de Rolagem */
-.scroll_container {
-    flex-grow: 1; /* Ocupa o espaço restante dentro de produtoslista/pedidoslista */
-    overflow-y: auto; /* ADICIONA SCROLL VERTICAL */
-    padding-right: 5px; /* Espaço para não colar na barra de scroll */
-}
-
-/* Estilos de Item (Mantidos) */
-.produto_item,
-.pedido_item {
+/* Estrutura Principal de Colunas */
+.colunas {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--color-border);
-    font-size: 16px;
-}
-.produto_item:last-child,
-.pedido_item:last-child {
-    border-bottom: none;
+    gap: 30px;
+    align-items: stretch;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
-/* --- Coluna 3: Editar Perfil --- */
-.editarPerfil {
-    width: 380px; 
-    text-align: center;
+.coluna{
+    flex: 1;
+}
+
+.secaoAdmin {
+    background-color: #EEE2D6;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: auto;
+    min-height: 300px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 52px;
+    color: #4C351F;
+}
+
+.linhaHorizontal {
+    border-top: 2px solid #4C351F;
+    margin: 10px 0;
+    width: 110%;
+    margin-left: -20px;
+    margin-right: -20px; /* Ajuste só pra ignorar o padding da div secaoAdmin */
+}
+
+form {
     display: flex;
     flex-direction: column;
 }
 
-.perfil_admin_img {
-    width: 130px; /* Levemente menor */
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-top: 5px;
-    border: 5px solid white; 
+label {
+    font-size: 26px;
+}
+
+input {
+    padding: 10px;
+    border: 0px solid #C4C4C4;
+    font-size: 16px;
+    color: #4C351F;
+    width: 100%;
+    height: 45px;
+    box-sizing: border-box;
     margin-bottom: 20px;
 }
 
-/* Endereço */
-.endereco_container {
-    background-color: white;
-    /* Ajustado para uma borda fina e branca, mais fiel ao protótipo */
-    border: 1px solid white; 
-    border-radius: 5px; 
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #4C351F;
+    box-shadow: 0 0 8px rgba(76, 53, 31, 0.6);
+}
+
+textarea {
+    width: 400px;
     padding: 10px;
-    text-align: left;
-    margin-bottom: 25px;
+    border: 0px solid #C4C4C4;
+    font-size: 16px;
+    color: #4C351F;
+    box-sizing: border-box;
+    min-height: 100px;
+    line-height: 1.5;
+    resize: none;
+    margin-bottom: 20px;
 }
 
-.endereco_text {
-    /* Corrigindo a cor da fonte para ser mais clara no protótipo */
-    color: #4b4b4b; 
+input[type="file"] {
+    display:none; /* Para ocultar o botão padrão do input file */
 }
 
-
-/* Botões do Editar Perfil */
-.btn_salvar_perfil {
-    width: 100%; /* Ajustado para 100% como o botão "Salvar" do produto */
-    background-color: var(--color-button-primary);
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 10px 0;
-    border: none;
-    border-radius: 8px;
+.botaoImagem {
+    display: inline-block;
+    background-color: #FFFF;
+    color: #4C351F;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 10px;
 }
 
-.deletar_conta_container {
-    margin-top: 30px;
-    /* Alinha o texto do botão deletar conta à esquerda da coluna, conforme o protótipo */
-    text-align: left; 
+#fileName {
+    color: #4C351F;
+    font-size: 14px;
+    display: block;
+    margin-top: -10px;
+    text-align: left;
 }
+
+.botaoImagem:focus {
+    outline: none;
+    border-color: #4C351F;
+    box-shadow: 0 0 8px rgba(76, 53, 31, 0.6);
+}
+
+.botaoImagem svg {
+    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+}
+
+
