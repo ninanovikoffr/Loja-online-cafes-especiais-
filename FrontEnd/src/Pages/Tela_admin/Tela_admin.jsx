@@ -11,7 +11,7 @@ const produtosMock = [
     { id: 3, nome: 'Café 100% Arábica' },
     { id: 4, nome: 'Café Orgânico' },
     { id: 5, nome: 'Café Extra Forte' },
-    { id: 6, nome: 'Café Moído na Hora' },
+    { id: 6, nome: 'Café Moído Torra Média' },
     { id: 7, nome: 'Grãos Premium' },
     { id: 8, nome: 'Café Descafeinado' },
     { id: 9, nome: 'Café Espresso' },

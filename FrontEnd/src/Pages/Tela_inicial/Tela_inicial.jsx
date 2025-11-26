@@ -1,12 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Navbar } from '../../Components/Navbar/Navbar';
+import Carrinho from '../../Components/Carrinho/Carrinho';
 
 import fundo from "../../assets/Fundo.svg";
 
 import "./Tela_inicial.css";
 
 function Tela_inicial() {
+  const [cartOpen, setCartOpen] = useState(false);
+  // mock items example
+  const [cartItems, setCartItems] = useState([
+    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' },
+    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' }
+  ]);
+
+  const addToCart = (item) => {
+    setCartItems(prev => [...prev, item]);
+    setCartOpen(true);
+  }
+
   return (
     <div className="tela_inicial">
      <Navbar />
@@ -24,19 +37,19 @@ function Tela_inicial() {
           <div className='secao'>
             <div className='cafes_text'>Café Gourmet Baunilha</div>
             <img src="/src/assets/cafe_baunilha.svg" className='foto_cafe' alt="Café gourmet baunilha" />
-            <button className='botao_comprar'>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café Gourmet Baunilha', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_baunilha.svg' })}>Comprar</button>
           </div>
 
           <div className='secao'>
             <div className='cafes_text'>Café Premium Torra Média</div>
             <img src="/src/assets/cafe_torra.svg" className='foto_cafe' alt="Café premium torra média" />
-            <button className='botao_comprar'>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café Premium Torra Média', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_torra.svg' })}>Comprar</button>
           </div>
 
           <div className='secao'>
             <div className='cafes_text'>Café 100% Arábica</div>
             <img src="/src/assets/cafe_arabica.svg" className='foto_cafe' alt="Café 100% arábica" />
-            <button className='botao_comprar'>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café 100% Arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' })}>Comprar</button>
           </div>
         </div>
       </div>
@@ -73,9 +86,11 @@ function Tela_inicial() {
       </div>
 
       {/* Botão Flutuante do Carrinho */}
-      <button className='botao_flutuante'> 
+        <button className='botao_flutuante' onClick={()=>setCartOpen(true)}> 
           <img src="/src/assets/Carrinho_icon.svg"/>
-      </button>
+        </button>
+
+        <Carrinho open={cartOpen} onClose={()=>setCartOpen(false)} items={cartItems} />
 
 
 
