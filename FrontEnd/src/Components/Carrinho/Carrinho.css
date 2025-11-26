@@ -10,30 +10,40 @@
 
 .popupcar{
   width: 860px;
+  height: 400px;
   max-width: calc(100% - 40px);
   background: #fff;
-  border-radius: 12px;
+  border-radius: 27px;
   padding: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   position: relative;
-  display: flex;
-  flex-direction: column;
+  
 }
 
 .xiscarrinho{
   position: absolute;
-  right: 14px;
-  top: 10px;
+  right: 22px;
+  top: 0px;
   background: transparent;
   border: none;
-  font-size: 28px;
+  font-size: 50px;
   cursor: pointer;
 }
 
-.cabecalhocar h2{
-  font-size: 28px;
-  color: #5b2f1b;
-  margin: 8px 0 16px 0;
+.cabecalhocar {
+  font-size: 32px;
+  color: #412913;
+  display:flex;
+  gap:30px;
+  margin-top:-30px;
+  width: 500px;
+  margin-left: 10px;
+
+  
+}
+
+.cabecalhocar img{
+    width: 60px;
 }
 
 .quadradocar{
@@ -73,6 +83,54 @@
 .totalpedido{
   display:flex; justify-content:space-between; font-weight:600; font-size:18px; padding-top:8px;
 }
+
+.quadradoesquerda{
+    width: 500px;
+    height: 300px;
+    margin-top: -20px;
+
+}
+
+.quadradodireita {
+}
+
+.formapagamento {
+}
+
+.pix {
+}
+
+.pix p {
+}
+
+.pix img {
+}
+
+.cartao {
+}
+
+.cartao p {
+}
+
+.cartao img {
+}
+
+.boleto {
+}
+
+.boleto p {
+}
+
+.boleto img {
+}
+
+.endereçoentrega {
+}
+
+.finalizar {
+}
+
+
 
 .finalizar{
   background:#4a2b1a; color:#fff; border:none; padding:12px 18px; border-radius:10px; cursor:pointer; font-size:16px;
