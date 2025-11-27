@@ -33,8 +33,6 @@ public class ProdutoService {
                 .nome(dto.getNome())
                 .descricao(dto.getDescricao())
                 .preco(new Preco(dto.getPreco()))
-                .estoque(dto.getEstoque())
-                .categoria(dto.getCategoria())
                 .imagemUrl(dto.getImagemUrl())
                 .build();
 
@@ -48,8 +46,6 @@ public class ProdutoService {
         existente.setNome(dto.getNome());
         existente.setDescricao(dto.getDescricao());
         existente.setPreco(new Preco(dto.getPreco()));
-        existente.setEstoque(dto.getEstoque());
-        existente.setCategoria(dto.getCategoria());
         existente.setImagemUrl(dto.getImagemUrl());
 
         return toResponse(produtoRepository.save(existente));
@@ -62,8 +58,6 @@ public class ProdutoService {
         if (dto.getNome() != null) existente.setNome(dto.getNome());
         if (dto.getDescricao() != null) existente.setDescricao(dto.getDescricao());
         if (dto.getPreco() != null) existente.setPreco(new Preco(dto.getPreco()));
-        if (dto.getEstoque() != null) existente.setEstoque(dto.getEstoque());
-        if (dto.getCategoria() != null) existente.setCategoria(dto.getCategoria());
         if (dto.getImagemUrl() != null) existente.setImagemUrl(dto.getImagemUrl());
 
         return toResponse(produtoRepository.save(existente));
@@ -82,8 +76,6 @@ public class ProdutoService {
                 .nome(model.getNome())
                 .descricao(model.getDescricao())
                 .preco(model.getPreco().getValue())
-                .estoque(model.getEstoque())
-                .categoria(model.getCategoria())
                 .imagemUrl(model.getImagemUrl())
                 .build();
     }

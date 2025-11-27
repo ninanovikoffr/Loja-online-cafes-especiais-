@@ -9,8 +9,6 @@ import lombok.*;
 public class ProdutoRequestDTO {
     private String nome;
     private String descricao;
-    private Double preco;   // Preco como Double no DTO
-    private Integer estoque;
-    private String categoria;
+    private Double preco;
     private String imagemUrl;
 }
