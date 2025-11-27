@@ -19,7 +19,7 @@ function Carrinho({ open, onClose, items = [] }){
 
                 <div className="cabecalhocar">
                     <img src={carrinhoCarrinho}/>
-                    <h2>Seu Carrinho</h2>
+                    <p>Seu Carrinho</p>
                 </div>
 
                 <div className="quadradocar">
@@ -40,8 +40,17 @@ function Carrinho({ open, onClose, items = [] }){
                                 ))
                             )}
                         </div>
+                        <div>
+                            <p className="fretecar">Frete: 5,00</p>
+
+                        </div>
+                        <div className="descontoscar">
+                            <p>Descontos: 0,00</p>
+
+                        </div>
+                        <div className="linhacar"><img src={linha}/></div>
                         <div className="somas">
-                            <div className="totalpedido"><span>Total do Pedido:</span><span>R$ {total}</span></div>
+                            <div className="totalpedido"><span>Total do Pedido:</span><span className="total">R$ {total}</span></div>
                         </div>
                     </div>
                     <div className="quadradodireita">
