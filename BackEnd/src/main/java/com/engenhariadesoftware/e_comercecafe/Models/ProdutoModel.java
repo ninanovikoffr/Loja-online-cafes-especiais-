@@ -33,9 +33,6 @@ public class ProdutoModel {
     @Column(nullable = false)
     private Integer estoque;
 
-    @Column(nullable = false, length = 50)
-    private String categoria;
-
     @Column(name = "imagem_url", length = 255)
     private String imagemUrl;
 
