@@ -54,18 +54,18 @@ function Carrinho({ open, onClose, items = [] }){
                         </div>
                     </div>
                     <div className="quadradodireita">
-                        <p className="formapagamento"></p>
+                        <p className="formapagamento">Forma de pagamento</p>
                         <div className="pix">
-                            <p></p>
-                            <img/>
+                            <p>Pix</p>
+                            <img src={pix}/>
                         </div>
                         <div className="cartao">
-                            <p></p>
-                            <img/>
+                            <p>Cartão</p>
+                            <img src={cartao}/>
                         </div>
                         <div className="boleto">
-                            <p></p>
-                            <img/>
+                            <p>Boleto</p>
+                            <img src={codigodebarras}/>
                         </div>
                         <div className="endereçoentrega">
 

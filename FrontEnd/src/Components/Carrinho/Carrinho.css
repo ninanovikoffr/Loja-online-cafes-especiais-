@@ -128,12 +128,22 @@
 }
 
 .quadradodireita {
+    
 }
 
 .formapagamento {
+    margin-left: 10px;
+    margin-top: -80px;
+    font-family: 'M PLUS 2';
+    font-size: 20px;
+    font-weight: 600;
+    color:#412913;
+
 }
 
 .pix {
+    
+    display:flex;
 }
 
 .pix p {
@@ -143,6 +153,7 @@
 }
 
 .cartao {
+    display:flex;
 }
 
 .cartao p {
@@ -152,6 +163,7 @@
 }
 
 .boleto {
+    display:flex;
 }
 
 .boleto p {
@@ -169,14 +181,16 @@
 
 
 .finalizar{
-
+    margin-top: 0px;
   background:#4a2b1a; 
   color:#fff; 
   border:none; 
   padding:12px 18px; 
   border-radius:10px; 
+  margin-left: 20px;
+  width:300px;
   cursor:pointer; 
-  font-size:16px;
+  font-size:22px;
 }
 
 /* responsive */
