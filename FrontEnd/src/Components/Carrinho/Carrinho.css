@@ -1,0 +1,143 @@
+.popupcarrinho{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.popupcar{
+  width: 860px;
+  height: 400px;
+  max-width: calc(100% - 40px);
+  background: #fff;
+  border-radius: 27px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  position: relative;
+  
+}
+
+.xiscarrinho{
+  position: absolute;
+  right: 22px;
+  top: 0px;
+  background: transparent;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.cabecalhocar {
+  font-size: 32px;
+  color: #412913;
+  display:flex;
+  gap:30px;
+  margin-top:-30px;
+  width: 500px;
+  margin-left: 10px;
+
+  
+}
+
+.cabecalhocar img{
+    width: 60px;
+}
+
+.quadradocar{
+  display: flex;
+  gap: 24px;
+}
+
+.itenscarrinho{
+  flex: 1 1 60%;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.umitemcar{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.umitemcar img{ width: 48px; height:48px; object-fit:cover }
+.informacaoitem{ flex:1 }
+.nomeitem{ font-weight:600; color:#4a2b1a }
+.descricaoitem{ font-size:12px; color:#777 }
+.precoitem{ font-weight:600; color:#4a2b1a }
+
+.somas{
+  width: 320px;
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.totalpedido{
+  display:flex; justify-content:space-between; font-weight:600; font-size:18px; padding-top:8px;
+}
+
+.quadradoesquerda{
+    width: 500px;
+    height: 300px;
+    margin-top: -20px;
+
+}
+
+.quadradodireita {
+}
+
+.formapagamento {
+}
+
+.pix {
+}
+
+.pix p {
+}
+
+.pix img {
+}
+
+.cartao {
+}
+
+.cartao p {
+}
+
+.cartao img {
+}
+
+.boleto {
+}
+
+.boleto p {
+}
+
+.boleto img {
+}
+
+.endereçoentrega {
+}
+
+.finalizar {
+}
+
+
+
+.finalizar{
+  background:#4a2b1a; color:#fff; border:none; padding:12px 18px; border-radius:10px; cursor:pointer; font-size:16px;
+}
+
+/* responsive */
+@media (max-width: 920px){
+  .quadradocar{ flex-direction: column }
+  .somas{ width:100%; max-width:100% }
+}
