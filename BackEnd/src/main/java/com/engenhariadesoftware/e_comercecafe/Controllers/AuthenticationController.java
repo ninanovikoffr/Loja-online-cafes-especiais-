@@ -82,7 +82,7 @@ public class AuthenticationController {
             .cpf(new CPF(usuarioRequestDTO.getCpf()))
             .email(new Email(usuarioRequestDTO.getEmail()))
             .senha(new Senha(encryptedPassword))
-            .role(UsuarioRoles.CLIENTE)
+            .role(UsuarioRoles.ADMIN)
             .createdAt(LocalDate.now())
             .build();
         this.usuarioRepository.save(usuario);

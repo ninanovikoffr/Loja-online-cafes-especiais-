@@ -30,9 +30,6 @@ public class ProdutoModel {
     @AttributeOverride(name = "value", column = @Column(name = "preco", nullable = false))
     private Preco preco;
 
-    @Column(nullable = false)
-    private Integer estoque;
-
     @Column(name = "imagem_url", length = 255)
     private String imagemUrl;
 

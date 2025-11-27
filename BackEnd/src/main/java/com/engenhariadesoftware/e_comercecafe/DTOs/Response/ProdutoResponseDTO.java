@@ -13,8 +13,7 @@ public class ProdutoResponseDTO {
     private Long idProduto;
     private String nome;
     private String descricao;
-    private Double preco;   // Preco convertido para Double
-    private Integer estoque;
+    private Double preco;
     private String categoria;
     private String imagemUrl;
     private LocalDate createdAt;
