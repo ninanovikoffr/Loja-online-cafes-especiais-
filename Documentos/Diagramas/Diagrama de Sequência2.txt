@@ -1,0 +1,10 @@
+@startuml
+actor Visitante
+participant Sistema
+database BD
+
+Visitante -> Sistema : enviarCredenciais()
+Sistema -> BD : buscarClientePorEmail()
+BD --> Sistema : dadosCliente
+Sistema -> Visitante : autenticar()
+@enduml

@@ -5,7 +5,7 @@ node "Servidor Web" {
 }
 
 node "Servidor de Banco de Dados" {
-  component "Banco de Dados (MySQL)" as DB
+  component "Banco de Dados (PostgresSQL)" as DB
 }
 
 node "Cliente" {

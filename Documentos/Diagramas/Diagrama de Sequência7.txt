@@ -1,0 +1,10 @@
+@startuml
+actor Administrador
+participant Sistema
+database BD
+
+Administrador -> Sistema : solicitarDetalhesPedido(id)
+Sistema -> BD : buscarPedido(id)
+BD --> Sistema : dadosPedido()
+Sistema --> Administrador : exibirPedido()
+@enduml

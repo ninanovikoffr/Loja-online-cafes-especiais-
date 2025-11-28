@@ -1,0 +1,10 @@
+@startuml
+actor Administrador
+participant Sistema
+database BD
+
+Administrador -> Sistema : cadastrarProduto()
+Sistema -> BD : inserirProduto()
+BD --> Sistema : produtoCriado()
+Sistema --> Administrador : exibirConfirmacao()
+@enduml
