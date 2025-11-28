@@ -18,13 +18,13 @@ public class CarrinhoItemModel {
     private Long idCarrinhoItem;
 
     @ManyToOne
-    @JoinColumn(name = "id_carrinho", nullable = false)
+    @JoinColumn(name = "id_carrinho")
     private CarrinhoModel carrinho;
 
     @ManyToOne
-    @JoinColumn(name = "id_produto", nullable = false)
+    @JoinColumn(name = "id_produto")
     private ProdutoModel produto;
 
-    @Column(nullable = false)
+    @Column(name = "quantidade")
     private Integer quantidade;
 }

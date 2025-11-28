@@ -20,18 +20,18 @@ public class PedidoModel {
     private Long idPedido;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private UsuarioModel usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_endereco", nullable = false)
+    @JoinColumn(name = "id_endereco")
     private EnderecoModel endereco;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     @Builder.Default
     private String status = "aguardando";
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 

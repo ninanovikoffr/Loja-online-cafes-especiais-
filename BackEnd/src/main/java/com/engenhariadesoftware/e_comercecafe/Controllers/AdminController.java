@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/Admin")
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired

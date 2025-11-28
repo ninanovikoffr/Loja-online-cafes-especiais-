@@ -20,14 +20,14 @@ public class ProdutoModel {
     @Column(name = "id_produto")
     private Long idProduto;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nome;
 
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "preco", nullable = false))
+    @AttributeOverride(name = "value", column = @Column(name = "preco"))
     private Preco preco;
 
     @Column(name = "imagem_url", length = 255)
