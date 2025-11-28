@@ -61,7 +61,7 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Usuário promovido a administrador com sucesso"),
         @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PatchMapping("/tornar-admin")
+    @PatchMapping("/tornar-admin/{id}")
     public UsuarioResponseDTO tornaradmin(@RequestBody Long id) {
         UsuarioResponseDTO usuarioResponseDTO = usuarioService.buscarPorId(id);
         if (usuarioResponseDTO != null) {
