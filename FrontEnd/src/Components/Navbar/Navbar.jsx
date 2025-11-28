@@ -17,7 +17,9 @@ export function Navbar() {
       </div>
 
       <div className="navbar__center">
-        <img src={logo} alt="Logo Terroir" />
+        <Link to="/">
+          <img src={logo} alt="Logo Terroir" />
+        </Link>
       </div>
 
       <div className="navbar__right">

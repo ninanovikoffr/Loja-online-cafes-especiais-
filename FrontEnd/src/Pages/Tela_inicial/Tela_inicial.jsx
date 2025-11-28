@@ -12,7 +12,8 @@ function Tela_inicial() {
   // mock items example
   const [cartItems, setCartItems] = useState([
     { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' },
-    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' }
+    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' },
+    
   ]);
 
   const addToCart = (item) => {
