@@ -1,0 +1,10 @@
+@startuml
+actor Cliente
+participant Sistema
+database BD
+
+Cliente -> Sistema : atualizarDadosPerfil()
+Sistema -> BD : atualizarCliente()
+BD --> Sistema : confirmacao()
+Sistema --> Cliente : perfilAtualizado()
+@enduml

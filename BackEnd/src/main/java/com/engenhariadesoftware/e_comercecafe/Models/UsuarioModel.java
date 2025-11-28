@@ -27,26 +27,26 @@ public class UsuarioModel implements UserDetails {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nome;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "cpf", nullable = false, unique = true, length = 11))
+    @AttributeOverride(name = "value", column = @Column(name = "cpf", unique = true, length = 11))
     private CPF cpf;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "email", nullable = false, unique = true, length = 100))
+    @AttributeOverride(name = "value", column = @Column(name = "email", unique = true, length = 100))
     private Email email;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "senha", nullable = false))
+    @AttributeOverride(name = "value", column = @Column(name = "senha"))
     private Senha senha;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     @Builder.Default
     private UsuarioRoles role = UsuarioRoles.CLIENTE;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     @Builder.Default
     private LocalDate createdAt = LocalDate.now();
 

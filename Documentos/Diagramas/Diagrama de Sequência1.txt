@@ -1,0 +1,10 @@
+@startuml
+actor Visitante
+participant Sistema
+database BD
+
+Visitante -> Sistema : preencherDadosCadastro()
+Sistema -> BD : inserirCliente()
+BD --> Sistema : clienteCriado()
+Sistema --> Visitante : exibirSucesso()
+@enduml

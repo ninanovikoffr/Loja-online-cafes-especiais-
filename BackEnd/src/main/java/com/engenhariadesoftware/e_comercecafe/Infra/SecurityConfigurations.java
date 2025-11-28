@@ -36,34 +36,37 @@ public class SecurityConfigurations {
 
                     // Endpoints públicos (autenticação sem token)
                     .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()  // Login e registro
+                    .requestMatchers(HttpMethod.POST, "/admin/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/usuario/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/usuario/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/usuario/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/carrinhos/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/carrinhos/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/carrinhos/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/carrinhos/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/carrinhos-item/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/carrinhos-item/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/carrinhos-item/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/carrinhos-item/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/enderecos/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/enderecos/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/enderecos/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/enderecos/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/produtos/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/pedidos/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/pedidos/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/pedidos/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/pedidos/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/pedido-item/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/pedido-item/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/pedido-item/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/pedido-item/**").permitAll()
+                    
 
-                    // Endpoints ADMIN (apenas admins podem acessar)
-                    .requestMatchers(HttpMethod.GET, "/usuario/all").hasRole("ADMIN")  // Listar todos os usuários
-                    .requestMatchers(HttpMethod.GET, "/carrinhos/all").hasRole("ADMIN") // Listar todos os carrinhos
-                    .requestMatchers(HttpMethod.GET, "/enderecos").hasRole("ADMIN") // Listar todos os endereços
-                    .requestMatchers(HttpMethod.GET, "/pedidos").hasRole("ADMIN")  // Listar todos os pedidos
-                    .requestMatchers(HttpMethod.GET, "/pedido-itens").hasRole("ADMIN") // Listar itens de pedidos
-                    .requestMatchers(HttpMethod.GET, "/produtos/**").hasRole("ADMIN") // Listar todos os produtos
-                    .requestMatchers(HttpMethod.GET, "/carrinho-itens").hasRole("ADMIN") // Listar todos os itens do carrinho
-                    .requestMatchers(HttpMethod.GET, "/usuario/{id}").hasRole("ADMIN") // Buscar usuário por ID
-                    .requestMatchers(HttpMethod.PUT, "/produtos/{id}").hasRole("ADMIN") // Atualizar produto
-                    .requestMatchers(HttpMethod.PATCH, "/usuario/update/{id}").hasRole("ADMIN") // Atualizar dados do usuário
-                    .requestMatchers(HttpMethod.DELETE, "/usuario/{id}").hasRole("ADMIN")  // Deletar usuário
-                    .requestMatchers(HttpMethod.DELETE, "/produtos/{id}").hasRole("ADMIN") // Deletar produto
-                    .requestMatchers(HttpMethod.PATCH, "/enderecos/tornar-padrao/{id}").hasRole("ADMIN") // Tornar endereço padrão
-                    .requestMatchers(HttpMethod.DELETE, "/carrinho-itens/{id}").hasRole("ADMIN") // Deletar item do carrinho
-                    .requestMatchers(HttpMethod.DELETE, "/pedidos/{id}").hasRole("ADMIN") // Deletar pedido
-                    .requestMatchers(HttpMethod.DELETE, "/carrinhos/{id}").hasRole("ADMIN") // Deletar carrinho
-                    .requestMatchers(HttpMethod.DELETE, "/usuario/{id}").hasRole("ADMIN") // Deletar usuário
-                    .requestMatchers(HttpMethod.POST, "/produto/criar").hasRole("ADMIN")  // Criar produto
-                    .requestMatchers(HttpMethod.PATCH, "/produto/{id}").hasRole("ADMIN")  // Atualizar parcialmente produto
-
-                    // Endpoints para usuário autenticado (qualquer usuário, desde que logado)
-                    .requestMatchers("/usuario/me", "/usuario/me/update").authenticated()
-                    .requestMatchers("/carrinhos/criar").authenticated()  // Criar carrinho
-                    .requestMatchers("/pedido-itens").authenticated() // Criar item de pedido
-                    .requestMatchers("/pedidos").authenticated() // Criar pedido
-                    .anyRequest().authenticated()  // Qualquer outra rota precisa ser autenticada
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

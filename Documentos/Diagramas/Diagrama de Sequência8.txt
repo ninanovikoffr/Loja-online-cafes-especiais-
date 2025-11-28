@@ -1,0 +1,17 @@
+@startuml
+actor Cliente
+participant Carrinho
+participant Sistema
+database BD
+
+Cliente -> Carrinho : revisarCarrinho()
+Carrinho --> Cliente : itensOK()
+
+Cliente -> Sistema : selecionarFormaPagamento()
+Sistema -> Sistema : validarPagamento()
+
+Sistema -> BD : criarPedido()
+BD --> Sistema : pedidoCriado()
+
+Sistema --> Cliente : compraConfirmada()
+@enduml

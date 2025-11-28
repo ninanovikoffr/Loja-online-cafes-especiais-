@@ -20,7 +20,7 @@ public class CarrinhoModel {
 
     //Relacionamento com usuário
     @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario")
     private UsuarioModel usuario;
 
     //Relacionamento com itens

@@ -18,13 +18,13 @@ public class PedidoItemModel {
     private Long idPedidoItem;
 
     @ManyToOne
-    @JoinColumn(name = "id_pedido", nullable = false)
+    @JoinColumn(name = "id_pedido")
     private PedidoModel pedido;
 
     @ManyToOne
-    @JoinColumn(name = "id_produto", nullable = false)
+    @JoinColumn(name = "id_produto")
     private ProdutoModel produto;
 
-    @Column(nullable = false)
+    @Column(name = "quantidade")
     private Integer quantidade;
 }

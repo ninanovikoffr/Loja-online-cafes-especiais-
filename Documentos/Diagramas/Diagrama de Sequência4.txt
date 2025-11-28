@@ -1,0 +1,10 @@
+@startuml
+actor Cliente
+participant Sistema
+database BD
+
+Cliente -> Sistema : inserirNovoEndereco()
+Sistema -> BD : salvarEndereco()
+BD --> Sistema : enderecoSalvo()
+Sistema --> Cliente : confirmar()
+@enduml
