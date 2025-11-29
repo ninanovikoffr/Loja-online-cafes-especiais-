@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.CarrinhoRequestDTO;
+import com.engenhariadesoftware.e_comercecafe.DTOs.Response.CarrinhoItemResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.CarrinhoResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Services.CarrinhoService;
 
@@ -89,4 +90,47 @@ public class CarrinhoController {
         carrinhoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{idUsuario}/produtos/{idProduto}")
+    @Operation(summary = "Adicionar produto ao carrinho", description = "Adiciona um item ao carrinho do usuário.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Item adicionado ao carrinho"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    public ResponseEntity<CarrinhoResponseDTO> adicionarProduto(@PathVariable Long idUsuario, @PathVariable Long idProduto, @RequestParam(defaultValue = "1") int quantidade) {
+
+    CarrinhoResponseDTO carrinho = carrinhoService.adicionarProduto(idUsuario, idProduto, quantidade);
+
+    return ResponseEntity.ok(carrinho);
+}
+
+
+    @DeleteMapping("/{idUsuario}/produtos/{idProduto}")
+    @Operation(summary = "Remover produto do carrinho", description = "Remove um item específico do carrinho do usuário.")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Item removido com sucesso"),
+    @ApiResponse(responseCode = "404", description = "Item ou carrinho não encontrado")
+    })
+    public ResponseEntity<CarrinhoResponseDTO> removerProduto(
+        @PathVariable Long idUsuario,
+        @PathVariable Long idProduto) {
+
+    CarrinhoResponseDTO carrinho = carrinhoService.removerProduto(idUsuario, idProduto);
+    return ResponseEntity.ok(carrinho);
+}
+
+    @GetMapping("/{idUsuario}/produtos")
+    @Operation(summary = "Listar produtos do carrinho", description = "Retorna todos os itens do carrinho do usuário.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Itens recuperados"),
+        @ApiResponse(responseCode = "404", description = "Carrinho não encontrado")
+    })
+    public ResponseEntity<List<CarrinhoItemResponseDTO>> listarItens( @PathVariable Long idUsuario) {
+    List<CarrinhoItemResponseDTO> itens =
+            carrinhoService.listarItensDoCarrinho(idUsuario);
+
+    return ResponseEntity.ok(itens);
+}
+
+
 }
