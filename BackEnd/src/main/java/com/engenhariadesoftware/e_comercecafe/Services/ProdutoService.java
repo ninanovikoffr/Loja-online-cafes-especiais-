@@ -17,7 +17,7 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
-
+    
     public List<ProdutoResponseDTO> listarTodos() {
         return produtoRepository.findAll().stream()
                 .map(this::toResponse)
