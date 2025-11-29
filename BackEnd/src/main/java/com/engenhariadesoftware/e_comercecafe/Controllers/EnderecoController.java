@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.EnderecoRequestDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.EnderecoResponseDTO;
-import com.engenhariadesoftware.e_comercecafe.Models.EnderecoModel;
 import com.engenhariadesoftware.e_comercecafe.Services.EnderecoService;
 import com.engenhariadesoftware.e_comercecafe.Repositories.UsuarioRepository;
 import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
@@ -61,23 +60,6 @@ public class EnderecoController {
         return enderecoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Endpoint para tornar um endereço padrão.
-     * 
-     * @param id - ID do endereço a ser marcado como padrão.
-     * @return O endereço atualizado.
-     */
-    @Operation(summary = "Tornar um endereço padrão", description = "Marca um endereço como o padrão.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Endereço marcado como padrão"),
-        @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
-    })
-    @PatchMapping("/tornar-padrao/{id}")
-    public ResponseEntity<EnderecoModel> tornarPadrao(@PathVariable Long id) {
-        EnderecoModel response = enderecoService.tornarPadrao(id);
-        return ResponseEntity.ok(response);
     }
 
     /**

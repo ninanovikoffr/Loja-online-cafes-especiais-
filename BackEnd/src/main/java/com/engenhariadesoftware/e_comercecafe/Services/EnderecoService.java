@@ -63,7 +63,6 @@ public class EnderecoService {
             .bairro(viaCepResponseDTO.getBairro())
             .cidade(viaCepResponseDTO.getLocalidade())
             .estado(viaCepResponseDTO.getUf())
-            .isPadrao(enderecoRequestDTO.getIsPadrao())
             .usuario(usuario)
             .build();
 
@@ -88,29 +87,7 @@ public class EnderecoService {
                 .bairro(enderecoModel.getBairro())
                 .cidade(enderecoModel.getCidade())
                 .estado(enderecoModel.getEstado())
-                .isPadrao(enderecoModel.getIsPadrao())
                 .idUsuario(enderecoModel.getUsuario().getIdUsuario())
                 .build();
-    }
-
-    public EnderecoModel tornarPadrao(Long id) {
-
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        UsuarioModel usuario = usuarioRepository.findByEmail_Value(email);
-        Long usuarioId = usuario.getIdUsuario();
-
-        EnderecoModel endereco = enderecoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
-        
-
-        if (!endereco.getUsuario().getIdUsuario().equals(usuarioId)) {
-            throw new RuntimeException("Você não tem permissão para alterar este endereço");
-        }
-        endereco.setIsPadrao(true);
-        return enderecoRepository.save(endereco);
-        
-        
     }
 }
