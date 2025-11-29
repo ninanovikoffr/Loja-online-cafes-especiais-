@@ -58,8 +58,7 @@
 }
 
 .itenscarrinho{
-  flex: 1 1 60%;
-  max-height: 360px;
+  max-height: 260px;
   overflow-y: auto;
 }
 
@@ -96,6 +95,8 @@
     width: 500px;
     height: 300px;
     margin-top: -20px;
+    display: flex;          /* ADICIONAR */
+    flex-direction: column;
 
 }
 
@@ -119,7 +120,7 @@
 
 .descontoscar{
     margin-left: 341px;
-    margin-top:-20px;
+    margin-top:-40px;
     font-family: 'M PLUS 2';
     font-size: 20px;
     font-weight: 400;
@@ -207,28 +208,21 @@
 
 .boleto p {
     margin-right: 90px;
-    margin-left:10px;
+    margin-left:16px;
     font-family: 'M PLUS 2';
     font-size: 20px;
     font-weight: 400;
     color:#412913;
-    margin-top: 7px;
+    margin-top: 8px;
 }
 
 .boleto img {
      width: 30px;
 }
 
-.endereçoentrega {
-}
-
-.finalizar {
-}
-
-
 
 .finalizar{
-    margin-top: 0px;
+    margin-top: 40px;
   background:#4a2b1a; 
   color:#fff; 
   border:none; 
@@ -246,27 +240,4 @@
   .somas{ width:100%; max-width:100% }
 }
 
-/* Address modal */
-.addressModal{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:3000;
-}
-.addressModalBox{
-  width: 520px;
-  max-width: calc(100% - 40px);
-  background:#fff;
-  border-radius:10px;
-  padding:18px;
-  box-shadow:0 12px 30px rgba(0,0,0,0.16);
-}
-.addressModalBox h3{ margin:0 0 10px 0; color:#412913 }
-.addressModalForm{ display:grid; grid-template-columns: 1fr 1fr; gap:8px }
-.addressModalForm input{ padding:8px 10px; border-radius:8px; border:1px solid #e6e0dc }
-.addressModalForm .modalActions{ grid-column:1 / -1; display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
-.addressModalForm .modalActions button{ padding:8px 12px; border-radius:8px }
-.btn-add-address{ margin-top:8px; padding:8px 10px; background:transparent; border:1px dashed #d8d0cc; border-radius:8px; cursor:pointer }
+

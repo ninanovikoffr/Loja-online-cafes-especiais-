@@ -49,7 +49,6 @@ const pedidosMock = [
 function Tela_admin() {
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
-    const [categoria, setCategoria] = useState('');
     const [imagem, setImagem] = useState(null);
     const [preco, setPreco] = useState('');
     const [notification, setNotification] = useState(null);
@@ -76,7 +75,6 @@ function Tela_admin() {
         const produto = {
             nome,
             descricao,
-            categoria,
             preco: preco.replace('R$', '').replace(',', '.'),
             imagem: imagem ? imagem.name : null,
         };
@@ -87,7 +85,6 @@ function Tela_admin() {
                 setNotification({ message: 'Produto criado com sucesso!', type: 'success' });
                 setNome('');
                 setDescricao('');
-                setCategoria('');
                 setImagem(null);
                 setPreco('');
             })
@@ -128,13 +125,6 @@ function Tela_admin() {
                                 </label>
                                 <span id="fileName">{imagem ? imagem.name : 'Nenhum arquivo escolhido'}</span>
                             </div>
-
-                            <label htmlFor="opcao">Categoria</label>
-                            <select id="opcao" name="opcao" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                                <option value="opcao1">Cafés especiais</option>
-                                <option value="opcao2">Kits de café</option>
-                                <option value="opcao3">Cápsulas de café</option>
-                            </select>
 
                             <label htmlFor="preco">Preço</label>
                             <input 

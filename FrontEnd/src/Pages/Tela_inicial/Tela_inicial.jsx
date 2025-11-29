@@ -11,8 +11,7 @@ function Tela_inicial() {
   const [cartOpen, setCartOpen] = useState(false);
   // mock items example
   const [cartItems, setCartItems] = useState([
-    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' },
-    { nome: 'Café 100% arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' },
+    
     
   ]);
 
