@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.CarrinhoRequestDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.CarrinhoItemResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.CarrinhoResponseDTO;
+import com.engenhariadesoftware.e_comercecafe.DTOs.Response.PedidoResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Services.CarrinhoService;
 
 import java.util.List;
@@ -131,6 +132,14 @@ public class CarrinhoController {
 
     return ResponseEntity.ok(itens);
 }
+
+    @PostMapping("/{idUsuario}/finalizar")
+    @Operation(summary = "Finalizar compra", description = "Transforma o carrinho do usuário em um pedido.")
+    public ResponseEntity<PedidoResponseDTO> finalizarCompra(@PathVariable Long idUsuario) {
+        PedidoResponseDTO pedido = carrinhoService.finalizarCompra(idUsuario);
+        return ResponseEntity.ok(pedido);
+    }
+
 
 
 }
