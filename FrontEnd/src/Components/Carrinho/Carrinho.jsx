@@ -31,6 +31,7 @@ function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
                 <div className="quadradocar">
 
                     <div className="quadradoesquerda">
+                        <div className="itenscarrinho">
 
                         {items.map((it, idx) => (
                             <div className="umitemcar" key={idx}>
@@ -79,6 +80,7 @@ function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
                                 </button>
                             </div>
                         ))}
+                        </div>
 
 
                         <div>
