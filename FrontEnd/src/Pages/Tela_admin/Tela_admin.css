@@ -180,6 +180,14 @@ input[type="file"] {
     word-wrap: break-word;
 }
 
+.mensagens{
+    font-size: 18px;
+    color: #4C351F;
+    font-weight: 300;
+    line-height: 1.2;
+    word-wrap: break-word;
+}
+
 .acoes {
     display: flex;
     gap: 10px;
@@ -226,5 +234,11 @@ input[type="file"] {
     color: #ffffff;
     font-size: 24px;
     text-align: center;
+}
 
+.botaoSalvar:hover {
+    background: #3a2817;
+    cursor: pointer;
+    transform: scale(1.03);
+    transition: 0.2s ease-in-out;
 }
