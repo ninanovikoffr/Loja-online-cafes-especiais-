@@ -43,7 +43,6 @@ public class UsuarioService {
                 .email(new Email(usuarioRequestDTO.getEmail()))
                 .senha(new Senha(usuarioRequestDTO.getSenha()))
                 .role(usuarioRequestDTO.getRole())
-                .createdAt(usuarioRequestDTO.getCreatedAt())
                 .build();
                 
         return toResponse(usuarioRepository.save(model));

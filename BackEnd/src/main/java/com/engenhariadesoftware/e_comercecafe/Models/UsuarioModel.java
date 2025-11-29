@@ -5,7 +5,6 @@ import com.engenhariadesoftware.e_comercecafe.ValueObjects.*;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,11 +43,8 @@ public class UsuarioModel implements UserDetails {
 
     @Column(length = 20)
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private UsuarioRoles role = UsuarioRoles.CLIENTE;
-
-    @Column(name = "created_at")
-    @Builder.Default
-    private LocalDate createdAt = LocalDate.now();
 
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

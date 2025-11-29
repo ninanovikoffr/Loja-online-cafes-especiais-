@@ -18,7 +18,6 @@ import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
 import com.engenhariadesoftware.e_comercecafe.Repositories.UsuarioRepository;
 import com.engenhariadesoftware.e_comercecafe.Services.UsuarioService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -108,7 +107,6 @@ public class UsuarioController {
     @PostMapping("/create")
     public UsuarioResponseDTO criar(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         usuarioRequestDTO.setRole(UsuarioRoles.CLIENTE);
-        usuarioRequestDTO.setCreatedAt(LocalDate.now());
         usuarioRequestDTO.setSenha(passwordEncoder.encode(usuarioRequestDTO.getSenha()));
         return usuarioService.salvar(usuarioRequestDTO);
     }
