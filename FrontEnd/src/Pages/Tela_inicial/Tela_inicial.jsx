@@ -15,6 +15,21 @@ function Tela_inicial() {
     
   ]);
 
+  
+const handleUpdateItem = (index, novaQtd) => {
+    setCartItems(prev => {
+        const copia = [...prev];
+        copia[index].quantidade = novaQtd;
+        return copia;
+    });
+};
+
+const handleRemoveItem = (index) => {
+    setCartItems(prev => prev.filter((_, i) => i !== index));
+};
+
+
+
   const addToCart = (item) => {
     setCartItems(prev => [...prev, item]);
     setCartOpen(true);
@@ -90,7 +105,14 @@ function Tela_inicial() {
           <img src="/src/assets/Carrinho_icon.svg"/>
         </button>
 
-        <Carrinho open={cartOpen} onClose={()=>setCartOpen(false)} items={cartItems} />
+      <Carrinho
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cartItems}
+        onUpdateItem={handleUpdateItem}
+        onRemoveItem={handleRemoveItem}
+      />
+
 
 
 
