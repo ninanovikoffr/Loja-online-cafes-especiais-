@@ -132,44 +132,91 @@
 }
 
 .formapagamento {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-top: -80px;
     font-family: 'M PLUS 2';
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color:#412913;
 
 }
 
 .pix {
-    
+    cursor: pointer;
+    margin-top: -10px;
+    background-color: #fff;
+    width: 220px;
+    height: 47px;
+    border:1px solid #403F3F;
+    border-radius:15px ;
     display:flex;
+    
 }
 
 .pix p {
+    font-family: 'M PLUS 2';
+    font-size: 20px;
+    font-weight: 400;
+    color:#412913;
+    margin-top: 7px;
+    margin-right: 93px;
+    margin-left:10px;
+
 }
 
 .pix img {
+    width: 60px;
 }
 
 .cartao {
+    cursor: pointer;
+    margin-top:10px;
+    background-color: #fff;
     display:flex;
+    width: 220px;
+    height: 47px;
+    border:1px solid #403F3F;
+    border-radius:15px ;
+    
 }
 
 .cartao p {
+    margin-right: 88px;
+    margin-left:10px;
+    font-family: 'M PLUS 2';
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 7px;
+    color:#412913;
 }
 
 .cartao img {
+     width: 30px;
 }
 
 .boleto {
+    cursor: pointer;
+    margin-top:10px;
+    background-color: #fff;
+    width: 220px;
+    height: 47px;
+    border:1px solid #403F3F;
+    border-radius:15px ;
     display:flex;
 }
 
 .boleto p {
+    margin-right: 90px;
+    margin-left:10px;
+    font-family: 'M PLUS 2';
+    font-size: 20px;
+    font-weight: 400;
+    color:#412913;
+    margin-top: 7px;
 }
 
 .boleto img {
+     width: 30px;
 }
 
 .endereçoentrega {
@@ -198,3 +245,28 @@
   .quadradocar{ flex-direction: column }
   .somas{ width:100%; max-width:100% }
 }
+
+/* Address modal */
+.addressModal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3000;
+}
+.addressModalBox{
+  width: 520px;
+  max-width: calc(100% - 40px);
+  background:#fff;
+  border-radius:10px;
+  padding:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.16);
+}
+.addressModalBox h3{ margin:0 0 10px 0; color:#412913 }
+.addressModalForm{ display:grid; grid-template-columns: 1fr 1fr; gap:8px }
+.addressModalForm input{ padding:8px 10px; border-radius:8px; border:1px solid #e6e0dc }
+.addressModalForm .modalActions{ grid-column:1 / -1; display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
+.addressModalForm .modalActions button{ padding:8px 12px; border-radius:8px }
+.btn-add-address{ margin-top:8px; padding:8px 10px; background:transparent; border:1px dashed #d8d0cc; border-radius:8px; cursor:pointer }

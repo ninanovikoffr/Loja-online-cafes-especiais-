@@ -9,6 +9,7 @@ import { Routes, Route } from 'react-router-dom'
 
 
 
+
 function App() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       <Route path="/admin" element={<Tela_admin />} />
       <Route path="/login" element={<Tela_login />} />
       <Route path="/registrar" element={<Tela_registrar />} />
+      
 
     </Routes>
   )
