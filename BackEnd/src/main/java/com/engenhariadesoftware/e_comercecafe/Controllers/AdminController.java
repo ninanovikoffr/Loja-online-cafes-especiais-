@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.UsuarioRequestDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.UsuarioResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Enuns.UsuarioRoles;
+import com.engenhariadesoftware.e_comercecafe.Services.AdminService;
 import com.engenhariadesoftware.e_comercecafe.Services.UsuarioService;
 
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -28,6 +29,8 @@ public class AdminController {
     PasswordEncoder passwordEncoder;
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    AdminService adminservice;
 
     /**
      * Endpoint para criar um novo administrador.
@@ -44,7 +47,6 @@ public class AdminController {
     @PostMapping("/criar-admin")
     public UsuarioResponseDTO CriarAdmin(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         usuarioRequestDTO.setRole(UsuarioRoles.ADMIN);
-        usuarioRequestDTO.setCreatedAt(LocalDate.now());
         usuarioRequestDTO.setSenha(passwordEncoder.encode(usuarioRequestDTO.getSenha()));
         return usuarioService.salvar(usuarioRequestDTO);
     }
@@ -61,15 +63,10 @@ public class AdminController {
         @ApiResponse(responseCode = "200", description = "Usuário promovido a administrador com sucesso"),
         @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
+
     @PatchMapping("/tornar-admin/{id}")
-    public UsuarioResponseDTO tornaradmin(@RequestBody Long id) {
-        UsuarioResponseDTO usuarioResponseDTO = usuarioService.buscarPorId(id);
-        if (usuarioResponseDTO != null) {
-            UsuarioRequestDTO usuarioRequestDTO = UsuarioRequestDTO.builder()
-                    .role(UsuarioRoles.ADMIN)
-                    .build();
-            return usuarioService.salvar(usuarioRequestDTO);
-        }
-        return null;
-    }
+    public UsuarioResponseDTO tornarAdmin(@PathVariable Long id) {
+        return adminservice.tornarAdmin(id);
+}
+
 }

@@ -18,8 +18,6 @@ import com.engenhariadesoftware.e_comercecafe.ValueObjects.CPF;
 import com.engenhariadesoftware.e_comercecafe.ValueObjects.Email;
 import com.engenhariadesoftware.e_comercecafe.ValueObjects.Senha;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -82,8 +80,7 @@ public class AuthenticationController {
             .cpf(new CPF(usuarioRequestDTO.getCpf()))
             .email(new Email(usuarioRequestDTO.getEmail()))
             .senha(new Senha(encryptedPassword))
-            .role(UsuarioRoles.ADMIN)
-            .createdAt(LocalDate.now())
+            .role(UsuarioRoles.CLIENTE)
             .build();
         this.usuarioRepository.save(usuario);
         return ResponseEntity.ok().build();

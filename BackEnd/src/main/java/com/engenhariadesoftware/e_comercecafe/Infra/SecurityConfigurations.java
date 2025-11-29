@@ -37,6 +37,7 @@ public class SecurityConfigurations {
                     // Endpoints públicos (autenticação sem token)
                     .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()  // Login e registro
                     .requestMatchers(HttpMethod.POST, "/admin/**").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/admin/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/usuario/**").permitAll()
                     .requestMatchers(HttpMethod.PATCH, "/usuario/**").permitAll()
