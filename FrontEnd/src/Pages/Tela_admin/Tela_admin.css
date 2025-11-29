@@ -216,6 +216,7 @@ input[type="file"] {
 }
 
 .botaoSalvar{
+    cursor: pointer;
     background: #4C351F;
     border-radius: 17px;
     height: 50px;
