@@ -60,7 +60,6 @@ public class PedidoItemService {
         return PedidoItemResponseDTO.builder()
                 .idPedidoItem(pedidoItemModel.getIdPedidoItem())
                 .quantidade(pedidoItemModel.getQuantidade())
-                .idPedido(pedidoItemModel.getPedido().getIdPedido())
                 .idProduto(pedidoItemModel.getProduto().getIdProduto())
                 .build();
     }

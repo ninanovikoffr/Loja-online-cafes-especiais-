@@ -2,7 +2,6 @@ package com.engenhariadesoftware.e_comercecafe.DTOs.Response;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,9 +13,7 @@ public class ProdutoResponseDTO {
     private String nome;
     private String descricao;
     private Double preco;
-    private String categoria;
     private String imagemUrl;
-    private LocalDate createdAt;
 
     // Relacionamentos como listas de IDs
     private List<Long> carrinhoItensIds;

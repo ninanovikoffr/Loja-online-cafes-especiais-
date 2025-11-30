@@ -74,28 +74,6 @@ public class ProdutoController {
     }
 
     /**
-     * Endpoint para atualizar um produto.
-     * 
-     * @param id - ID do produto a ser atualizado.
-     * @param dto - Dados do produto a serem atualizados.
-     * @return O produto atualizado.
-     */
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Atualizar produto", description = "Atualiza as informações de um produto existente.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado")
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> atualizar(
-            @PathVariable Long id,
-            @RequestBody ProdutoRequestDTO dto
-    ) {
-        ProdutoResponseDTO atualizado = produtoService.atualizar(id, dto);
-        return ResponseEntity.ok(atualizado);
-    }
-
-    /**
      * Endpoint para atualizar parcialmente um produto.
      * 
      * @param id - ID do produto a ser atualizado.
@@ -107,7 +85,7 @@ public class ProdutoController {
         @ApiResponse(responseCode = "200", description = "Produto atualizado parcialmente com sucesso"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    @PatchMapping("/{id}")
+    @PatchMapping("/atualizar/{id}")
     public ResponseEntity<ProdutoResponseDTO> atualizarParcial(
             @PathVariable Long id,
             @RequestBody ProdutoRequestDTO dto
@@ -128,7 +106,7 @@ public class ProdutoController {
         @ApiResponse(responseCode = "204", description = "Produto deletado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletar(id);
         return ResponseEntity.noContent().build();

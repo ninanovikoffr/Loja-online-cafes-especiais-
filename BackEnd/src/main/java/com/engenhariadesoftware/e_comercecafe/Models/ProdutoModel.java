@@ -3,7 +3,6 @@ package com.engenhariadesoftware.e_comercecafe.Models;
 import com.engenhariadesoftware.e_comercecafe.ValueObjects.Preco;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,7 +22,7 @@ public class ProdutoModel {
     @Column(length = 100)
     private String nome;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "Descricao", length = 500)
     private String descricao;
 
     @Embedded
@@ -32,10 +31,6 @@ public class ProdutoModel {
 
     @Column(name = "imagem_url", length = 255)
     private String imagemUrl;
-
-    @Column(name = "created_at")
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     //Relacionamentos
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)

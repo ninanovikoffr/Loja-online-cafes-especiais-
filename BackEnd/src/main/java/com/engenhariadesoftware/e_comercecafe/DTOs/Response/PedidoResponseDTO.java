@@ -1,8 +1,6 @@
 package com.engenhariadesoftware.e_comercecafe.DTOs.Response;
 
 import lombok.*;
-
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -12,10 +10,9 @@ import java.util.List;
 public class PedidoResponseDTO {
     private Long idPedido;
     private String status;
-    private LocalDate createdAt;
+    private Double total;
 
-    // Relacionamentos como IDs
     private Long idUsuario;
     private Long idEndereco;
-    private List<Long> itensIds;
+    private List<PedidoItemResponseDTO> itens;
 }

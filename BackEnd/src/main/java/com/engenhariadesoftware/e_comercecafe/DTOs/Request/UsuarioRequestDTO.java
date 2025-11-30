@@ -1,8 +1,6 @@
 package com.engenhariadesoftware.e_comercecafe.DTOs.Request;
 
 
-import java.time.LocalDate;
-
 import com.engenhariadesoftware.e_comercecafe.Enuns.UsuarioRoles;
 
 import lombok.*;
@@ -18,5 +16,4 @@ public class UsuarioRequestDTO {
     private String email;
     private String senha;
     private UsuarioRoles role;
-    private LocalDate createdAt;
 }

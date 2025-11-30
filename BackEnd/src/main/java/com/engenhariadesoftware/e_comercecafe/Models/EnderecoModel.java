@@ -4,8 +4,6 @@ import com.engenhariadesoftware.e_comercecafe.ValueObjects.CEP;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "enderecos")
 @Getter
@@ -41,14 +39,6 @@ public class EnderecoModel {
 
     @Column(length = 2)
     private String estado;
-
-    @Column(name = "is_padrao")
-    @Builder.Default
-    private Boolean isPadrao = false;
-
-    @Column(name = "created_at")
-    @Builder.Default
-    private LocalDate createdAt = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")

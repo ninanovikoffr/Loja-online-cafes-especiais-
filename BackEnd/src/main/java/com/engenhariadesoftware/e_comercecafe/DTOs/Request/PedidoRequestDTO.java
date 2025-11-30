@@ -9,5 +9,5 @@ import lombok.*;
 public class PedidoRequestDTO {
     private Long idUsuario;
     private Long idEndereco;
-    private String status; // "aguardando", "em_preparo", "enviado", "entregue", "cancelado"
+    private String status;
 }

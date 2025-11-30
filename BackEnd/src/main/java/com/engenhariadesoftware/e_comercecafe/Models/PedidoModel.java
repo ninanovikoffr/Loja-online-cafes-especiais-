@@ -2,7 +2,6 @@ package com.engenhariadesoftware.e_comercecafe.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,13 +26,11 @@ public class PedidoModel {
     @JoinColumn(name = "id_endereco")
     private EnderecoModel endereco;
 
+    private Double total;
+
     @Column(length = 20)
     @Builder.Default
     private String status = "aguardando";
-
-    @Column(name = "created_at")
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     //Relacionamento com itens do pedido
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)

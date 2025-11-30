@@ -17,7 +17,7 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
-
+    
     public List<ProdutoResponseDTO> listarTodos() {
         return produtoRepository.findAll().stream()
                 .map(this::toResponse)
@@ -37,18 +37,6 @@ public class ProdutoService {
                 .build();
 
         return toResponse(produtoRepository.save(model));
-    }
-
-    public ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO dto) {
-        ProdutoModel existente = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-
-        existente.setNome(dto.getNome());
-        existente.setDescricao(dto.getDescricao());
-        existente.setPreco(new Preco(dto.getPreco()));
-        existente.setImagemUrl(dto.getImagemUrl());
-
-        return toResponse(produtoRepository.save(existente));
     }
 
     public ProdutoResponseDTO atualizarParcial(Long id, ProdutoRequestDTO dto) {
