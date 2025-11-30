@@ -34,6 +34,7 @@ Tecnologias principais:
   - Aumentar quantidade
   - Diminuir quantidade
   - Remover item
+  - Finalizar pedido
 - Painel **admin** com CRUD completo de produtos
 
 ### 🔹 Backend
