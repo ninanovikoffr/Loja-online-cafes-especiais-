@@ -8,11 +8,13 @@ import perfil_icon from "../../assets/Perfil_icon.svg";
 import { FaBars, FaSearch } from "react-icons/fa";
 
 export function Navbar() {
+  const navigate = useNavigate();
+  
   return (
     <header className="navbar">
       <div className="navbar__left">
         <img src={perfil_icon} className="navbar__icon" alt="Perfil" />
-        <button className="navbar__login">Entrar</button>
+        <button className="navbar__login" onClick={() => navigate('/login')} >Entrar</button>
       </div>
 
       <div className="navbar__center">
