@@ -80,7 +80,7 @@ public class AuthenticationController {
             .cpf(new CPF(usuarioRequestDTO.getCpf()))
             .email(new Email(usuarioRequestDTO.getEmail()))
             .senha(new Senha(encryptedPassword))
-            .role(UsuarioRoles.CLIENTE)
+            .role(usuarioRequestDTO.getRole())
             .build();
         this.usuarioRepository.save(usuario);
         return ResponseEntity.ok().build();

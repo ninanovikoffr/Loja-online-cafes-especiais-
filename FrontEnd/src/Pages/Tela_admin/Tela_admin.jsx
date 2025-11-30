@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaEye, FaTrash, FaEdit, FaArrowRight, FaPlusCircle } from 'react-icons/fa';
 import { Navbar } from '../../Components/Navbar/Navbar';
 import axios from 'axios';
@@ -8,6 +9,14 @@ import "./Tela_admin.css";
 // Dados reais serão carregados do backend
 // API base - AJUSTARRRR
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+axios.interceptors.request.use(config => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 
 const initialProdutos = [];
 const initialPedidos = [];
@@ -206,9 +215,35 @@ function Tela_admin() {
 
 
     useEffect(() => {
+        // Ler token e role do localStorage e configurar axios
+        const token = localStorage.getItem('token');
+        const roleRaw = localStorage.getItem('role');
+        let role = null;
+        try { role = roleRaw ? JSON.parse(roleRaw) : null; } catch (e) { role = roleRaw; }
+
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+
+        // Se não for admin, redireciona para a home (não permitir acessar a tela admin)
+        const isAdmin = 
+            role === 'ADMIN' ||
+            role === 'admin' ||
+            (Array.isArray(role) && (role.includes('ADMIN') || role.includes('admin')));
+
+        if (!isAdmin) {
+            // se não tem token/role admin, redireciona
+            // evite executar fetches protegidos
+            window.alert('Acesso negado: perfil não é administrador.');
+            // usamos window.location para garantir redirecionamento mesmo fora do router
+            window.location.href = '/';
+            return;
+        }
+
         fetchProdutos();
         fetchPedidos();
         fetchUsuario();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -299,8 +334,11 @@ function Tela_admin() {
                                         <span>{pedido.status}</span>
                                         
                                         <div className="acoes">
-                                            <FaEye/>
-                                            <FaTrash onClick={() => deletarPedido(pedido.id)}                                             />
+                                            <FaEye style={{ cursor: "pointer" }} />
+                                            <FaTrash 
+                                                onClick={() => deletarPedido(pedido.id)} 
+                                                style={{ cursor: "pointer" }} 
+                                            />
                                         </div>
                                     </div>
                                 ))
@@ -325,11 +363,11 @@ function Tela_admin() {
                             <a className= "links" href="redefinir_senha">Redefinir senha</a>
 
                             <label>Endereços</label>
-                            <textarea value={enderecoUsuario} onChange={(e) => setEnderecoUsuario(e.target.value)}/>
-
+                            <textarea value={enderecoUsuario}onChange={(e) => setEnderecoUsuario(e.target.value)}/>
                             <button className='botaoSalvar'>Salvar</button>
                             <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
                         </form>
+
 
                     </div>
                 </div>

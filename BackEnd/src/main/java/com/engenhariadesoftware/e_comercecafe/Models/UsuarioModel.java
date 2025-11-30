@@ -42,9 +42,8 @@ public class UsuarioModel implements UserDetails {
     private Senha senha;
 
     @Column(length = 20)
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private UsuarioRoles role = UsuarioRoles.CLIENTE;
+    private UsuarioRoles role;
 
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -68,15 +67,15 @@ public class UsuarioModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role.equals(UsuarioRoles.ADMIN)) {
+
+        if (this.role == UsuarioRoles.ADMIN) {
             return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"),
-                new SimpleGrantedAuthority("ROLE_CLIENTE")
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_CLIENTE")
             );
         }
-        else {
-            return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
-        }
+
+        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
     }
 
     @Override

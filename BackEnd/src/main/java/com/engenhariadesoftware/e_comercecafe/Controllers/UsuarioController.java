@@ -106,7 +106,6 @@ public class UsuarioController {
     })
     @PostMapping("/create")
     public UsuarioResponseDTO criar(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
-        usuarioRequestDTO.setRole(UsuarioRoles.CLIENTE);
         usuarioRequestDTO.setSenha(passwordEncoder.encode(usuarioRequestDTO.getSenha()));
         return usuarioService.salvar(usuarioRequestDTO);
     }
