@@ -49,7 +49,7 @@ public class SecurityConfigurations {
                 // LOGIN + REGISTRO liberados
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/pedidos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/carrinhos/**").permitAll()
 
 
                 .anyRequest().authenticated()
