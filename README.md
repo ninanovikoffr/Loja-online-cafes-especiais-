@@ -19,7 +19,7 @@ Tecnologias principais:
 |------|------------|
 | **Visitante** | Visualiza catálogo, produtos populares e acessa login/registro. |
 | **Cliente** | Login, registro, adicionar ao carrinho, aumentar/diminuir quantidades, finalizar compra. |
-| **Administrador** | Todas as permissões de cliente + criar, editar, listar e excluir produtos. |
+| **Administrador** | Todas as permissões de cliente + criar, editar, listar e excluir produtos e pedidos. |
 
 ---
 
@@ -34,6 +34,7 @@ Tecnologias principais:
   - Aumentar quantidade
   - Diminuir quantidade
   - Remover item
+  - Finalizar pedido
 - Painel **admin** com CRUD completo de produtos
 
 ### 🔹 Backend
