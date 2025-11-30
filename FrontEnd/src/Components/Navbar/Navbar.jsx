@@ -1,34 +1,22 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import React from "react";
+import "./Navbar.css";
+
 import logo from "../../assets/Logo.svg";
-import perfil_icon from "../../assets/Perfil_icon.svg"; // Ícone genérico de perfil
-import perfil_admin from "../../assets/Foto_admin.svg"; // Foto do admin para a tela de admin
+import perfil_icon from "../../assets/Perfil_icon.svg";
 
 import { FaBars, FaSearch } from "react-icons/fa";
 
 export function Navbar() {
-  const location = useLocation(); // Captura a localização atual (URL)
-
   return (
     <header className="navbar">
       <div className="navbar__left">
-        {/* Condicional para exibir o ícone de perfil genérico ou foto do admin */}
-        {location.pathname === '/admin' ? (
-          <>
-            <img src={perfil_admin} className="navbar__icon-admin" alt="Perfil Admin" />
-            <Link to="/admin" className="navbar__login">Meu Perfil</Link>
-          </>
-        ) : (
-          <>
-            <img src={perfil_icon} className="navbar__icon" alt="Perfil" />
-            <Link to="/login" className="navbar__login">Entrar</Link>
-          </>
-        )}
+        <img src={perfil_icon} className="navbar__icon" alt="Perfil" />
+        <button className="navbar__login">Entrar</button>
       </div>
 
       <div className="navbar__center">
-        <Link to="/">
-          <img src={logo} alt="Logo Terroir" />
-        </Link>
+        <img src={logo} alt="Logo Terroir" />
       </div>
 
       <div className="navbar__right">
