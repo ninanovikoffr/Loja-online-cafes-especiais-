@@ -13,6 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -26,62 +31,54 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                    // Permitir acesso público ao Swagger
-                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
 
-                    // Endpoints públicos (autenticação sem token)
-                    .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()  // Login e registro
-                    .requestMatchers(HttpMethod.POST, "/admin/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/admin/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/usuario/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/usuario/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/usuario/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/carrinhos/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/carrinhos/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/carrinhos/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/carrinhos/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/carrinhos-item/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/carrinhos-item/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/carrinhos-item/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/carrinhos-item/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/enderecos/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/enderecos/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/enderecos/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/enderecos/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/produtos/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/produtos/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/pedidos/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/pedidos/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/pedidos/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/pedidos/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/pedido-item/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/pedido-item/**").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/pedido-item/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE, "/pedido-item/**").permitAll()
-                    
+                // SWAGGER
+                .requestMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                ).permitAll()
 
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                // LOGIN + REGISTRO liberados
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
-
-
+    // CORS universal para React + Swagger
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration cfg = new CorsConfiguration();
+        cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*"));
+        cfg.setAllowCredentials(true);
+        cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        cfg.setAllowedHeaders(Arrays.asList("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cfg);
+        return source;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
+        return auth.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
