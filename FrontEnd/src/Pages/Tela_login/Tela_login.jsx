@@ -47,10 +47,10 @@ function Tela_login(){
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
             const decoded = jwtDecode(token);
-
-            // O role veio como string ou array?
+            const userId = decoded.sub;
+            localStorage.setItem("idUsuario", userId);
+            
             let roles = decoded.role || decoded.roles || [];
-
             if (!Array.isArray(roles)) {
                 roles = [roles]; // garante que sempre seja array
             }

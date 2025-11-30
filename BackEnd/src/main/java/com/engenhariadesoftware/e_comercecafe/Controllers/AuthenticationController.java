@@ -75,12 +75,15 @@ public class AuthenticationController {
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioRequestDTO.getSenha());
+        // Se o front não enviar role, definir CLIENTE como padrão
+        var roleToSet = usuarioRequestDTO.getRole() != null ? usuarioRequestDTO.getRole() : UsuarioRoles.CLIENTE;
+
         UsuarioModel usuario = UsuarioModel.builder()
             .nome(usuarioRequestDTO.getNome())
             .cpf(new CPF(usuarioRequestDTO.getCpf()))
             .email(new Email(usuarioRequestDTO.getEmail()))
             .senha(new Senha(encryptedPassword))
-            .role(usuarioRequestDTO.getRole())
+            .role(roleToSet)
             .build();
         this.usuarioRepository.save(usuario);
         return ResponseEntity.ok().build();

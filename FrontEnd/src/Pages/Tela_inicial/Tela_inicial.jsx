@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Navbar } from '../../Components/Navbar/Navbar';
 import Carrinho from '../../Components/Carrinho/Carrinho';
+import axios from "axios";
+
 
 import fundo from "../../assets/Fundo.svg";
 
@@ -9,31 +11,23 @@ import "./Tela_inicial.css";
 
 function Tela_inicial() {
   const [cartOpen, setCartOpen] = useState(false);
-  // mock items example
-  const [cartItems, setCartItems] = useState([
-    
-    
-  ]);
-
+  const idUsuario = localStorage.getItem("idUsuario");
   
-const handleUpdateItem = (index, novaQtd) => {
-    setCartItems(prev => {
-        const copia = [...prev];
-        copia[index].quantidade = novaQtd;
-        return copia;
-    });
-};
+  const addToCart = async (idProduto) => {
+    try {
+      await axios.post(
+        `http://localhost:8080/carrinhos/${idUsuario}/produtos/${idProduto}`
+      );
 
-const handleRemoveItem = (index) => {
-    setCartItems(prev => prev.filter((_, i) => i !== index));
-};
+      setCartOpen(true); // abre o carrinho após adicionar
+    } catch (error) {
+      console.error("Erro ao adicionar produto:", error);
+      alert("Erro ao adicionar produto ao carrinho.");
+    }
+  };
 
+  console.log("ID do usuário salvo:", idUsuario);
 
-
-  const addToCart = (item) => {
-    setCartItems(prev => [...prev, item]);
-    setCartOpen(true);
-  }
 
   return (
     <div className="tela_inicial">
@@ -52,19 +46,19 @@ const handleRemoveItem = (index) => {
           <div className='secao'>
             <div className='cafes_text'>Café Gourmet Baunilha</div>
             <img src="/src/assets/cafe_baunilha.svg" className='foto_cafe' alt="Café gourmet baunilha" />
-            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café Gourmet Baunilha', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_baunilha.svg' })}>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart(3)}>Comprar</button>
           </div>
 
           <div className='secao'>
             <div className='cafes_text'>Café Premium Torra Média</div>
             <img src="/src/assets/cafe_torra.svg" className='foto_cafe' alt="Café premium torra média" />
-            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café Premium Torra Média', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_torra.svg' })}>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart(2)}>Comprar</button>
           </div>
 
           <div className='secao'>
             <div className='cafes_text'>Café 100% Arábica</div>
             <img src="/src/assets/cafe_arabica.svg" className='foto_cafe' alt="Café 100% arábica" />
-            <button className='botao_comprar' onClick={() => addToCart({ nome: 'Café 100% Arábica', descricao: '250 g - moído', preco: 39.90, img: '/src/assets/cafe_arabica.svg' })}>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart(1)}>Comprar</button>
           </div>
         </div>
       </div>
@@ -108,15 +102,8 @@ const handleRemoveItem = (index) => {
       <Carrinho
         open={cartOpen}
         onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateItem={handleUpdateItem}
-        onRemoveItem={handleRemoveItem}
       />
 
-
-
-
-      
     </div>
   );
 }
