@@ -299,11 +299,8 @@ function Tela_admin() {
                                         <span>{pedido.status}</span>
                                         
                                         <div className="acoes">
-                                            <FaEye style={{ cursor: "pointer" }} />
-                                            <FaTrash 
-                                                onClick={() => deletarPedido(pedido.id)} 
-                                                style={{ cursor: "pointer" }} 
-                                            />
+                                            <FaEye/>
+                                            <FaTrash onClick={() => deletarPedido(pedido.id)}                                             />
                                         </div>
                                     </div>
                                 ))
