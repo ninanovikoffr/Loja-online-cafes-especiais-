@@ -73,6 +73,10 @@
   height: 35px;
 }
 
+.navbar__icon-admin {
+  height: 50px;  
+}
+
 .navbar__search input {
   border: none;
   outline: none;
