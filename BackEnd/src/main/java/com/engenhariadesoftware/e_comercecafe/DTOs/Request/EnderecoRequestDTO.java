@@ -14,6 +14,5 @@ public class EnderecoRequestDTO {
     private String bairro;
     private String cidade;
     private String estado;
-    private Boolean isPadrao;
     private Long idUsuario;
 }
