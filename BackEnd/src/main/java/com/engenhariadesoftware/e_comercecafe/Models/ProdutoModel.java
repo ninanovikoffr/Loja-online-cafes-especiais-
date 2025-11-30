@@ -22,7 +22,7 @@ public class ProdutoModel {
     @Column(length = 100)
     private String nome;
 
-    @Column(columnDefinition = "Descricao", length = 500)
+    @Column(length = 500)
     private String descricao;
 
     @Embedded
