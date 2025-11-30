@@ -1,4 +1,4 @@
-package com.engenhariadesoftware.e_comercecafe.Controllers;
+package com.engenhariadesoftware.e_comercecafe.SeleniumTests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort; // Import necessário
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.Duration;
 

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.UsuarioRequestDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.UsuarioResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.UsuarioResponseShowDTO;
-import com.engenhariadesoftware.e_comercecafe.Enuns.UsuarioRoles;
 import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
 import com.engenhariadesoftware.e_comercecafe.Repositories.UsuarioRepository;
 import com.engenhariadesoftware.e_comercecafe.Services.UsuarioService;
