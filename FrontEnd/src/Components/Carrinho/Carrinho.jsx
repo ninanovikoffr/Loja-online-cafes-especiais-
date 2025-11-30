@@ -6,8 +6,13 @@ import cartao from "../../assets/cartao.svg";
 import linha from "../../assets/linha.svg";
 import pix from "../../assets/logopix.svg";
 import {FaTrash } from 'react-icons/fa';
+import { useState } from 'react';
+
+
 
 function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
+
+    const [metodo, setMetodo] = useState("pix"); 
 
     if (!open) return null;
 
@@ -36,15 +41,12 @@ function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
                         {items.map((it, idx) => (
                             <div className="umitemcar" key={idx}>
 
-                                {/* IMAGEM */}
                                 <img src={it.img} alt={it.nome} />
 
-                                {/* INFORMAÇÕES */}
                                 <div className="informacaoitem">
                                     <div className="nomeitem">{it.nome}</div>
                                     <div className="descricaoitem">{it.descricao}</div>
 
-                                    {/* QUANTIDADE */}
                                     <div className="quantidade-container">
                                         <button
                                             className="quant-btn"
@@ -66,12 +68,10 @@ function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
                                     </div>
                                 </div>
 
-                                {/* PREÇO DO ITEM × QUANTIDADE */}
                                 <div className="precoitem">
                                     R$ {(it.preco * (it.quantidade || 1)).toFixed(2)}
                                 </div>
 
-                                {/* REMOVER ITEM */}
                                 <button
                                     className="btn-remove"
                                     onClick={() => onRemoveItem(idx)}
@@ -107,20 +107,20 @@ function Carrinho({ open, onClose, items = [], onUpdateItem, onRemoveItem }) {
 
                         <p className="formapagamento">Forma de pagamento</p>
 
-                        <button className="pix">
+                        <button className={`pix ${metodo === "pix" ? "selected" : ""}`} onClick={() => setMetodo("pix")}>
                             <p>Pix</p>
                             <img src={pix} />
                         </button>
 
-                        <button className="cartao">
+                        <button className={`cartao ${metodo === "cartao" ? "selected" : ""}`} onClick={() => setMetodo("cartao")}>
                             <p>Cartão</p>
                             <img src={cartao} />
                         </button>
 
-                        <div className="boleto">
+                        <button className={`boleto ${metodo === "boleto" ? "selected" : ""}`} onClick={() => setMetodo("boleto")}>
                             <p>Boleto</p>
                             <img src={codigodebarras} />
-                        </div>
+                        </button>
 
                         <button className="finalizar">Finalizar Pedido</button>
 
