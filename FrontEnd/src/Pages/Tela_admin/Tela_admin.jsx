@@ -54,33 +54,42 @@ function Tela_admin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('nome', nome);
-        formData.append('descricao', descricao);
-
-        const precoNumero = preco.replace('R$', '').replace(',', '.');
-        formData.append('preco', precoNumero);
-
-        if (imagem) formData.append('imagem', imagem);
+        // O backend espera um JSON (ProdutoRequestDTO). Atualmente o upload de arquivos não está implementado no servidor,
+        // então enviamos apenas os campos esperados: nome, descricao, preco e imagemUrl (opcional).
+        const precoNumero = preco ? preco.replace('R$', '').replace('.', '').replace(',', '.') : null;
+        const body = {
+            nome,
+            descricao,
+            preco: precoNumero ? parseFloat(precoNumero) : null,
+            imagemUrl: null // não há suporte a upload de imagem no backend ainda
+        };
 
         try {
+            const token = localStorage.getItem('token');
+            const roleRaw = localStorage.getItem('role');
+            let roles = null;
+            try { roles = roleRaw ? JSON.parse(roleRaw) : null; } catch (e) { roles = roleRaw; }
+            const isAdmin = roles === 'ADMIN' || (Array.isArray(roles) && roles.includes('ADMIN')) || roles === 'admin';
+
+            if (!isAdmin) {
+                alert('Ação restrita: é necessário usuário ADMIN para criar produtos.');
+                return;
+            }
+
+            const config = { headers: { Authorization: token ? `Bearer ${token}` : '' } };
+
             if (produtoEditando) {
-                await axios.put(`/produtos/${produtoEditando}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                // backend usa PATCH /produtos/atualizar/{id}
+                await axios.patch(`/produtos/atualizar/${produtoEditando}`, body, config);
                 alert('Produto atualizado com sucesso!')
             } else {
-                await axios.post('/produtos/criar', formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                await axios.post('/produtos/criar', body, config);
                 alert('Produto criado com sucesso!');
             }
 
             setProdutoEditando(null);
             setNome('');
             setDescricao('');
-            setCategoria('');
             setPreco('');
             setImagem(null);
 
@@ -129,7 +138,8 @@ function Tela_admin() {
         if (!confirmar) return;
 
         try {
-            await axios.delete(`/produtos/${idProduto}`);
+            // rota no backend: /produtos/deletar/{id}
+            await axios.delete(`/produtos/deletar/${idProduto}`);
 
             alert("Produto deletado com sucesso!");
             fetchProdutos(); // recarrega a lista
@@ -178,9 +188,11 @@ function Tela_admin() {
             });
 
             setUsuario(res.data);
-            setNomeUsuario(res.data.nome);
-            setEmailUsuario(res.data.email);
-            setEnderecoUsuario(res.data.endereco);
+            // UsuarioResponseShowDTO contém nome, email, cpf e role
+            setNomeUsuario(res.data.nome || "");
+            setEmailUsuario(res.data.email || "");
+            // backend atualmente não retorna 'endereco' no DTO, manter campo vazio
+            setEnderecoUsuario("");
         } catch (err) {
             console.error("Erro ao carregar usuário:", err);
             alert("Erro ao carregar dados do usuário.");
@@ -189,20 +201,15 @@ function Tela_admin() {
 
     //Atualiza os dados do admin no backend
     const atualizarUsuario = async () => {
-        const token = localStorage.getItem("token");
-
         try {
+            // O backend espera UsuarioRequestDTO (nome, cpf, email, senha, role).
+            // Aqui enviamos apenas os campos que o usuário pode alterar: nome e email.
             const body = {
                 nome: nomeUsuario,
-                email: emailUsuario,
-                endereco: enderecoUsuario
+                email: emailUsuario
             };
 
-            await axios.patch("/usuario/me/update", body, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await axios.patch("/usuario/me/update", body);
 
             alert("Dados atualizados com sucesso!");
 
@@ -336,7 +343,7 @@ function Tela_admin() {
                                         <div className="acoes">
                                             <FaEye style={{ cursor: "pointer" }} />
                                             <FaTrash 
-                                                onClick={() => deletarPedido(pedido.id)} 
+                                                onClick={() => deletarPedido(pedido.idPedido)} 
                                                 style={{ cursor: "pointer" }} 
                                             />
                                         </div>
@@ -354,7 +361,7 @@ function Tela_admin() {
                         <div>Editar Perfil</div>
                         <hr className="linhaHorizontal"/>
                         <img className="perfilImagem" src={perfil_admin} alt="perfil"/>
-                        <form>
+                        <form onSubmit={(e) => { e.preventDefault(); atualizarUsuario(); }}>
                             <label>Nome</label>
                             <input type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)}/>
 
@@ -364,7 +371,7 @@ function Tela_admin() {
 
                             <label>Endereços</label>
                             <textarea value={enderecoUsuario}onChange={(e) => setEnderecoUsuario(e.target.value)}/>
-                            <button className='botaoSalvar'>Salvar</button>
+                            <button className='botaoSalvar' type="submit">Salvar</button>
                             <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
                         </form>
 

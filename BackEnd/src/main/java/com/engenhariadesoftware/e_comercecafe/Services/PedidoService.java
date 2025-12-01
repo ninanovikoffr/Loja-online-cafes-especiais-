@@ -11,6 +11,7 @@ import com.engenhariadesoftware.e_comercecafe.Repositories.EnderecoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +28,14 @@ public class PedidoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    @Transactional(readOnly = true)
     public List<PedidoResponseDTO> listarTodos() {
         return pedidoRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public Optional<PedidoResponseDTO> buscarPorId(Long id) {
         return pedidoRepository.findById(id).map(this::toResponse);
     }
@@ -57,11 +60,36 @@ public class PedidoService {
     }
 
     private PedidoResponseDTO toResponse(PedidoModel pedidoModel) {
+        Long idUsuario = null;
+        Long idEndereco = null;
+        Double total = null;
+
+        if (pedidoModel.getUsuario() != null) {
+            idUsuario = pedidoModel.getUsuario().getIdUsuario();
+        }
+        if (pedidoModel.getEndereco() != null) {
+            idEndereco = pedidoModel.getEndereco().getIdEndereco();
+        }
+        if (pedidoModel.getTotal() != null) {
+            total = pedidoModel.getTotal();
+        }
+
         return PedidoResponseDTO.builder()
                 .idPedido(pedidoModel.getIdPedido())
                 .status(pedidoModel.getStatus())
-                .idUsuario(pedidoModel.getUsuario().getIdUsuario())
-                .idEndereco(pedidoModel.getEndereco().getIdEndereco())
+                .total(total)
+                .idUsuario(idUsuario)
+                .idEndereco(idEndereco)
+                .itens(pedidoModel.getItens() != null ?
+                        pedidoModel.getItens().stream().map(item -> {
+                            var dto = new com.engenhariadesoftware.e_comercecafe.DTOs.Response.PedidoItemResponseDTO();
+                            dto.setIdPedidoItem(item.getIdPedidoItem());
+                            dto.setIdProduto(item.getProduto() != null ? item.getProduto().getIdProduto() : null);
+                            dto.setNome(item.getProduto() != null ? item.getProduto().getNome() : null);
+                            dto.setQuantidade(item.getQuantidade());
+                            dto.setPrecoUnitario(item.getPrecoUnitario());
+                            return dto;
+                        }).toList() : null)
                 .build();
     }
 }
