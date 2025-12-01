@@ -153,7 +153,7 @@ public class CarrinhoService {
                 .build();
     }
 
-        @Transactional
+    @Transactional
     public PedidoResponseDTO finalizarCompra(Long idUsuario) {
 
         UsuarioModel usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));

@@ -147,7 +147,7 @@ function Tela_admin() {
             setPedidos(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Erro ao buscar pedidos:', err);
-            alert("Erro ao carregar pedidos!");
+            alert('Erro ao carregar pedidos!');
         } finally {
             setLoadingPedidos(false);
         }

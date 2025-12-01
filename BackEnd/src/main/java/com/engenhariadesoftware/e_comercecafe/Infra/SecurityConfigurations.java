@@ -50,6 +50,10 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/carrinhos/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/carrinhos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/pedidos/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/pedidos/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/pedidos/**").permitAll()
 
 
                 .anyRequest().authenticated()

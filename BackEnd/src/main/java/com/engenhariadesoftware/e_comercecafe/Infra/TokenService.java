@@ -43,8 +43,6 @@ public class TokenService {
         }
     }
 
-
-
     private Instant dataExpiracao() {
         return Instant.now().plus(Duration.ofHours(2));
     }

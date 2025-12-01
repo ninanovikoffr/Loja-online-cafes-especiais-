@@ -26,7 +26,7 @@ public class PedidoController {
      * 
      * @return Lista de todos os pedidos.
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Listar todos os pedidos", description = "Recupera todos os pedidos registrados no sistema.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pedidos recuperados com sucesso"),
@@ -43,7 +43,7 @@ public class PedidoController {
      * @param id - ID do pedido a ser recuperado.
      * @return Pedido encontrado ou resposta 404 se não encontrado.
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Buscar pedido por ID", description = "Recupera um pedido específico baseado no ID.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pedido encontrado com sucesso"),

@@ -68,15 +68,18 @@ public class UsuarioModel implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        if (this.role == UsuarioRoles.ADMIN) {
+        if (this.role != null && this.role.name().equalsIgnoreCase("ADMIN")) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
                     new SimpleGrantedAuthority("ROLE_CLIENTE")
             );
         }
 
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        return List.of(
+            new SimpleGrantedAuthority("ROLE_CLIENTE")
+        );
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

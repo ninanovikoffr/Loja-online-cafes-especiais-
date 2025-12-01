@@ -30,13 +30,30 @@ function Tela_registrar(){
         };
 
         try {
-            // Envia os dados para o backend
+            // Alguns cenários adicionam um header Authorization global no axios.
+            // Se um token inválido estiver presente, o backend pode recusar mesmo em endpoints públicos.
+            // Para garantir, removemos temporariamente o header antes do POST e restauramos depois.
+            const previousAuth = axios.defaults.headers.common['Authorization'];
+            try {
+                delete axios.defaults.headers.common['Authorization'];
+            } catch (e) {
+                // ignore
+            }
+
+            // Envia os dados para o backend sem Authorization
             const response = await axios.post('http://localhost:8080/auth/register', userData);
+
+            // Restaurar header anterior
+            if (previousAuth) axios.defaults.headers.common['Authorization'] = previousAuth;
+
             if (response.status === 200) {
                 alert("Conta criada com sucesso!");
                 navigate('/login'); // Redireciona para a página inicial após cadastro
             }
         } catch (error) {
+            // Restaurar header em caso de erro
+            try { if (axios && axios.defaults && axios.defaults.headers && previousAuth) axios.defaults.headers.common['Authorization'] = previousAuth; } catch(e){}
+
             alert("Erro ao criar conta. Tente novamente.");
             console.error(error);
         }
