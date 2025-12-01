@@ -114,7 +114,7 @@ VITE_API_URL=http://localhost:4000
 
 Criar banco:
 ```sql
-CREATE DATABASE terroir;
+CREATE DATABASE DataBaseEcommerceCafe;
 ```
 
 Ao rodar o backend, as **migrations Flyway** serão aplicadas automaticamente.
@@ -159,6 +159,7 @@ ProjectRoot/
 - react
 - react-router-dom
 - axios
+- jwt-decode
 - react-icons
 - vite
 
