@@ -196,5 +196,5 @@ https://www.figma.com/design/YRmCSWIV94Sm94X0SqDSXe/Projeto
 ---
 
 ## 📘 Versão
-`v0.2` — Telas de login e registro, popup de carrinho, CRUD de produtos no admin, autenticação, produtos populares na tela inicial.
+`v0.3` — Popup de carrinho, CRUD de produtos, CRUD de pedidos, autenticação, e integração.
 
