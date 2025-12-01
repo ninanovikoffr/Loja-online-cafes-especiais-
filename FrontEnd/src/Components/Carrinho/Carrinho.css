@@ -277,7 +277,7 @@
 }
 
 
-/* responsive */
+
 @media (max-width: 920px){
   .quadradocar{ flex-direction: column }
   .somas{ width:100%; max-width:100% }

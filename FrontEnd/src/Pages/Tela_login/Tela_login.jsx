@@ -30,7 +30,6 @@ function Tela_login(){
 
             const data = await response.json();
 
-            // backend devolve algo tipo { token: "..." }
             const token =
                 data.token ||
                 data.accessToken ||
@@ -42,7 +41,6 @@ function Tela_login(){
                 throw new Error("Token não encontrado na resposta do backend");
             }
 
-            // salva o token
             localStorage.setItem("token", token);
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -52,12 +50,11 @@ function Tela_login(){
             
             let roles = decoded.role || decoded.roles || [];
             if (!Array.isArray(roles)) {
-                roles = [roles]; // garante que sempre seja array
+                roles = [roles];
             }
 
             localStorage.setItem("role", JSON.stringify(roles));
 
-            // validação
             const isAdmin = roles.includes("ADMIN");
 
             if (isAdmin) {

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 
 import logo from "../../assets/Logo.svg";
-import perfil_icon from "../../assets/Perfil_icon.svg";      // cliente
-import perfil_admin from "../../assets/Foto_admin.svg";       // admin
+import perfil_icon from "../../assets/Perfil_icon.svg";      
+import perfil_admin from "../../assets/Foto_admin.svg";      
 
 import { FaBars, FaSearch } from "react-icons/fa";
 

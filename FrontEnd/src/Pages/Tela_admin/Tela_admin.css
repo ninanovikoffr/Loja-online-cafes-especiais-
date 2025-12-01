@@ -16,7 +16,7 @@
     align-items: center;
     padding: 100px 80px 30px 40px;
     margin-top: 40px;
-    margin-left:30px; /* Puxa o conteúdo para cima, ficando mais alinhado com o protótipo */
+    margin-left:30px; 
 }
 
 .olaAdmin {
@@ -76,7 +76,7 @@
     margin: 10px 0;
     width: 109%;
     margin-left: -20px;
-    margin-right: -20px; /* Ajuste só pra ignorar o padding da div secaoAdmin */
+    margin-right: -20px; 
 }
 
 form {
@@ -121,7 +121,7 @@ textarea {
 }
 
 input[type="file"] {
-    display:none; /* Para ocultar o botão padrão do input file */
+    display:none; 
 }
 
 .botaoImagem {

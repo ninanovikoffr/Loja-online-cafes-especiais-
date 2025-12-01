@@ -33,13 +33,11 @@ function Tela_inicial() {
     <div className="tela_inicial">
      <Navbar />
 
-      {/* Banner principal */}
       <div className="fundo_titulo">
         <img src={fundo} className="fundo_imagem" alt="Fundo de café" />
         <h1 className="titulo_terroir">TERROIR</h1>
       </div>
 
-      {/* Seção Populares */}
       <div className='populares'>
         <div className='populares_text'>Populares</div>
         <div className='colunas_populares'>
@@ -63,7 +61,6 @@ function Tela_inicial() {
         </div>
       </div>
 
-      {/* Seção Explore por Categorias */}
       <div className='categorias'>
         <div className='categorias_text'>Explore por categorias</div>
         <div className='colunas_categorias'>
@@ -94,7 +91,6 @@ function Tela_inicial() {
         </div>
       </div>
 
-      {/* Botão Flutuante do Carrinho */}
         <button className='botao_flutuante' onClick={()=>setCartOpen(true)}> 
           <img src="/src/assets/Carrinho_icon.svg"/>
         </button>

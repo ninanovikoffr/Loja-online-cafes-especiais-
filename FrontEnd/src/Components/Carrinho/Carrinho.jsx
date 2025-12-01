@@ -9,7 +9,7 @@ import pix from "../../assets/logopix.svg";
 import { FaTrash } from 'react-icons/fa';
 import axios from "axios";
 
-// Catálogo local dos produtos (mesmos da tela inicial)
+// Catálogo local dos produtos
 const CATALOGO_PRODUTOS = {
     1: {
         nome: 'Café 100% Arábica',
@@ -39,7 +39,7 @@ function Carrinho({ open, onClose }) {
     const idUsuario = localStorage.getItem("idUsuario");
     const token = localStorage.getItem("token");
 
-    // garante que TODAS as chamadas do axios vão com Authorization
+
     if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
@@ -94,9 +94,7 @@ function Carrinho({ open, onClose }) {
         }
     };
 
-    // ============================================
-    // REMOVER 1 UNIDADE (OU PRODUTO, DEPENDE DO BACK)
-    // ============================================
+   
     const decrementarQtd = async (item) => {
         try {
             await axios.delete(
@@ -109,7 +107,7 @@ function Carrinho({ open, onClose }) {
     };
 
     // ============================================
-    // REMOVER PRODUTO DO CARRINHO (USANDO O MESMO DELETE)
+    // REMOVER PRODUTO DO CARRINHO 
     // ============================================
     const removerItem = async (idProduto) => {
         try {

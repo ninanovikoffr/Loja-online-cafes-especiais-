@@ -6,8 +6,7 @@ import axios from 'axios';
 import perfil_admin from "../../assets/Foto_admin.svg";
 import "./Tela_admin.css";
 
-// Dados reais serão carregados do backend
-// API base - AJUSTARRRR
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 axios.interceptors.request.use(config => {
     const token = localStorage.getItem("token");
@@ -37,7 +36,7 @@ function Tela_admin() {
     const [emailUsuario, setEmailUsuario] = useState("");
     const [enderecoUsuario, setEnderecoUsuario] = useState("");
 
-    // Função para formatar o preço
+ 
     const formatarPreco = (value) => {
         let valor = value.replace(/\D/g, '');
         if (valor.length > 2) {
@@ -55,14 +54,13 @@ function Tela_admin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // O backend espera um JSON (ProdutoRequestDTO). Atualmente o upload de arquivos não está implementado no servidor,
-        // então enviamos apenas os campos esperados: nome, descricao, preco e imagemUrl (opcional).
+
         const precoNumero = preco ? preco.replace('R$', '').replace('.', '').replace(',', '.') : null;
         const body = {
             nome,
             descricao,
             preco: precoNumero ? parseFloat(precoNumero) : null,
-            imagemUrl: null // não há suporte a upload de imagem no backend ainda
+            imagemUrl: null 
         };
 
         try {
@@ -80,7 +78,6 @@ function Tela_admin() {
             const config = { headers: { Authorization: token ? `Bearer ${token}` : '' } };
 
             if (produtoEditando) {
-                // backend usa PATCH /produtos/atualizar/{id}
                 await axios.patch(`/produtos/atualizar/${produtoEditando}`, body, config);
                 alert('Produto atualizado com sucesso!')
             } else {
@@ -101,12 +98,10 @@ function Tela_admin() {
         }
     };
 
-    // Busca produtos do backend
     const fetchProdutos = async () => {
         setLoadingProdutos(true);
         try {
             const res = await axios.get('/produtos');
-            // assumes backend returns array in res.data
             setProdutos(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Erro ao buscar produtos:', err);
@@ -116,7 +111,6 @@ function Tela_admin() {
         }
     };
 
-    // Preencher o formulário de produto ao clicar em editar
     const carregarProdutoParaEdicao = (produto) => {
         setProdutoEditando(produto.idProduto); 
         setNome(produto.nome);
@@ -125,7 +119,7 @@ function Tela_admin() {
         let precoFormatado = "";
         if (produto.preco !== null && produto.preco !== undefined) {
             precoFormatado = "R$" + Number(produto.preco)
-                .toFixed(2) // força 2 casas decimais
+                .toFixed(2) 
                 .replace(".", ","); 
         }
         setPreco(precoFormatado);
@@ -133,24 +127,21 @@ function Tela_admin() {
         setImagem(null);
     };
 
-    // Deletar produto no back
     const deletarProduto = async (idProduto) => {
         const confirmar = confirm("Tem certeza que deseja excluir este produto?");
         if (!confirmar) return;
 
         try {
-            // rota no backend: /produtos/deletar/{id}
             await axios.delete(`/produtos/deletar/${idProduto}`);
 
             alert("Produto deletado com sucesso!");
-            fetchProdutos(); // recarrega a lista
+            fetchProdutos(); 
         } catch (error) {
             console.error("Erro ao deletar produto:", error);
             alert("Erro ao deletar o produto.");
         }
     };
 
-    // Busca pedidos do backend
     const fetchPedidos = async () => {
         setLoadingPedidos(true);
         try {
@@ -164,7 +155,6 @@ function Tela_admin() {
         }
     };
 
-    // Deleta pedidos do backend
     const deletarPedido = async (idPedido) => {
         const confirmar = confirm("Tem certeza que deseja excluir este pedido?");
         if (!confirmar) return;
@@ -179,7 +169,6 @@ function Tela_admin() {
         }
     };
 
-    //Busca o usuário autenticado
     const fetchUsuario = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -189,10 +178,8 @@ function Tela_admin() {
             });
 
             setUsuario(res.data);
-            // UsuarioResponseShowDTO contém nome, email, cpf e role
             setNomeUsuario(res.data.nome || "");
             setEmailUsuario(res.data.email || "");
-            // backend atualmente não retorna 'endereco' no DTO, manter campo vazio
             setEnderecoUsuario("");
         } catch (err) {
             console.error("Erro ao carregar usuário:", err);
@@ -200,11 +187,8 @@ function Tela_admin() {
         }
     };
 
-    //Atualiza os dados do admin no backend
     const atualizarUsuario = async () => {
         try {
-            // O backend espera UsuarioRequestDTO (nome, cpf, email, senha, role).
-            // Aqui enviamos apenas os campos que o usuário pode alterar: nome e email.
             const body = {
                 nome: nomeUsuario,
                 email: emailUsuario
@@ -214,7 +198,7 @@ function Tela_admin() {
 
             alert("Dados atualizados com sucesso!");
 
-            fetchUsuario(); // recarregar dados
+            fetchUsuario();
         } catch (err) {
             console.error("Erro ao atualizar usuário:", err);
             alert("Erro ao atualizar usuário.");
@@ -223,7 +207,6 @@ function Tela_admin() {
 
 
     useEffect(() => {
-        // Ler token e role do localStorage e configurar axios
         const token = localStorage.getItem('token');
         const roleRaw = localStorage.getItem('role');
         let role = null;
@@ -233,17 +216,13 @@ function Tela_admin() {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         }
 
-        // Se não for admin, redireciona para a home (não permitir acessar a tela admin)
         const isAdmin = 
             role === 'ADMIN' ||
             role === 'admin' ||
             (Array.isArray(role) && (role.includes('ADMIN') || role.includes('admin')));
 
         if (!isAdmin) {
-            // se não tem token/role admin, redireciona
-            // evite executar fetches protegidos
             window.alert('Acesso negado: perfil não é administrador.');
-            // usamos window.location para garantir redirecionamento mesmo fora do router
             window.location.href = '/';
             return;
         }
@@ -251,7 +230,6 @@ function Tela_admin() {
         fetchProdutos();
         fetchPedidos();
         fetchUsuario();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -261,10 +239,8 @@ function Tela_admin() {
             <div className="tituloadmin">
                 <p className="olaAdmin">Olá Admin!</p>
                 <button className="sairbotao" onClick={() => {
-                    // limpar sessão e voltar para a página inicial
                     localStorage.removeItem('token');
                     localStorage.removeItem('role');
-                    // remover header Authorization se estiver setado
                     try{ delete axios.defaults.headers.common['Authorization']; }catch(e){}
                     navigate('/');
                 }}>
