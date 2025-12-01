@@ -5,33 +5,32 @@ class Usuario {
     +nome: string
     +email: string
     +senha: string
-    +endereco: string
+    +cpf: string
     +role: string       // ADMIN ou CLIENTE
 
-    +cadastrarConta(): void
-    +login(): void
-    +editarDados(): void
+    +cadastrarConta()
+    +login()
+    +editarDados()
 }
 
 class Produto {
     +id: int
     +nome: string
-    +categoria: string
     +preco: decimal
     +imagem: string
 
-    +cadastrarProduto(): void
-    +editarProduto(): void
-    +removerProduto(): void
+    +cadastrarProduto()
+    +editarProduto()
+    +removerProduto()
 }
 
 class Carrinho {
     +id: int
     +total: decimal
 
-    +adicionarProduto(): void
-    +removerProduto(): void
-    +calcularTotal(): decimal
+    +adicionarProduto()
+    +removerProduto()
+    +calcularTotal()
 }
 
 class Pedido {
@@ -39,8 +38,8 @@ class Pedido {
     +total: decimal
     +status: string
 
-    +finalizarPedido(): void
-    +acompanharStatus(): void
+    +finalizarPedido
+    +acompanharStatus
 }
 
 ' ---------------------------

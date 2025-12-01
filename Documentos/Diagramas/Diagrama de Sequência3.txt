@@ -5,7 +5,7 @@ participant Carrinho
 database BD
 
 Cliente -> Sistema : selecionarProduto()
-Sistema -> BD : obterDetalhesProduto()
+Sistema -> BD : getproduto()
 BD --> Sistema : produto()
 
 Sistema -> Carrinho : adicionarItem(produto)
