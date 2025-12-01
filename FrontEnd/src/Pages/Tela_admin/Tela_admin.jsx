@@ -22,6 +22,7 @@ const initialProdutos = [];
 const initialPedidos = [];
 
 function Tela_admin() {
+    const navigate = useNavigate()
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [imagem, setImagem] = useState(null);
@@ -259,7 +260,14 @@ function Tela_admin() {
 
             <div className="tituloadmin">
                 <p className="olaAdmin">Olá Admin!</p>
-                <button className="sairbotao">
+                <button className="sairbotao" onClick={() => {
+                    // limpar sessão e voltar para a página inicial
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('role');
+                    // remover header Authorization se estiver setado
+                    try{ delete axios.defaults.headers.common['Authorization']; }catch(e){}
+                    navigate('/');
+                }}>
                     Sair <FaArrowRight />
                 </button>
             </div>
