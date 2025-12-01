@@ -4,9 +4,9 @@ left to right direction
 package "Frontend" {
   class "Tela Login"
   class "Tela Cadastro"
-  class "Tela Produto"
-  class "Tela Carrinho"
-  class "Tela Pedido"
+  class "Tela Admin"
+  class "Tela Inicial"
+  class "Carrinho Popup"
 }
 
 package "Backend" {
@@ -18,7 +18,7 @@ package "Backend" {
 
 package "Modelo de Dados" {
   class "Produto"
-  class "Cliente"
+  class "Usuario"
   class "Pedido"
   class "Carrinho"
 }

@@ -3,7 +3,7 @@ actor Visitante
 participant Sistema
 database BD
 
-Visitante -> Sistema : enviarCredenciais()
+Visitante -> Sistema : registrar()
 Sistema -> BD : buscarClientePorEmail()
 BD --> Sistema : dadosCliente
 Sistema -> Visitante : autenticar()

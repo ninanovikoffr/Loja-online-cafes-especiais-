@@ -3,8 +3,8 @@ actor Visitante
 participant Sistema
 database BD
 
-Visitante -> Sistema : preencherDadosCadastro()
-Sistema -> BD : inserirCliente()
+Visitante -> Sistema : registrar()
+Sistema -> BD : adicionarUsuario()
 BD --> Sistema : clienteCriado()
 Sistema --> Visitante : exibirSucesso()
 @enduml

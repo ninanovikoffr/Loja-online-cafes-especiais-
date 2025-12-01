@@ -3,8 +3,8 @@ actor Cliente
 participant Sistema
 database BD
 
-Cliente -> Sistema : inserirNovoEndereco()
-Sistema -> BD : salvarEndereco()
-BD --> Sistema : enderecoSalvo()
+Cliente -> Sistema : gerarpedido()
+Sistema -> BD : salvarpedido()
+BD --> Sistema : pedidosalvo()
 Sistema --> Cliente : confirmar()
 @enduml
