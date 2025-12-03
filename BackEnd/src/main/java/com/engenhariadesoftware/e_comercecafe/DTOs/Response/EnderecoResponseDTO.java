@@ -16,4 +16,18 @@ public class EnderecoResponseDTO {
     private String cidade;
     private String estado;
     private Long idUsuario;
+
+
+
+    public EnderecoResponseDTO(com.engenhariadesoftware.e_comercecafe.Models.EnderecoModel enderecoModel) {
+        this.idEndereco = enderecoModel.getIdEndereco();
+        this.cep = enderecoModel.getCep() != null ? enderecoModel.getCep().getValue() : null;
+        this.rua = enderecoModel.getRua();
+        this.numero = enderecoModel.getNumero();
+        this.complemento = enderecoModel.getComplemento();
+        this.bairro = enderecoModel.getBairro();
+        this.cidade = enderecoModel.getCidade();
+        this.estado = enderecoModel.getEstado();
+        this.idUsuario = enderecoModel.getUsuario() != null ? enderecoModel.getUsuario().getIdUsuario() : null;
+    }
 }

@@ -58,6 +58,10 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/produtos/**").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/produtos/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/enderecos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/enderecos/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/enderecos/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/enderecos/**").permitAll()
 
 
                 .anyRequest().authenticated()
