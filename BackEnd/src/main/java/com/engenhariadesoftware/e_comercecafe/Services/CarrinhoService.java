@@ -165,7 +165,6 @@ public class CarrinhoService {
         throw new RuntimeException("Carrinho está vazio");
     }
 
-    // Criar o pedido
     PedidoModel pedido = new PedidoModel();
     pedido.setUsuario(usuario);
     pedido.setItens(new ArrayList<>());
@@ -186,10 +185,8 @@ public class CarrinhoService {
 
     pedido.setTotal(total);
 
-    // Salvar pedido
     PedidoModel salvo = pedidoRepository.save(pedido);
 
-    // Limpar carrinho
     carrinho.getItens().clear();
     carrinhoRepository.save(carrinho);
 

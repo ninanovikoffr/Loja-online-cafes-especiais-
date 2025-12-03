@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Request.EnderecoRequestDTO;
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.EnderecoResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Services.EnderecoService;
+import com.engenhariadesoftware.e_comercecafe.Repositories.EnderecoRepository;
 import com.engenhariadesoftware.e_comercecafe.Repositories.UsuarioRepository;
+import com.engenhariadesoftware.e_comercecafe.Models.EnderecoModel;
 import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/enderecos")
@@ -26,6 +29,8 @@ public class EnderecoController {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private EnderecoService enderecoService;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     /**
      * Endpoint para listar todos os endereços.
@@ -38,10 +43,12 @@ public class EnderecoController {
         @ApiResponse(responseCode = "200", description = "Endereços recuperados com sucesso"),
         @ApiResponse(responseCode = "403", description = "Acesso negado")
     })
-    @GetMapping
-    public List<EnderecoResponseDTO> listarTodos() {
-        return enderecoService.listarTodos();
-    }
+    @GetMapping("/listar/{idUsuario}")
+    public ResponseEntity<List<EnderecoResponseDTO>> obterEnderecos(@PathVariable Long idUsuario) {
+    List<EnderecoModel> enderecos = enderecoRepository.findByUsuarioIdUsuario(idUsuario);
+    List<EnderecoResponseDTO> enderecoDTOs = enderecos.stream().map(endereco -> new EnderecoResponseDTO(endereco)).collect(Collectors.toList());
+    return ResponseEntity.ok(enderecoDTOs);
+}
 
     /**
      * Endpoint para buscar um endereço por ID.
@@ -55,7 +62,7 @@ public class EnderecoController {
         @ApiResponse(responseCode = "200", description = "Endereço encontrado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    @GetMapping("/{id}")
+    @GetMapping("/buscar{id}")
     public ResponseEntity<EnderecoResponseDTO> buscarPorId(@PathVariable Long id) {
         return enderecoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
