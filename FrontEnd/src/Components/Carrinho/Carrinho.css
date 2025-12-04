@@ -131,7 +131,7 @@
 
 .formapagamento {
     margin-left: 5px;
-    margin-top: -80px;
+    margin-top: -100px;
     font-family: 'M PLUS 2';
     font-size: 24px;
     font-weight: 600;
@@ -230,16 +230,76 @@
 }
 
 .finalizar{
-    margin-top: 40px;
+    margin-top: 10px;
   background:#4a2b1a; 
   color:#fff; 
   border:none; 
   padding:12px 18px; 
   border-radius:10px; 
-  margin-left: 20px;
+  margin-left: 0px;
   width:300px;
   cursor:pointer; 
   font-size:22px;
+}
+
+.enderecos-title {
+    font-family: 'M PLUS 2';
+    font-size: 18px;
+    font-weight: 600;
+    color: #412913;
+    margin: 8px 0;
+}
+
+.enderecos-list {
+    max-height: 70px; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 6px;
+}
+
+.endereco-box {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    font-size: 14px;
+    color: #333;
+}
+
+.endereco-box:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.endereco-box.selected {
+    border: 2px solid ;
+    border-color: #3b1f0f; /* borda mais escura quando selecionado */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    background: #f7f3ee;
+}
+
+.endereco-empty {
+    color: #666;
+    font-size: 14px;
+    padding: 6px 4px;
+}
+
+.endereco-selecionado {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #4a2b1a;
+    font-weight: 500;
+}
+
+
+.endereco-empty {
+    color: #666;
+    font-size: 13px;
+    padding: 6px 4px;
+    margin-top: 6px;
 }
 
 .quantidade-container {
@@ -282,5 +342,3 @@
   .quadradocar{ flex-direction: column }
   .somas{ width:100%; max-width:100% }
 }
-
-

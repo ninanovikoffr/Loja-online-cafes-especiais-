@@ -1,73 +1,144 @@
 package com.engenhariadesoftware.e_comercecafe.Controllers;
 
-import com.engenhariadesoftware.e_comercecafe.Services.CarrinhoService;
+import com.engenhariadesoftware.e_comercecafe.Enuns.UsuarioRoles;
+import com.engenhariadesoftware.e_comercecafe.Models.CarrinhoModel;
+import com.engenhariadesoftware.e_comercecafe.Models.ProdutoModel;
+import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
+import com.engenhariadesoftware.e_comercecafe.Repositories.CarrinhoRepository;
+import com.engenhariadesoftware.e_comercecafe.Repositories.ProdutoRepository;
+import com.engenhariadesoftware.e_comercecafe.Repositories.UsuarioRepository;
+import com.engenhariadesoftware.e_comercecafe.ValueObjects.CPF;
+import com.engenhariadesoftware.e_comercecafe.ValueObjects.Email;
+import com.engenhariadesoftware.e_comercecafe.ValueObjects.Preco;
+import com.engenhariadesoftware.e_comercecafe.ValueObjects.Senha;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Classe de testes unitários para CarrinhoController, utilizando Mockito
- * para isolar a camada de serviço.
- */
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.datasource.url=jdbc:h2:mem:carrinho_ctrl;DB_CLOSE_DELAY=-1;MODE=PostgreSQL",
+        "spring.datasource.driverClassName=org.h2.Driver",
+        "spring.datasource.username=sa",
+        "spring.datasource.password=",
+        "spring.jpa.hibernate.ddl-auto=create-drop",
+        "spring.jpa.show-sql=false",
+        "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
+        "spring.flyway.enabled=false"
+})
+@Transactional
 class CarrinhoControllerTest {
 
-    @Mock
-    private CarrinhoService carrinhoService; // Simula o serviço de carrinho
-
-    @InjectMocks
-    private CarrinhoController carrinhoController; // Injeta o serviço mockado no Controller
-
+    @Autowired
     private MockMvc mockMvc;
 
-    // IDs de exemplo
-    private final Long ID_USUARIO = 1L;
-    private final Long ID_PRODUTO = 10L;
-    private final int QUANTIDADE = 2;
+    @Autowired
+    private CarrinhoRepository carrinhoRepository;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @BeforeEach
-    void setUp() {
-        // Configura o MockMvc para testar apenas o CarrinhoController
-        mockMvc = MockMvcBuilders.standaloneSetup(carrinhoController).build();
+    void clean() {
+        carrinhoRepository.deleteAll();
+        produtoRepository.deleteAll();
+        usuarioRepository.deleteAll();
+    }
+
+    private UsuarioModel criarUsuario() {
+        UsuarioModel usuario = new UsuarioModel();
+        usuario.setNome("Usuario Teste");
+        usuario.setCpf(new CPF("12345678901"));
+        usuario.setEmail(new Email("usuario@teste.com"));
+        usuario.setSenha(new Senha("senha123"));
+        usuario.setRole(UsuarioRoles.CLIENTE);
+        return usuarioRepository.save(usuario);
+    }
+
+    private ProdutoModel criarProduto(String nome, double preco) {
+        ProdutoModel produto = new ProdutoModel();
+        produto.setNome(nome);
+        produto.setDescricao("Descricao");
+        produto.setPreco(new Preco(preco));
+        produto.setImagemUrl("imagem.png");
+        return produtoRepository.save(produto);
     }
 
     @Test
-    void testAdicionarProduto_DeveRetornarOkEChamarServico() throws Exception {
-        // Simular chamada para o endpoint POST /carrinhos/{idUsuario}/produtos/{idProduto}
-        mockMvc.perform(post("/carrinhos/{idUsuario}/produtos/{idProduto}", ID_USUARIO, ID_PRODUTO)
-                        // Adiciona o parâmetro de quantidade
-                        .param("quantidade", String.valueOf(QUANTIDADE))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()); // Verifica se o status HTTP é 200 OK
+    void adicionarProdutoDeveCriarCarrinhoERegistrarItem() throws Exception {
+        UsuarioModel usuario = criarUsuario();
+        ProdutoModel produto = criarProduto("Cafe A", 12.5);
 
-        // VERIFICAÇÃO CHAVE:
-        // Verifica se o método 'adicionarProduto' foi chamado no CarrinhoService
-        // com os parâmetros corretos após a requisição HTTP.
-        verify(carrinhoService, times(1)).adicionarProduto(ID_USUARIO, ID_PRODUTO, QUANTIDADE);
-        verifyNoMoreInteractions(carrinhoService);
+        mockMvc.perform(post("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), produto.getIdProduto())
+                        .param("quantidade", "2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        CarrinhoModel carrinho = carrinhoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElseThrow();
+        assertEquals(1, carrinho.getItens().size());
+        assertEquals(2, carrinho.getItens().get(0).getQuantidade());
+        assertEquals(produto.getIdProduto(), carrinho.getItens().get(0).getProduto().getIdProduto());
     }
-    
-    @Test
-    void testRemoverProduto_DeveRetornarOkEChamarServico() throws Exception {
-        // Simular chamada para o endpoint DELETE /carrinhos/{idUsuario}/produtos/{idProduto}
-        mockMvc.perform(delete("/carrinhos/{idUsuario}/produtos/{idProduto}", ID_USUARIO, ID_PRODUTO)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()); // Verifica se o status HTTP é 200 OK
 
-        // VERIFICAÇÃO CHAVE:
-        // Verifica se o método 'removerProduto' foi chamado no CarrinhoService
-        // com os parâmetros corretos.
-        verify(carrinhoService, times(1)).removerProduto(ID_USUARIO, ID_PRODUTO);
-        verifyNoMoreInteractions(carrinhoService);
+    @Test
+    void removerProdutoDeveManterApenasItensRestantes() throws Exception {
+        UsuarioModel usuario = criarUsuario();
+        ProdutoModel produtoA = criarProduto("Cafe A", 10.0);
+        ProdutoModel produtoB = criarProduto("Cafe B", 20.0);
+
+        mockMvc.perform(post("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), produtoA.getIdProduto())
+                        .param("quantidade", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        mockMvc.perform(post("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), produtoB.getIdProduto())
+                        .param("quantidade", "3")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), produtoA.getIdProduto())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        CarrinhoModel carrinho = carrinhoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElseThrow();
+        assertEquals(1, carrinho.getItens().size());
+        assertEquals(produtoB.getIdProduto(), carrinho.getItens().get(0).getProduto().getIdProduto());
+        assertEquals(3, carrinho.getItens().get(0).getQuantidade());
+    }
+
+    @Test
+    void removerProdutoInexistenteRetornaErro() throws Exception {
+        UsuarioModel usuario = criarUsuario();
+        ProdutoModel produto = criarProduto("Cafe A", 10.0);
+
+        mockMvc.perform(post("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), produto.getIdProduto())
+                        .param("quantidade", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertThrows(Exception.class, () ->
+                mockMvc.perform(delete("/carrinhos/{idUsuario}/produtos/{idProduto}", usuario.getIdUsuario(), 999)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn()
+        );
+
+        CarrinhoModel carrinho = carrinhoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElseThrow();
+        assertEquals(1, carrinho.getItens().size());
     }
 }

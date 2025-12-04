@@ -141,6 +141,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- WebDriver Manager - Versão atualizada e estável (5.8.0) -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>

@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import './Carrinho.css';
 
 import carrinhoCarrinho from "../../assets/iconecarrinhopopup.svg";
 import codigodebarras from "../../assets/codigodebarras.svg";
 import cartao from "../../assets/cartao.svg";
 import linha from "../../assets/linha.svg";
-import pix from "../../assets/logopix.svg";
+import pixImg from "../../assets/logopix.svg";
 import { FaTrash } from 'react-icons/fa';
 import axios from "axios";
 
-// Catálogo local dos produtos
+// Catalogo local dos produtos
 const CATALOGO_PRODUTOS = {
     1: {
-        nome: 'Café 100% Arábica',
-        descricao: '250 g - moído',
+        nome: 'Cafe 100% Arabica',
+        descricao: '250 g - moido',
         preco: 39.90,
         img: '/src/assets/cafe_arabica.svg'
     },
     2: {
-        nome: 'Café Premium Torra Média',
-        descricao: '250 g - moído',
+        nome: 'Cafe Premium Torra Media',
+        descricao: '250 g - moido',
         preco: 39.90,
         img: '/src/assets/cafe_torra.svg'
     },
     3: {
-        nome: 'Café Gourmet Baunilha',
-        descricao: '250 g - moído',
+        nome: 'Cafe Gourmet Baunilha',
+        descricao: '250 g - moido',
         preco: 39.90,
         img: '/src/assets/cafe_baunilha.svg'
     }
@@ -35,10 +35,11 @@ function Carrinho({ open, onClose }) {
 
     const [items, setItems] = useState([]);
     const [metodo, setMetodo] = useState("pix");
+    const [addresses, setAddresses] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState(null);
 
     const idUsuario = localStorage.getItem("idUsuario");
     const token = localStorage.getItem("token");
-
 
     if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -77,8 +78,28 @@ function Carrinho({ open, onClose }) {
 
     useEffect(() => {
         if (open) carregarItens();
+        if (open) carregarEnderecos();
     }, [open]);
 
+    // ============================================
+    // LISTAR ENDERECOS DO USUARIO (FRONTEND)
+    // ============================================
+    const carregarEnderecos = async () => {
+        try {
+            const resp = await axios.get(`http://localhost:8080/enderecos/listar/${idUsuario}`);
+            const dados = resp.data || [];
+            setAddresses(dados);
+
+            // Se houver um endereco previamente selecionado, mantemos a selecao
+            if (dados.length && selectedAddress) {
+                const match = dados.find(d => d.id === selectedAddress.id || d.idEndereco === selectedAddress.idEndereco);
+                if (match) setSelectedAddress(match);
+            }
+        } catch (err) {
+            console.warn('Nao foi possivel carregar enderecos do backend:', err.message || err);
+            setAddresses([]);
+        }
+    };
 
     // ============================================
     // ADICIONAR +1 UNIDADE
@@ -94,7 +115,7 @@ function Carrinho({ open, onClose }) {
         }
     };
 
-   
+
     const decrementarQtd = async (item) => {
         try {
             await axios.delete(
@@ -125,16 +146,26 @@ function Carrinho({ open, onClose }) {
     // FINALIZAR COMPRA
     // ============================================
     const finalizarCompra = async () => {
+        if (!selectedAddress) {
+            alert("Por favor, selecione um endereco antes de finalizar o pedido.");
+            return;
+        }
+
         try {
+            const pedidoData = {
+                enderecoId: selectedAddress.id,
+            };
+
             await axios.post(
-                `http://localhost:8080/carrinhos/${idUsuario}/finalizar`
+                `http://localhost:8080/carrinhos/${idUsuario}/finalizar`,
+                pedidoData
             );
 
             alert("Pedido finalizado com sucesso!");
             onClose();
         } catch (err) {
             console.error("Erro ao finalizar:", err.response || err);
-            alert("Erro ao finalizar pedido (verifique se seu usuário tem permissão e se o token é válido).");
+            alert("Erro ao finalizar pedido. Tente novamente mais tarde.");
         }
     };
 
@@ -152,7 +183,7 @@ function Carrinho({ open, onClose }) {
         <div className="popupcarrinho" onClick={onClose}>
             <div className="popupcar" onClick={(e) => e.stopPropagation()}>
 
-                <button className="xiscarrinho" onClick={onClose}>×</button>
+                <button className="xiscarrinho" onClick={onClose}>X</button>
 
                 <div className="cabecalhocar">
                     <img src={carrinhoCarrinho} alt="Carrinho" />
@@ -184,7 +215,7 @@ function Carrinho({ open, onClose }) {
                                                 className="quant-btn"
                                                 onClick={() => decrementarQtd(it)}
                                             >
-                                                –
+                                                -
                                             </button>
 
                                             <span className="quantidade">
@@ -243,15 +274,15 @@ function Carrinho({ open, onClose }) {
                             onClick={() => setMetodo("pix")}
                         >
                             <p>Pix</p>
-                            <img src={pix} alt="Pix" />
+                            <img src={pixImg} alt="Pix" />
                         </button>
 
                         <button
                             className={`cartao ${metodo === "cartao" ? "selected" : ""}`}
                             onClick={() => setMetodo("cartao")}
                         >
-                            <p>Cartão</p>
-                            <img src={cartao} alt="Cartão" />
+                            <p>Cartao</p>
+                            <img src={cartao} alt="Cartao" />
                         </button>
 
                         <button
@@ -261,6 +292,40 @@ function Carrinho({ open, onClose }) {
                             <p>Boleto</p>
                             <img src={codigodebarras} alt="Boleto" />
                         </button>
+
+                        <div>
+                            <p className="enderecos-title">Endereco de entrega</p>
+
+                            <div className="enderecos-list">
+                                {addresses.length === 0 && (
+                                    <div className="endereco-empty">Nenhum endereco cadastrado.</div>
+                                )}
+                                {addresses.map((addr, idx) => {
+                                    const rua = addr.rua || addr.logradouro || addr.street || addr.endereco || addr.logradouroCompleto || '';
+                                    const numero = addr.numero || addr.number || addr.n || '';
+                                    const bairro = addr.bairro || addr.distrito || addr.bairro || '';
+                                    const cidade = addr.cidade || addr.city || addr.localidade || '';
+                                    const estado = addr.estado || addr.uf || '';
+                                    const cep = addr.cep || addr.zip || addr.postalCode || '';
+
+                                    const full = `${rua}${numero ? ', ' + numero : ''}${bairro ? ' - ' + bairro : ''}${cidade ? ' - ' + cidade : ''}${estado ? ' - ' + estado : ''}${cep ? ' - CEP: ' + cep : ''}`;
+
+                                    const keyId = addr.id || addr.idEndereco || idx;
+                                    const isSelected = selectedAddress && (selectedAddress.id === addr.id || selectedAddress.idEndereco === addr.idEndereco);
+
+                                    return (
+                                        <div
+                                            key={keyId}
+                                            className={`endereco-box ${isSelected ? 'selected' : ''}`}
+                                            onClick={() => setSelectedAddress(addr)}
+                                        >
+                                            <div className="endereco-text">{full}</div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
 
                         <button className="finalizar" onClick={finalizarCompra}>
                             Finalizar Pedido
