@@ -160,7 +160,7 @@ function Carrinho({ open, onClose }) {
             };
 
             await axios.post(
-                `http://localhost:8080/carrinhos/${idUsuario}/finalizar`,
+                `http://localhost:8080/carrinhos/${idUsuario}/finalizar/${selectedAddressId}`,
                 pedidoData
             );
 

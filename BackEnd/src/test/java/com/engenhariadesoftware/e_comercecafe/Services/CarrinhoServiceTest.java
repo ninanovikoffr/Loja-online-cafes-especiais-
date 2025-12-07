@@ -150,7 +150,7 @@ class CarrinhoServiceTest {
         carrinhoService.adicionarProduto(usuario.getIdUsuario(), produtoA.getIdProduto(), 2);
         carrinhoService.adicionarProduto(usuario.getIdUsuario(), produtoB.getIdProduto(), 3);
 
-        PedidoResponseDTO response = carrinhoService.finalizarCompra(usuario.getIdUsuario());
+        PedidoResponseDTO response = carrinhoService.finalizarCompra(usuario.getIdUsuario(), null);
 
         assertNotNull(response);
         assertEquals(170.0, response.getTotal(), 0.001);

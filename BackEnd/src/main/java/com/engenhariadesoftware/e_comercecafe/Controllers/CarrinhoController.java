@@ -133,10 +133,10 @@ public class CarrinhoController {
     return ResponseEntity.ok(itens);
 }
 
-    @PostMapping("/{idUsuario}/finalizar")
+    @PostMapping("/{idUsuario}/finalizar/{idEndereco}")
     @Operation(summary = "Finalizar compra", description = "Transforma o carrinho do usuário em um pedido.")
-    public ResponseEntity<PedidoResponseDTO> finalizarCompra(@PathVariable Long idUsuario) {
-        PedidoResponseDTO pedido = carrinhoService.finalizarCompra(idUsuario);
+    public ResponseEntity<PedidoResponseDTO> finalizarCompra(@PathVariable Long idUsuario, @PathVariable Long idEndereco) {
+        PedidoResponseDTO pedido = carrinhoService.finalizarCompra(idUsuario, idEndereco);
         return ResponseEntity.ok(pedido);
     }
 

@@ -154,7 +154,7 @@ public class CarrinhoService {
     }
 
     @Transactional
-    public PedidoResponseDTO finalizarCompra(Long idUsuario) {
+    public PedidoResponseDTO finalizarCompra(Long idUsuario, Long idEndereco) {
 
         UsuarioModel usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -166,6 +166,7 @@ public class CarrinhoService {
     }
 
     PedidoModel pedido = new PedidoModel();
+    pedido.setEndereco(usuario.getEnderecos().stream().filter(e -> e.getIdEndereco().equals(idEndereco)).findFirst().orElseThrow(() -> new RuntimeException("Endereço não encontrado no usuário")));
     pedido.setUsuario(usuario);
     pedido.setItens(new ArrayList<>());
 
@@ -194,7 +195,7 @@ public class CarrinhoService {
 }
 
     private PedidoResponseDTO toPedidoResponse(PedidoModel pedido) {
-        return PedidoResponseDTO.builder().idPedido(pedido.getIdPedido()).idUsuario(pedido.getUsuario().getIdUsuario()).total(pedido.getTotal()).itens(
+        return PedidoResponseDTO.builder().idPedido(pedido.getIdPedido()).idEndereco(pedido.getEndereco().getIdEndereco()).idUsuario(pedido.getUsuario().getIdUsuario()).total(pedido.getTotal()).itens(
                 pedido.getItens().stream()
                     .map(pi -> PedidoItemResponseDTO.builder()
                             .idProduto(pi.getProduto().getIdProduto())
