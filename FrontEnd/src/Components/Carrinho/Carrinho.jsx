@@ -36,7 +36,7 @@ function Carrinho({ open, onClose }) {
     const [items, setItems] = useState([]);
     const [metodo, setMetodo] = useState("pix");
     const [addresses, setAddresses] = useState([]);
-    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
 
     const idUsuario = localStorage.getItem("idUsuario");
     const token = localStorage.getItem("token");
@@ -81,6 +81,9 @@ function Carrinho({ open, onClose }) {
         if (open) carregarEnderecos();
     }, [open]);
 
+    // Gera um id consistente para o endereco, mesmo se backend usar chaves diferentes
+    const resolveAddressId = (addr, fallback) => addr.idEndereco ?? addr.id ?? fallback;
+
     // ============================================
     // LISTAR ENDERECOS DO USUARIO (FRONTEND)
     // ============================================
@@ -90,10 +93,10 @@ function Carrinho({ open, onClose }) {
             const dados = resp.data || [];
             setAddresses(dados);
 
-            // Se houver um endereco previamente selecionado, mantemos a selecao
-            if (dados.length && selectedAddress) {
-                const match = dados.find(d => d.id === selectedAddress.id || d.idEndereco === selectedAddress.idEndereco);
-                if (match) setSelectedAddress(match);
+            // Mantem selecao se endereco ainda existir
+            if (dados.length && selectedAddressId !== null) {
+                const exists = dados.some((d, index) => resolveAddressId(d, index) === selectedAddressId);
+                if (!exists) setSelectedAddressId(null);
             }
         } catch (err) {
             console.warn('Nao foi possivel carregar enderecos do backend:', err.message || err);
@@ -146,14 +149,14 @@ function Carrinho({ open, onClose }) {
     // FINALIZAR COMPRA
     // ============================================
     const finalizarCompra = async () => {
-        if (!selectedAddress) {
+        if (selectedAddressId === null) {
             alert("Por favor, selecione um endereco antes de finalizar o pedido.");
             return;
         }
 
         try {
             const pedidoData = {
-                enderecoId: selectedAddress.id,
+                enderecoId: selectedAddressId,
             };
 
             await axios.post(
@@ -310,14 +313,15 @@ function Carrinho({ open, onClose }) {
 
                                     const full = `${rua}${numero ? ', ' + numero : ''}${bairro ? ' - ' + bairro : ''}${cidade ? ' - ' + cidade : ''}${estado ? ' - ' + estado : ''}${cep ? ' - CEP: ' + cep : ''}`;
 
-                                    const keyId = addr.id || addr.idEndereco || idx;
-                                    const isSelected = selectedAddress && (selectedAddress.id === addr.id || selectedAddress.idEndereco === addr.idEndereco);
+                                    const addrId = resolveAddressId(addr, idx);
+                                    const keyId = addrId;
+                                    const isSelected = selectedAddressId === addrId;
 
                                     return (
                                         <div
                                             key={keyId}
                                             className={`endereco-box ${isSelected ? 'selected' : ''}`}
-                                            onClick={() => setSelectedAddress(addr)}
+                                            onClick={() => setSelectedAddressId(addrId)}
                                         >
                                             <div className="endereco-text">{full}</div>
                                         </div>
