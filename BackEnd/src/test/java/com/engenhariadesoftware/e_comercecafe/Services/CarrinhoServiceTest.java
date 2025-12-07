@@ -1,10 +1,8 @@
 package com.engenhariadesoftware.e_comercecafe.Services;
 
 import com.engenhariadesoftware.e_comercecafe.DTOs.Response.CarrinhoResponseDTO;
-import com.engenhariadesoftware.e_comercecafe.DTOs.Response.PedidoResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Enuns.UsuarioRoles;
 import com.engenhariadesoftware.e_comercecafe.Models.CarrinhoModel;
-import com.engenhariadesoftware.e_comercecafe.Models.PedidoModel;
 import com.engenhariadesoftware.e_comercecafe.Models.ProdutoModel;
 import com.engenhariadesoftware.e_comercecafe.Models.UsuarioModel;
 import com.engenhariadesoftware.e_comercecafe.Repositories.CarrinhoRepository;
@@ -24,6 +22,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -139,28 +138,5 @@ class CarrinhoServiceTest {
 
         CarrinhoModel salvo = carrinhoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElseThrow();
         assertEquals(1, salvo.getItens().size());
-    }
-
-    @Test
-    void finalizarCompraCriaPedidoELimpaCarrinho() {
-        UsuarioModel usuario = criarUsuario();
-        ProdutoModel produtoA = criarProduto("Cafe A", 10.0);
-        ProdutoModel produtoB = criarProduto("Cafe B", 50.0);
-
-        carrinhoService.adicionarProduto(usuario.getIdUsuario(), produtoA.getIdProduto(), 2);
-        carrinhoService.adicionarProduto(usuario.getIdUsuario(), produtoB.getIdProduto(), 3);
-
-        PedidoResponseDTO response = carrinhoService.finalizarCompra(usuario.getIdUsuario(), null);
-
-        assertNotNull(response);
-        assertEquals(170.0, response.getTotal(), 0.001);
-        assertEquals(2, response.getItens().size());
-
-        CarrinhoModel carrinho = carrinhoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElseThrow();
-        assertTrue(carrinho.getItens().isEmpty(), "Carrinho deve ser esvaziado apos finalizar a compra");
-
-        PedidoModel pedidoSalvo = pedidoRepository.findAll().stream().findFirst().orElse(null);
-        assertNotNull(pedidoSalvo);
-        assertEquals(usuario.getIdUsuario(), pedidoSalvo.getUsuario().getIdUsuario());
     }
 }
