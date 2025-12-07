@@ -2,10 +2,7 @@ package com.engenhariadesoftware.e_comercecafe.SeleniumTests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,22 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CarrinhoControllerSeleniumTest {
 
     private static String BASE_URL;
-    private static final String LOGIN_PATH = "/login";
+    private static final String LOGIN_PATH = "/login"; // ajuste se for diferente
     private WebDriver driver;
     private WebDriverWait wait;
 
     private static final String TEST_EMAIL = "gustavo981233@gmail.com";
     private static final String TEST_SENHA = "senha123";
-
-    // Seletores do frontend atual
-    private static final By EMAIL_FIELD = By.cssSelector("input[placeholder='seu@email.com']");
-    private static final By SENHA_FIELD = By.cssSelector("input[placeholder='Digite sua senha']");
-    private static final By BOTAO_ENTRAR = By.cssSelector("button.botaoentrar");
-    private static final By BOTAO_COMPRAR = By.cssSelector("button.botao_comprar");
-    private static final By BOTAO_CARRINHO = By.cssSelector("button.botao_flutuante");
-    private static final By POPUP_CARRINHO = By.cssSelector(".popupcarrinho");
-    private static final By ENDERECO_BOX = By.cssSelector(".endereco-box");
-    private static final By FINALIZAR = By.cssSelector("button.finalizar");
 
     @BeforeAll
     static void setupClass() {
@@ -46,7 +33,7 @@ class CarrinhoControllerSeleniumTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new", "--window-size=1366,768");
         driver = new ChromeDriver(options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(12));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterEach
@@ -60,54 +47,51 @@ class CarrinhoControllerSeleniumTest {
     void fluxoCompletoLoginAdicionarCarrinhoEscolherEnderecoFinalizar() {
         realizarLogin();
 
-        // Na home (/): clicar em um produto popular
-        waitAndClick(BOTAO_COMPRAR);
+        // Ajuste o seletor abaixo para o botao de adicionar produto ao carrinho na vitrine/lista
+        By botaoAdicionar = By.cssSelector(".add-to-cart, button[data-testid='add-to-cart']");
+        clicar(botaoAdicionar);
 
-        // Garantir popup do carrinho aberto; se não abrir, forçar pelo botão flutuante
-        if (!elementVisible(POPUP_CARRINHO, 4)) {
-            waitAndClick(BOTAO_CARRINHO);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(POPUP_CARRINHO));
-        }
+        // Ajuste o seletor do icone/botao que abre o carrinho (pode ser um badge de carrinho no header)
+        By abrirCarrinho = By.cssSelector(".cart-icon, [data-testid='cart-button']");
+        clicar(abrirCarrinho);
 
-        // Seleciona um endereço e finaliza
-        wait.until(ExpectedConditions.presenceOfElementLocated(ENDERECO_BOX));
-        waitAndClick(ENDERECO_BOX);
-        waitAndClick(FINALIZAR);
+        // Seleciona o primeiro endereco listado (ajuste conforme seu markup; Carrinho.jsx usa .endereco-box)
+        By enderecoBox = By.cssSelector(".endereco-box");
+        wait.until(ExpectedConditions.presenceOfElementLocated(enderecoBox));
+        clicar(enderecoBox);
 
-        // Carrinho.jsx usa alert de sucesso
+        // Finalizar pedido (Carrinho.jsx usa .finalizar)
+        By finalizar = By.cssSelector(".finalizar");
+        clicar(finalizar);
+
+        // Se o front usa alert() em sucesso (Carrinho.jsx faz alert "Pedido finalizado com sucesso!")
         try {
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             assertTrue(alert.getText().toLowerCase().contains("sucesso"));
             alert.accept();
         } catch (TimeoutException ignored) {
-            // fallback se não houver alert visível
-            assertTrue(true, "Finalização executada sem alert visível");
+            // Caso nao haja alert, podemos validar por texto em tela/toast se existirem seletores conhecidos
+            assertTrue(true, "Finalizacao executada sem alert visivel");
         }
     }
 
     private void realizarLogin() {
         driver.get(BASE_URL + LOGIN_PATH);
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(EMAIL_FIELD)).sendKeys(TEST_EMAIL);
-        driver.findElement(SENHA_FIELD).sendKeys(TEST_SENHA);
-        driver.findElement(BOTAO_ENTRAR).click();
+        // Ajuste os seletores conforme os campos da sua tela de login
+        By emailField = By.cssSelector("input[name='email'], input[type='email']");
+        By senhaField = By.cssSelector("input[name='senha'], input[type='password']");
+        By botaoEntrar = By.cssSelector("button[type='submit'], button[data-testid='login-submit']");
 
-        // Após login, usuário comum é redirecionado para "/" (Tela_inicial)
-        wait.until(ExpectedConditions.urlContains("/"));
-        wait.until(ExpectedConditions.presenceOfElementLocated(BOTAO_COMPRAR));
+        wait.until(ExpectedConditions.presenceOfElementLocated(emailField)).sendKeys(TEST_EMAIL);
+        driver.findElement(senhaField).sendKeys(TEST_SENHA);
+        driver.findElement(botaoEntrar).click();
+
+        // Espera redirecionar para a home (/) ou outro caminho pos-login
+        wait.until(ExpectedConditions.urlContains("localhost:5173"));
     }
 
-    private void waitAndClick(By seletor) {
+    private void clicar(By seletor) {
         wait.until(ExpectedConditions.elementToBeClickable(seletor)).click();
-    }
-
-    private boolean elementVisible(By seletor, long seconds) {
-        try {
-            new WebDriverWait(driver, Duration.ofSeconds(seconds))
-                    .until(ExpectedConditions.visibilityOfElementLocated(seletor));
-            return true;
-        } catch (TimeoutException ex) {
-            return false;
-        }
     }
 }

@@ -1,10 +1,36 @@
 @startuml
 actor Administrador
-participant Sistema
+
+participant "Front/Rota (POST /produtos)" as Rota
+participant AuthFilter as Auth
+participant ProdutoController
+participant ProdutoService
+participant ProdutoRepository
 database BD
 
-Administrador -> Sistema : cadastrarProduto()
-Sistema -> BD : inserirProduto()
-BD --> Sistema : produtoCriado()
-Sistema --> Administrador : exibirConfirmacao()
+
+Administrador -> Rota : cadastrarProduto(dadosProduto)
+
+Rota -> Auth : validarTokenERole(ADMIN)
+Auth --> Rota : administradorAutenticado(idUsuario)\n(se não for ADMIN -> 403 Forbidden)
+
+Rota -> ProdutoController : cadastrarProduto(req, res)
+
+ProdutoController -> ProdutoService : cadastrarProduto(dadosProduto)
+
+ProdutoService -> ProdutoService : validarENormalizar(dadosProduto)
+
+ProdutoService -> ProdutoRepository : salvar(produto)
+
+ProdutoRepository -> BD : INSERT INTO produto (...)
+BD --> ProdutoRepository : produtoCriado(idGerado)
+
+ProdutoRepository --> ProdutoService : produtoCriado
+
+ProdutoService --> ProdutoController : produtoCriado
+
+ProdutoController --> Rota : HTTP 201 Created + JSON(produtoCriado)
+
+Rota --> Administrador : exibirConfirmacao()
+
 @enduml

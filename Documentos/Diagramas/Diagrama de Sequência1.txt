@@ -1,10 +1,28 @@
 @startuml
 actor Visitante
-participant Sistema
+
+participant "Rota (POST /usuarios)" as Rota
+participant UsuarioController
+participant UsuarioService
+participant UsuarioModel
 database BD
 
-Visitante -> Sistema : registrar()
-Sistema -> BD : adicionarUsuario()
-BD --> Sistema : clienteCriado()
-Sistema --> Visitante : exibirSucesso()
+Visitante -> Rota : Envia dados do cadastro (JSON)
+
+Rota -> UsuarioController : registrar(req, res)
+
+UsuarioController -> UsuarioService : registrarUsuario(dados)
+
+UsuarioService -> UsuarioModel : create(dados)
+UsuarioModel --> UsuarioService : usuario (objeto)
+
+UsuarioService -> BD : INSERT INTO usuario (...)
+BD --> UsuarioService : confirmação inserção
+
+UsuarioService --> UsuarioController : usuarioCriado
+
+UsuarioController --> Rota : HTTP 201 + JSON
+
+Rota --> Visitante : exibirSucesso()
+
 @enduml

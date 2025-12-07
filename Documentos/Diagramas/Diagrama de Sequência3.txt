@@ -1,13 +1,45 @@
 @startuml
 actor Cliente
-participant Sistema
-participant Carrinho
+
+participant "Front/Rota (POST /carrinho/itens)" as Rota
+participant CarrinhoController
+participant ProdutoService
+participant ProdutoRepository
+participant CarrinhoService
+participant CarrinhoRepository
 database BD
 
-Cliente -> Sistema : selecionarProduto()
-Sistema -> BD : getproduto()
-BD --> Sistema : produto()
+Cliente -> Rota : selecionarProduto(produtoId, quantidade)
 
-Sistema -> Carrinho : adicionarItem(produto)
-Carrinho --> Cliente : carrinhoAtualizado()
+Rota -> CarrinhoController : adicionarItem(req, res)
+
+CarrinhoController -> ProdutoService : buscarProduto(produtoId)
+
+ProdutoService -> ProdutoRepository : findById(produtoId)
+
+ProdutoRepository -> BD : SELECT * FROM produto WHERE id = ?
+BD --> ProdutoRepository : dadosProduto
+
+ProdutoRepository --> ProdutoService : produto
+ProdutoService --> CarrinhoController : produto
+
+CarrinhoController -> CarrinhoService : adicionarItem(clienteId, produto, quantidade)
+
+CarrinhoService -> CarrinhoRepository : obterOuCriarPorCliente(clienteId)
+CarrinhoRepository -> BD : SELECT * FROM carrinho WHERE cliente_id = ?
+BD --> CarrinhoRepository : carrinho (ou null)
+CarrinhoRepository --> CarrinhoService : carrinho
+
+CarrinhoService -> CarrinhoService : adicionarLinha(produto, quantidade)
+
+CarrinhoService -> CarrinhoRepository : salvar(carrinho)
+CarrinhoRepository -> BD : INSERT/UPDATE carrinho e itens
+BD --> CarrinhoRepository : confirmação
+CarrinhoRepository --> CarrinhoService : carrinhoAtualizado
+
+CarrinhoService --> CarrinhoController : carrinhoAtualizado
+
+CarrinhoController --> Rota : HTTP 200 + JSON(carrinhoAtualizado)
+
+Rota --> Cliente : carrinhoAtualizado()
 @enduml

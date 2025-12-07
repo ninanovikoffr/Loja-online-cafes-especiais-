@@ -1,10 +1,40 @@
 @startuml
-actor Cliente
-participant Sistema
+actor Admin
+
+participant "Front/Rota (PATCH /me/update)" as Rota
+participant AuthFilter as Auth
+participant UsuarioController
+participant UsuarioService
+participant UsuarioRepository
 database BD
 
-Cliente -> Sistema : atualizarDadosPerfil()
-Sistema -> BD : atualizarCliente()
-BD --> Sistema : confirmacao()
-Sistema --> Cliente : perfilAtualizado()
+Admin -> Rota : PATCH /me/update\n{ nome?, cpf?, ... }
+
+Rota -> Auth : extrairUsuarioAutenticado(token)
+Auth -> Auth : validarTokenERole(ADMIN)
+Auth --> Rota : usuarioAutenticado(idUsuario)\n(se não for ADMIN -> 403 Forbidden)
+
+Rota -> UsuarioController : patchMe(usuarioAutenticado, dadosParciais)
+
+UsuarioController -> UsuarioService : atualizarParcialmente(idUsuario, dadosParciais)
+
+UsuarioService -> UsuarioRepository : findById(idUsuario)
+UsuarioRepository -> BD : SELECT * FROM usuario WHERE id = ?
+BD --> UsuarioRepository : dadosUsuario
+UsuarioRepository --> UsuarioService : usuarioAtual
+
+UsuarioService -> UsuarioService : aplicarPatch(camposNaoNulos)
+
+
+UsuarioService -> UsuarioRepository : salvar(usuarioAtualizado)
+UsuarioRepository -> BD : UPDATE usuario SET camposAlterados WHERE id = ?
+BD --> UsuarioRepository : confirmacao()
+UsuarioRepository --> UsuarioService : usuarioAtualizado
+
+UsuarioService --> UsuarioController : usuarioAtualizado
+
+UsuarioController --> Rota : HTTP 200 OK + JSON(usuarioAtualizado)
+
+Rota --> Admin : perfilAtualizado()
+
 @enduml

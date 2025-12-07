@@ -1,10 +1,39 @@
 @startuml
+
 actor Administrador
-participant Sistema
+
+
+participant "Front/Rota (DELETE /produtos/{id})" as Rota
+participant AuthFilter as Auth
+participant ProdutoController
+participant ProdutoService
+participant ProdutoRepository
 database BD
 
-Administrador -> Sistema : getpedido(id)
-Sistema -> BD : buscarPedido(id)
-BD --> Sistema : dadosPedido()
-Sistema --> Administrador : exibirPedido()
+
+Administrador -> Rota : deletarProduto(idProduto)
+
+
+Rota -> Auth : validarTokenERole(ADMIN)
+Auth --> Rota : adminAutenticado(idAdmin)\n(se não for ADMIN -> 403 Forbidden)
+
+
+Rota -> ProdutoController : deletarProduto(idProduto)
+
+
+ProdutoController -> ProdutoService : deletarProduto(idProduto)
+
+ProdutoService -> ProdutoRepository : findById(idProduto)
+ProdutoRepository -> BD : SELECT * FROM produto WHERE id = ?
+BD --> ProdutoRepository : dadosProduto (ou vazio)
+ProdutoRepository --> ProdutoService : produtoOptional
+
+ProdutoService -> ProdutoRepository : deletar(produto)
+ProdutoRepository -> BD : DELETE FROM produto WHERE id = ?
+BD --> ProdutoRepository : confirmacao()
+ProdutoRepository --> ProdutoService : ok
+ProdutoService --> ProdutoController : sucesso
+ProdutoController --> Rota : HTTP 201 Created
+Rota --> Administrador : exibirConfirmacao()
+
 @enduml

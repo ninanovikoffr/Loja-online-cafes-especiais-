@@ -1,10 +1,42 @@
 @startuml
 actor Cliente
-participant Sistema
+
+participant "Front/Rota (POST /Finalizarcompra)" as Rota
+participant CarrinhoController
+participant PedidoService
+participant CarrinhoService
+participant PedidoRepository
 database BD
 
-Cliente -> Sistema : gerarpedido()
-Sistema -> BD : salvarpedido()
-BD --> Sistema : pedidosalvo()
-Sistema --> Cliente : confirmar()
+Cliente -> Rota : gerarpedido(clienteId, enderecoId, formaPagamento)
+
+Rota -> CarrinhoController : Finalizarcompra(req, res)
+
+
+CarrinhoController -> PedidoService : gerarPedido(clienteId, enderecoId, formaPagamento)
+
+CarrinhoController -> CarrinhoService : obterCarrinho(clienteId)
+CarrinhoService -> BD : SELECT * FROM carrinho + itens WHERE cliente_id = ?
+BD --> CarrinhoService : dadosCarrinho
+CarrinhoService --> PedidoService : carrinho
+
+PedidoService -> PedidoService : montarPedido(carrinho, enderecoId, formaPagamento)
+
+PedidoService -> PedidoRepository : salvar(pedido)
+
+PedidoRepository -> BD : INSERT INTO pedidos (...)
+BD --> PedidoRepository : pedidoSalvo (id gerado)
+
+PedidoRepository --> PedidoService : pedidoSalvo
+
+PedidoService -> CarrinhoService : limparCarrinho(clienteId)
+CarrinhoService -> BD : DELETE FROM itens_carrinho WHERE cliente_id = ?
+BD --> CarrinhoService : confirmação
+
+PedidoService --> CarrinhoController : pedidoSalvo
+
+CarrinhoController --> Rota : HTTP 201 Created + JSON(pedidoSalvo)
+
+Rota --> Cliente : confirmar(pedidoSalvo)
+
 @enduml
