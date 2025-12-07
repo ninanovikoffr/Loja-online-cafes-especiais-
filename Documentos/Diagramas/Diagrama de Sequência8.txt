@@ -1,17 +1,30 @@
 @startuml
+
 actor Cliente
-participant Carrinho
-participant Sistema
+
+participant "Front/Rota (GET /produtos)" as Rota
+participant ProdutoController
+participant ProdutoService
+participant ProdutoRepository
 database BD
 
-Cliente -> Carrinho : revisarCarrinho()
-Carrinho --> Cliente : itensOK()
+Cliente -> Rota : listarProdutos()
 
-Cliente -> Sistema : selecionarFormaPagamento()
-Sistema -> Sistema : validarPagamento()
+Rota -> ProdutoController : getProdutos(req, res)
 
-Sistema -> BD : criarPedido()
-BD --> Sistema : pedidoCriado()
+ProdutoController -> ProdutoService : listarTodos()
 
-Sistema --> Cliente : compraConfirmada()
+ProdutoService -> ProdutoRepository : findAll()
+
+ProdutoRepository -> BD : SELECT * FROM produto
+BD --> ProdutoRepository : listaProdutos
+
+ProdutoRepository --> ProdutoService : listaProdutos
+
+ProdutoService --> ProdutoController : listaProdutos
+
+ProdutoController --> Rota : HTTP 200 OK + JSON(listaProdutos)
+
+Rota --> Cliente : exibirProdutos()
+
 @enduml

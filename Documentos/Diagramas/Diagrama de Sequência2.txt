@@ -1,10 +1,31 @@
 @startuml
 actor Visitante
-participant Sistema
+
+participant "Rota (POST /login)" as Rota
+participant AuthController
+participant AuthService
+participant UsuarioRepository
 database BD
 
-Visitante -> Sistema : registrar()
-Sistema -> BD : buscarClientePorEmail()
-BD --> Sistema : dadosCliente
-Sistema -> Visitante : autenticar()
+Visitante -> Rota : enviarCredenciais(email, senha)
+
+Rota -> AuthController : autenticar(req, res)
+
+AuthController -> AuthService : autenticar(email, senha)
+
+AuthService -> UsuarioRepository : buscarPorEmail(email)
+
+UsuarioRepository -> BD : SELECT * FROM clientes WHERE email = ?
+BD --> UsuarioRepository : dadosCliente
+
+UsuarioRepository --> AuthService : cliente
+
+AuthService -> AuthService : validarSenha(cliente, senha)
+
+AuthService --> AuthController : sucesso/falha autenticação
+
+AuthController --> Rota : HTTP 200/401 + JSON
+
+Rota --> Visitante : autenticar()
+
 @enduml
