@@ -1,18 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./Navbar.css";
 
 import logo from "../../assets/Logo.svg";
 import perfil_icon from "../../assets/Perfil_icon.svg";      
 import perfil_admin from "../../assets/Foto_admin.svg";      
 
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch, FaArrowRight } from "react-icons/fa";
 
 export function Navbar() {
   const navigate = useNavigate();
 
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [nomeUsuario, setNomeUsuario] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,7 +29,31 @@ export function Navbar() {
 
     setIsLogged(!!token);
     setIsAdmin(roles.includes("ADMIN"));
+    
+      if (token) {
+        const nomeArmazenado = localStorage.getItem("nomeUsuario");
+        if (nomeArmazenado) {
+          setNomeUsuario(nomeArmazenado);
+        } else {
+          const idUsuario = localStorage.getItem("idUsuario");
+          if (idUsuario) {
+            fetchNomeUsuario(idUsuario);
+          }
+        }
+      }
   }, []);
+
+  const fetchNomeUsuario = async (idUsuario) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/usuario/${idUsuario}`);
+      const nome = response.data.nome;
+      setNomeUsuario(nome);
+      localStorage.setItem("nomeUsuario", nome);
+    } catch (error) {
+      console.error("Erro ao buscar nome do usuário:", error);
+      setNomeUsuario("Usuário");
+    }
+  };
 
   const handleClick = () => {
     if (!isLogged) {
@@ -38,6 +64,25 @@ export function Navbar() {
     if (isAdmin) {
       navigate("/admin");
       return;
+    }
+  };
+
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Tem certeza que deseja sair?");
+    if (!confirmLogout) return;
+
+    try {
+      await axios.post('http://localhost:8080/auth/logout');
+    } catch (error) {
+      console.error("Erro ao fazer logout no backend:", error);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('idUsuario');
+      localStorage.removeItem('nomeUsuario');
+      try { delete axios.defaults.headers.common['Authorization']; } catch (e) { }
+      navigate('/');
+      window.location.reload();
     }
   };
 
@@ -71,9 +116,18 @@ export function Navbar() {
         )}
 
         {isLogged && (
-          <button className="navbar__login">
-            Minha Conta
-          </button>
+          <div className="navbar__user-container">
+            <button className="navbar__login">
+              {nomeUsuario || "Minha Conta"}
+            </button>
+            <button 
+              className="navbar__logout-btn" 
+              onClick={handleLogout}
+              title="Sair"
+            >
+              Sair <FaArrowRight />
+            </button>
+          </div>
         )}
       </div>
 

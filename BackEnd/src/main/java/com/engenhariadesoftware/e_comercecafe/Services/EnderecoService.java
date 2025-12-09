@@ -69,6 +69,73 @@ public class EnderecoService {
     return toResponse(enderecoRepository.save(model));
     }
 
+    public EnderecoResponseDTO atualizar(Long id, EnderecoRequestDTO dto) {
+        EnderecoModel endereco = enderecoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
+
+        // Atualiza CEP apenas se fornecido e diferente
+        if (dto.getCep() != null && !dto.getCep().isEmpty()) {
+            ViaCepResponseDTO viaCepResponseDTO = viaCepService.consultarCep(dto.getCep());
+            if (viaCepResponseDTO == null) {
+                throw new RuntimeException("CEP inválido ou não encontrado");
+            }
+            endereco.setCep(new CEP(dto.getCep()));
+            endereco.setBairro(viaCepResponseDTO.getBairro());
+            endereco.setCidade(viaCepResponseDTO.getLocalidade());
+            endereco.setEstado(viaCepResponseDTO.getUf());
+        }
+
+        // Atualiza rua se fornecida
+        if (dto.getRua() != null && !dto.getRua().isEmpty()) {
+            endereco.setRua(dto.getRua());
+        }
+
+        // Atualiza número se fornecido
+        if (dto.getNumero() != null && !dto.getNumero().isEmpty()) {
+            endereco.setNumero(dto.getNumero());
+        }
+
+        // Atualiza bairro se fornecido (e CEP não foi fornecido)
+        if (dto.getBairro() != null && !dto.getBairro().isEmpty() && (dto.getCep() == null || dto.getCep().isEmpty())) {
+            endereco.setBairro(dto.getBairro());
+        }
+
+        // Atualiza cidade se fornecida (e CEP não foi fornecido)
+        if (dto.getCidade() != null && !dto.getCidade().isEmpty() && (dto.getCep() == null || dto.getCep().isEmpty())) {
+            endereco.setCidade(dto.getCidade());
+        }
+
+        // Atualiza estado se fornecido (e CEP não foi fornecido)
+        if (dto.getEstado() != null && !dto.getEstado().isEmpty() && (dto.getCep() == null || dto.getCep().isEmpty())) {
+            endereco.setEstado(dto.getEstado());
+        }
+
+        // Atualiza complemento se fornecido
+        if (dto.getComplemento() != null) {
+            endereco.setComplemento(dto.getComplemento());
+        }
+
+        EnderecoModel salvo = enderecoRepository.save(endereco);
+        return toResponse(salvo);
+    }
+
+    public boolean pertenceAoUsuario(Long idEndereco) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        UsuarioModel usuario = usuarioRepository.findByEmail_Value(email);
+
+        if (usuario == null) {
+            return false;
+        }
+
+        EnderecoModel endereco = enderecoRepository.findById(idEndereco).orElse(null);
+        if (endereco == null) {
+            return false;
+        }
+
+        return endereco.getUsuario().getIdUsuario().equals(usuario.getIdUsuario());
+    }
+
 
      public void deletar(Long id) {
         if (!enderecoRepository.existsById(id)) {

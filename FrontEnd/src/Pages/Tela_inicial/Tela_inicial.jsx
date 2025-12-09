@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '../../Components/Navbar/Navbar';
 import Carrinho from '../../Components/Carrinho/Carrinho';
 import axios from "axios";
+import { FaSignOutAlt } from 'react-icons/fa';
 
 
 import fundo from "../../assets/Fundo.svg";
@@ -10,8 +11,46 @@ import fundo from "../../assets/Fundo.svg";
 import "./Tela_inicial.css";
 
 function Tela_inicial() {
+  const navigate = useNavigate();
   const [cartOpen, setCartOpen] = useState(false);
+  const [produtos, setProdutos] = useState([]);
   const idUsuario = localStorage.getItem("idUsuario");
+
+  // Buscar produtos do banco
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/produtos');
+        setProdutos(Array.isArray(res.data) ? res.data : []);
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+        setProdutos([]);
+      }
+    };
+
+    fetchProdutos();
+  }, []);
+  
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Tem certeza que deseja sair?");
+    if (!confirmLogout) return;
+
+    try {
+      // Chama o endpoint de logout no backend
+      await axios.post('http://localhost:8080/auth/logout');
+    } catch (error) {
+      console.error("Erro ao fazer logout no backend:", error);
+    } finally {
+      // Remove dados do localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('idUsuario');
+      localStorage.removeItem('nomeUsuario');
+      try { delete axios.defaults.headers.common['Authorization']; } catch (e) { }
+      navigate('/');
+      window.location.reload();
+    }
+  };
   
   const addToCart = async (idProduto) => {
     try {
@@ -32,6 +71,12 @@ function Tela_inicial() {
   return (
     <div className="tela_inicial">
      <Navbar />
+     
+     <div className="logout-container">
+       <button className="logout-btn" onClick={handleLogout}>
+         <FaSignOutAlt /> Sair
+       </button>
+     </div>
 
       <div className="fundo_titulo">
         <img src={fundo} className="fundo_imagem" alt="Fundo de café" />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaEye, FaTrash, FaEdit, FaArrowRight, FaPlusCircle } from 'react-icons/fa';
+import { FaEye, FaTrash, FaEdit, FaArrowRight, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import { Navbar } from '../../Components/Navbar/Navbar';
 import axios from 'axios';
 import perfil_admin from "../../assets/Foto_admin.svg";
@@ -34,7 +34,10 @@ function Tela_admin() {
     const [usuario, setUsuario] = useState(null);
     const [nomeUsuario, setNomeUsuario] = useState("");
     const [emailUsuario, setEmailUsuario] = useState("");
-    const [enderecoUsuario, setEnderecoUsuario] = useState("");
+    const [enderecos, setEnderecos] = useState([]);
+    const [enderecosEdicao, setEnderecosEdicao] = useState({});
+    const [modalAberto, setModalAberto] = useState(false);
+    const [enderecoEmEdicao, setEnderecoEmEdicao] = useState(null);
 
  
     const formatarPreco = (value) => {
@@ -56,24 +59,42 @@ function Tela_admin() {
         e.preventDefault();
 
         const precoNumero = preco ? preco.replace('R$', '').replace('.', '').replace(',', '.') : null;
-        const body = {
-            nome,
-            descricao,
-            preco: precoNumero ? parseFloat(precoNumero) : null,
-            imagemUrl: null 
-        };
+        
+        const token = localStorage.getItem('token');
+        const roleRaw = localStorage.getItem('role');
+        let roles = null;
+        try { roles = roleRaw ? JSON.parse(roleRaw) : null; } catch (e) { roles = roleRaw; }
+        const isAdmin = roles === 'ADMIN' || (Array.isArray(roles) && roles.includes('ADMIN')) || roles === 'admin';
+
+        if (!isAdmin) {
+            alert('Ação restrita: é necessário usuário ADMIN para criar produtos.');
+            return;
+        }
 
         try {
-            const token = localStorage.getItem('token');
-            const roleRaw = localStorage.getItem('role');
-            let roles = null;
-            try { roles = roleRaw ? JSON.parse(roleRaw) : null; } catch (e) { roles = roleRaw; }
-            const isAdmin = roles === 'ADMIN' || (Array.isArray(roles) && roles.includes('ADMIN')) || roles === 'admin';
+            let imagemUrl = null;
 
-            if (!isAdmin) {
-                alert('Ação restrita: é necessário usuário ADMIN para criar produtos.');
-                return;
+            // Se houver imagem selecionada, faz upload
+            if (imagem) {
+                const formData = new FormData();
+                formData.append('file', imagem);
+
+                const uploadConfig = { 
+                    headers: { 
+                        Authorization: token ? `Bearer ${token}` : ''
+                        // NÃO defina Content-Type manualmente para FormData!
+                    } 
+                };
+                const uploadRes = await axios.post('/produtos/upload-imagem', formData, uploadConfig);
+                imagemUrl = uploadRes.data.imagemUrl || uploadRes.data.url;
             }
+
+            const body = {
+                nome,
+                descricao,
+                preco: precoNumero ? parseFloat(precoNumero) : null,
+                imagemUrl: imagemUrl
+            };
 
             const config = { headers: { Authorization: token ? `Bearer ${token}` : '' } };
 
@@ -180,10 +201,138 @@ function Tela_admin() {
             setUsuario(res.data);
             setNomeUsuario(res.data.nome || "");
             setEmailUsuario(res.data.email || "");
-            setEnderecoUsuario("");
         } catch (err) {
             console.error("Erro ao carregar usuário:", err);
             alert("Erro ao carregar dados do usuário.");
+        }
+    };
+
+    const fetchEnderecos = async () => {
+        try {
+            const idUsuario = localStorage.getItem("idUsuario");
+            if (!idUsuario) {
+                setEnderecos([]);
+                setEnderecosEdicao({});
+                return;
+            }
+
+            const resp = await axios.get(`/enderecos/listar/${idUsuario}`);
+            const lista = Array.isArray(resp.data) ? resp.data : [];
+            setEnderecos(lista);
+
+            const mapaEdicao = {};
+            lista.forEach((end) => {
+                mapaEdicao[end.idEndereco] = {
+                    rua: end.rua || end.logradouro || end.street || end.endereco || "",
+                    numero: end.numero || end.number || "",
+                    bairro: end.bairro || end.distrito || "",
+                    cidade: end.cidade || end.city || end.localidade || "",
+                    estado: end.estado || end.uf || "",
+                    cep: end.cep || "",
+                    complemento: end.complemento || ""
+                };
+            });
+            setEnderecosEdicao(mapaEdicao);
+        } catch (err) {
+            console.error("Erro ao carregar enderecos:", err);
+            setEnderecos([]);
+            setEnderecosEdicao({});
+        }
+    };
+
+    const handleEnderecoChange = (id, campo, valor) => {
+        setEnderecosEdicao((prev) => ({
+            ...prev,
+            [id]: {
+                ...(prev[id] || {}),
+                [campo]: valor
+            }
+        }));
+    };
+
+    const abrirModalEdicao = async (endereco) => {
+        try {
+            // Busca os dados completos do endereço da API
+            const response = await axios.get(`/enderecos/${endereco.idEndereco}`);
+            const enderecoCompleto = response.data;
+            
+            // Atualiza o mapa de edição com os dados completos
+            setEnderecosEdicao((prev) => ({
+                ...prev,
+                [endereco.idEndereco]: {
+                    rua: enderecoCompleto.rua || enderecoCompleto.logradouro || enderecoCompleto.street || enderecoCompleto.endereco || "",
+                    numero: enderecoCompleto.numero || enderecoCompleto.number || "",
+                    bairro: enderecoCompleto.bairro || enderecoCompleto.distrito || "",
+                    cidade: enderecoCompleto.cidade || enderecoCompleto.city || enderecoCompleto.localidade || "",
+                    estado: enderecoCompleto.estado || enderecoCompleto.uf || "",
+                    cep: enderecoCompleto.cep || "",
+                    complemento: enderecoCompleto.complemento || ""
+                }
+            }));
+            
+            setEnderecoEmEdicao(enderecoCompleto);
+            setModalAberto(true);
+        } catch (err) {
+            console.error("Erro ao carregar endereço:", err);
+            // Fallback: usa os dados do endereço passado
+            setEnderecoEmEdicao(endereco);
+            setModalAberto(true);
+        }
+    };
+
+    const fecharModal = () => {
+        setModalAberto(false);
+        setEnderecoEmEdicao(null);
+    };
+
+    const salvarEndereco = async (id) => {
+        const dados = enderecosEdicao[id] || {};
+        if (!dados.cep || !dados.numero || !dados.rua || !dados.bairro || !dados.estado) {
+            alert("Informe rua, número, bairro, estado e CEP para salvar.");
+            return;
+        }
+
+        try {
+            // Encontra o endereço original para comparar
+            const enderecoOriginal = enderecos.find(e => e.idEndereco === id);
+            
+            // Cria um objeto com apenas os dados que foram alterados
+            const dadosAlterados = {};
+            
+            // Compara cada campo e adiciona ao objeto se foi alterado
+            const camposParaVerificar = ['rua', 'numero', 'bairro', 'cidade', 'estado', 'cep', 'complemento'];
+            
+            camposParaVerificar.forEach(campo => {
+                const valorOriginal = enderecoOriginal?.[campo] || enderecoOriginal?.[
+                    campo === 'rua' ? 'logradouro' : 
+                    campo === 'bairro' ? 'distrito' :
+                    campo === 'cidade' ? 'localidade' :
+                    campo === 'estado' ? 'uf' : campo
+                ] || "";
+                
+                const valorAtual = dados[campo] || "";
+                
+                // Se o valor foi alterado, adiciona ao objeto de atualização
+                if (valorOriginal !== valorAtual) {
+                    dadosAlterados[campo] = valorAtual;
+                }
+            });
+            
+            // Se nenhum campo foi alterado, avisa o usuário
+            if (Object.keys(dadosAlterados).length === 0) {
+                alert("Nenhuma alteração foi detectada.");
+                return;
+            }
+            
+            // Envia apenas os dados que foram alterados
+            await axios.patch(`/enderecos/atualizar/${id}`, dadosAlterados);
+
+            alert("Endereço atualizado com sucesso!");
+            fecharModal();
+            fetchEnderecos();
+        } catch (err) {
+            console.error("Erro ao atualizar endereço:", err);
+            alert("Erro ao atualizar endereço.");
         }
     };
 
@@ -198,6 +347,9 @@ function Tela_admin() {
 
             alert("Dados atualizados com sucesso!");
 
+            // Atualiza o nome no localStorage para refletir na Navbar
+            localStorage.setItem("nomeUsuario", nomeUsuario);
+
             fetchUsuario();
         } catch (err) {
             console.error("Erro ao atualizar usuário:", err);
@@ -205,6 +357,12 @@ function Tela_admin() {
         }
     };
 
+    useEffect(() => {
+        if (modalAberto && enderecoEmEdicao) {
+            console.log("Modal aberto com endereço:", enderecoEmEdicao);
+            console.log("Dados no state:", enderecosEdicao[enderecoEmEdicao.idEndereco]);
+        }
+    }, [modalAberto, enderecoEmEdicao, enderecosEdicao]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -230,7 +388,28 @@ function Tela_admin() {
         fetchProdutos();
         fetchPedidos();
         fetchUsuario();
+        fetchEnderecos();
     }, []);
+
+    const handleLogoutAdmin = async () => {
+        const confirmLogout = window.confirm("Tem certeza que deseja sair?");
+        if (!confirmLogout) return;
+
+        try {
+            // Chama o endpoint de logout no backend
+            await axios.post('http://localhost:8080/auth/logout');
+        } catch (error) {
+            console.error("Erro ao fazer logout no backend:", error);
+        } finally {
+            // Remove dados do localStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('nomeUsuario');
+            try { delete axios.defaults.headers.common['Authorization']; } catch (e) { }
+            navigate('/');
+            window.location.reload();
+        }
+    };
 
     return (
         <div className="tela_admin">
@@ -238,16 +417,7 @@ function Tela_admin() {
 
             <div className="tituloadmin">
                 <p className="olaAdmin">Olá Admin!</p>
-                <button className="sairbotao" onClick={() => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('role');
-                    try{ delete axios.defaults.headers.common['Authorization']; }catch(e){}
-                    navigate('/');
-                }}>
-                    Sair <FaArrowRight />
-                </button>
-            </div>
-
+            </div>            
             <div className="colunas">
                 <div className='coluna'>
                     <div className='secaoAdmin'>
@@ -344,27 +514,150 @@ function Tela_admin() {
                     <div className='secaoAdmin'>
                         <div>Editar Perfil</div>
                         <hr className="linhaHorizontal"/>
-                        <img className="perfilImagem" src={perfil_admin} alt="perfil"/>
-                        <form onSubmit={(e) => { e.preventDefault(); atualizarUsuario(); }}>
-                            <label>Nome</label>
-                            <input type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)}/>
+                        <div className='secaoRolagem'>
+                            <img className="perfilImagem" src={perfil_admin} alt="perfil"/>
+                            <form onSubmit={(e) => { e.preventDefault(); atualizarUsuario(); }}>
+                                <label>Nome</label>
+                                <input type="text" value={nomeUsuario} onChange={(e) => setNomeUsuario(e.target.value)}/>
 
-                            <label>E-mail</label>
-                            <input type="email" value={emailUsuario} onChange={(e) => setEmailUsuario(e.target.value)}/>
-                            <a className= "links" href="redefinir_senha">Redefinir senha</a>
+                                <label>E-mail</label>
+                                <input type="email" value={emailUsuario} onChange={(e) => setEmailUsuario(e.target.value)}/>
+                                <a className= "links" href="redefinir_senha">Redefinir senha</a>
 
-                            <label>Endereços</label>
-                            <textarea value={enderecoUsuario}onChange={(e) => setEnderecoUsuario(e.target.value)}/>
-                            <button className='botaoSalvar' type="submit">Salvar</button>
-                            <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
-                        </form>
+                                <label>Endereços</label>
+                                <div className="enderecosList">
+                                    {enderecos.length === 0 && (
+                                        <div className="mensagens">Nenhum endereço cadastrado.</div>
+                                    )}
+                                    {enderecos.map((addr, idx) => {
+                                        const rua = addr.rua || addr.logradouro || addr.street || addr.endereco || '';
+                                        const numero = addr.numero || addr.number || '';
+                                        const bairro = addr.bairro || addr.distrito || '';
+                                        const cidade = addr.cidade || addr.city || addr.localidade || '';
+                                        const estado = addr.estado || addr.uf || '';
+                                        const cep = addr.cep || '';
 
+                                        const full = `${rua}${numero ? ', ' + numero : ''}${bairro ? ' - ' + bairro : ''}${cidade ? ' - ' + cidade : ''}${estado ? ' - ' + estado : ''}${cep ? ' - CEP: ' + cep : ''}`;
 
+                                        return (
+                                            <div key={idx} className="endereco-box-admin">
+                                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                                    <span>{full || 'Endereço sem informações'}</span>
+                                                    <FaEdit 
+                                                        onClick={() => abrirModalEdicao(addr)} 
+                                                        style={{cursor: 'pointer', color: '#4C351F'}}
+                                                        size="1.8em"
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <button className='botaoSalvar' type="submit">Salvar</button>
+                                <a className= "links" style={{textAlign: 'center'}} href="redefinir_senha">Deletar conta</a>                           
+                            </form>
+                        </div>
                     </div>
                 </div>
 
 
             </div>
+
+            {/* Modal para editar endereço */}
+            {modalAberto && enderecoEmEdicao && (
+                <div className="modalOverlay">
+                    <div className="modalContent">
+                        <div className="modalHeader">
+                            <h2>Editar Endereço</h2>
+                            <FaTimes onClick={fecharModal} style={{cursor: 'pointer', fontSize: '24px'}} />
+                        </div>
+                        
+                        <div className="modalBody">
+                            <div className="modalRow">
+                                <div className="modalCol">
+                                    <label>Rua</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.rua || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'rua', e.target.value)}
+                                        placeholder="Digite a rua"
+                                    />
+                                </div>
+
+                                <div className="modalCol modalColSmall">
+                                    <label>Número</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.numero || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'numero', e.target.value)}
+                                        placeholder="Número"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="modalRow">
+                                <div className="modalCol">
+                                    <label>Bairro</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.bairro || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'bairro', e.target.value)}
+                                        placeholder="Digite o bairro"
+                                    />
+                                </div>
+
+                                <div className="modalCol">
+                                    <label>Cidade</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.cidade || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'cidade', e.target.value)}
+                                        placeholder="Digite a cidade"
+                                    />
+                                </div>
+
+                                <div className="modalCol modalColSmall">
+                                    <label>Estado</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.estado || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'estado', e.target.value)}
+                                        placeholder="UF"
+                                        maxLength="2"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="modalRow">
+                                <div className="modalCol modalColSmall">
+                                    <label>CEP</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.cep || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'cep', e.target.value)}
+                                        placeholder="CEP"
+                                    />
+                                </div>
+
+                                <div className="modalCol">
+                                    <label>Complemento</label>
+                                    <input 
+                                        type="text" 
+                                        value={enderecosEdicao[enderecoEmEdicao.idEndereco]?.complemento || ''}
+                                        onChange={(e) => handleEnderecoChange(enderecoEmEdicao.idEndereco, 'complemento', e.target.value)}
+                                        placeholder="Complemento (opcional)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="modalFooter">
+                            <button className="btnCancelar" onClick={fecharModal}>Cancelar</button>
+                            <button className="btnSalvar" onClick={() => salvarEndereco(enderecoEmEdicao.idEndereco)}>Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

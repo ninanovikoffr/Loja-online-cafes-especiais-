@@ -60,7 +60,8 @@
     border-radius: 20px;
     box-sizing: border-box;
     height: auto;
-    min-height: 300px;
+    min-height: 345px;
+    max-height: 710px;
     padding: 20px;
     margin-bottom: 20px;
 
@@ -77,6 +78,11 @@
     width: 109%;
     margin-left: -20px;
     margin-right: -20px; 
+}
+.secaoRolagem{
+    overflow-y: auto;
+    max-height: 610px;
+    padding-right:10px;
 }
 
 form {
@@ -107,7 +113,6 @@ input:focus, textarea:focus, select:focus{
 }
 
 textarea {
-    width: 400px;
     padding: 10px;
     border: 0px solid #C4C4C4;
     border-radius: 8px;
@@ -214,6 +219,23 @@ input[type="file"] {
     margin-top: 30px;
 }
 
+.enderecosList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 6px;
+    line-height: 24px;
+}
+
+.endereco-box-admin {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    color: #3a2a1d;
+}
+
+
 .links{
     color: #4C351F;
     font-size: 16px;
@@ -229,12 +251,9 @@ input[type="file"] {
     border-radius: 17px;
     height: 50px;
     width: 180px;
-    margin-left: 98px;
-    margin-bottom: 18px;
-    margin-top:10px;
+    margin: 25px auto 18px;
     color: #ffffff;
     font-size: 24px;
-    text-align: center;
 }
 
 .botaoSalvar:hover {
@@ -243,3 +262,186 @@ input[type="file"] {
     transform: scale(1.03);
     transition: 0.2s ease-in-out;
 }
+
+/* Barra de rolagem mais fina */
+.secaoRolagem::-webkit-scrollbar {
+    width: 6px;
+}
+
+.secaoRolagem::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.secaoRolagem::-webkit-scrollbar-thumb {
+    background: #c5afa2;
+    border-radius: 3px;
+}
+
+.secaoRolagem::-webkit-scrollbar-thumb:hover {
+    background: #c5afa2;
+}
+
+/* Barra de rolagem da lista de endereços */
+.enderecosList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.enderecosList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.enderecosList::-webkit-scrollbar-thumb {
+    background: #c5afa2;
+    border-radius: 3px;
+}
+
+.enderecosList::-webkit-scrollbar-thumb:hover {
+    background: #c5afa2;
+}
+
+.enderecosList {
+    scrollbar-width: thin;
+    scrollbar-color: #c5afa2 transparent;
+}
+
+/* Modal de Edição de Endereço */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: #EEE2D6;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+    padding: 30px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 28px;
+    color: #4C351F;
+    font-weight: 600;
+}
+
+.modalHeader svg {
+    color: #4C351F;
+    transition: color 0.3s ease;
+}
+
+.modalHeader svg:hover {
+    color: #ffaf47;
+}
+
+.modalBody {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.modalRow {
+    display: flex;
+    gap: 16px;
+}
+
+.modalCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalColSmall {
+    flex: 0.6;
+}
+
+.modalBody label {
+    font-size: 18px;
+    color: #4C351F;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.modalBody input {
+    padding: 12px;
+    border: 2px solid #d4c4b8;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #4C351F;
+    font-family: 'Geologica', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.modalBody input:focus {
+    outline: none;
+    border-color: #4C351F;
+    box-shadow: 0 0 8px rgba(76, 53, 31, 0.3);
+}
+
+.modalFooter {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btnCancelar, .btnSalvar {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Geologica', sans-serif;
+}
+
+.btnCancelar {
+    background-color: #d4c4b8;
+    color: #4C351F;
+}
+
+.btnCancelar:hover {
+    background-color: #c4b4a8;
+    transform: translateY(-2px);
+}
+
+.btnSalvar {
+    background-color: #4C351F;
+    color: #ffffff;
+}
+
+.btnSalvar:hover {
+    background-color: #3a2817;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 53, 31, 0.3);
+}
+

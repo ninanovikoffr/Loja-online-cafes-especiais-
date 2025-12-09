@@ -104,6 +104,18 @@ public class EnderecoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or @enderecoService.pertenceAoUsuario(#id)")
+    @PatchMapping("/atualizar/{id}")
+    @Operation(summary = "Atualizar endereço", description = "Atualiza um endereço existente pelo ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
+    })
+    public ResponseEntity<EnderecoResponseDTO> atualizar(@PathVariable Long id, @RequestBody EnderecoRequestDTO dto) {
+        EnderecoResponseDTO response = enderecoService.atualizar(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
     /**
      * Endpoint para deletar o endereço do usuário autenticado.
      * 

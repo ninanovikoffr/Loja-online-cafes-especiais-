@@ -13,6 +13,11 @@ import com.engenhariadesoftware.e_comercecafe.DTOs.Response.ProdutoResponseDTO;
 import com.engenhariadesoftware.e_comercecafe.Services.ProdutoService;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produtos")
@@ -110,5 +115,60 @@ public class ProdutoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Endpoint para fazer upload de imagem de produto.
+     * 
+     * @param file - Arquivo de imagem a ser salvo.
+     * @return URL da imagem salva.
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Upload de imagem de produto", description = "Faz upload de uma imagem para o produto.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Imagem enviada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Erro no upload da imagem")
+    })
+    @PostMapping("/upload-imagem")
+    public ResponseEntity<Map<String, String>> uploadImagem(@RequestParam("file") MultipartFile file) {
+        try {
+            // Validar se é uma imagem
+            if (!file.getContentType().startsWith("image/")) {
+                Map<String, String> erro = new HashMap<>();
+                erro.put("erro", "Arquivo não é uma imagem válida");
+                return ResponseEntity.badRequest().body(erro);
+            }
+
+            // Gerar nome único para o arquivo
+            String nomeOriginal = file.getOriginalFilename();
+            String extensao = nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
+            String nomeArquivo = UUID.randomUUID().toString() + extensao;
+
+            // Usar caminho do diretório de trabalho atual (raiz do projeto)
+            String caminhoBase = System.getProperty("user.dir");
+            String diretorioUpload = caminhoBase + File.separator + "uploads" + File.separator + "produtos" + File.separator;
+            File diretorio = new File(diretorioUpload);
+            
+            if (!diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Salvar arquivo
+            File arquivoSalvo = new File(diretorioUpload + nomeArquivo);
+            file.transferTo(arquivoSalvo);
+
+            // Retornar a URL da imagem
+            String imagemUrl = "/uploads/produtos/" + nomeArquivo;
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("imagemUrl", imagemUrl);
+            resposta.put("url", imagemUrl);
+
+            return ResponseEntity.ok(resposta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> erro = new HashMap<>();
+            erro.put("erro", "Erro ao fazer upload da imagem: " + e.getMessage());
+            return ResponseEntity.badRequest().body(erro);
+        }
     }
 }

@@ -5,6 +5,38 @@
   flex-direction: column;
   width: 100%;
   padding-top: 80px; 
+  position: relative;
+}
+
+.logout-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 100;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #8B5A3C;
+  color: #FFF8F2;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Geologica', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #6B4423;
+}
+
+.logout-btn svg {
+  font-size: 1.1rem;
 }
 
 

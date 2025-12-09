@@ -57,6 +57,25 @@ function Tela_login(){
 
             const isAdmin = roles.includes("ADMIN");
 
+            // Busca o nome do usuário da API
+            try {
+                const usuarioResponse = await fetch(`http://localhost:8080/usuario/${userId}`, {
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                });
+                if (usuarioResponse.ok) {
+                    const usuarioData = await usuarioResponse.json();
+                    localStorage.setItem("nomeUsuario", usuarioData.nome);
+                } else {
+                    console.warn("Não foi possível buscar o nome do usuário");
+                }
+            } catch (error) {
+                console.warn("Erro ao buscar nome do usuário:", error);
+            }
+
             if (isAdmin) {
                 navigate("/admin");
             } else {
