@@ -9,27 +9,6 @@ import pixImg from "../../assets/logopix.svg";
 import { FaTrash } from 'react-icons/fa';
 import axios from "axios";
 
-// Catalogo local dos produtos
-const CATALOGO_PRODUTOS = {
-    1: {
-        nome: 'Cafe 100% Arabica',
-        descricao: '250 g - moido',
-        preco: 39.90,
-        img: '/src/assets/cafe_arabica.svg'
-    },
-    2: {
-        nome: 'Cafe Premium Torra Media',
-        descricao: '250 g - moido',
-        preco: 39.90,
-        img: '/src/assets/cafe_torra.svg'
-    },
-    3: {
-        nome: 'Cafe Gourmet Baunilha',
-        descricao: '250 g - moido',
-        preco: 39.90,
-        img: '/src/assets/cafe_baunilha.svg'
-    }
-};
 
 function Carrinho({ open, onClose }) {
 
@@ -56,19 +35,38 @@ function Carrinho({ open, onClose }) {
 
             const itensBrutos = response.data || [];
 
-            const itensComInfo = itensBrutos.map((it) => {
-                const prod = CATALOGO_PRODUTOS[it.idProduto] || {};
+            // Buscar informações dos produtos do banco de dados
+            const itensComInfo = await Promise.all(
+                itensBrutos.map(async (it) => {
+                    try {
+                        const prodResponse = await axios.get(
+                            `http://localhost:8080/produtos/${it.idProduto}`
+                        );
+                        const prod = prodResponse.data || {};
 
-                return {
-                    idCarrinhoItem: it.idCarrinhoItem,
-                    idProduto: it.idProduto,
-                    quantidade: it.quantidade,
-                    nome: prod.nome || `Produto ${it.idProduto}`,
-                    descricao: prod.descricao || '',
-                    preco: prod.preco || 0,
-                    img: prod.img || '',
-                };
-            });
+                        return {
+                            idCarrinhoItem: it.idCarrinhoItem,
+                            idProduto: it.idProduto,
+                            quantidade: it.quantidade,
+                            nome: prod.nome || `Produto ${it.idProduto}`,
+                            descricao: prod.descricao || '',
+                            preco: prod.preco || 0,
+                            img: prod.img || '',
+                        };
+                    } catch (err) {
+                        console.error(`Erro ao carregar produto ${it.idProduto}:`, err);
+                        return {
+                            idCarrinhoItem: it.idCarrinhoItem,
+                            idProduto: it.idProduto,
+                            quantidade: it.quantidade,
+                            nome: `Produto ${it.idProduto}`,
+                            descricao: '',
+                            preco: 0,
+                            img: '',
+                        };
+                    }
+                })
+            );
 
             setItems(itensComInfo);
         } catch (err) {
@@ -121,7 +119,7 @@ function Carrinho({ open, onClose }) {
 
     const decrementarQtd = async (item) => {
         try {
-            await axios.delete(
+            await axios.patch(
                 `http://localhost:8080/carrinhos/${idUsuario}/produtos/${item.idProduto}`
             );
             carregarItens();

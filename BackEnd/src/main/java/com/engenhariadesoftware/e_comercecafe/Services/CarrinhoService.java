@@ -121,6 +121,33 @@ public class CarrinhoService {
         return toResponse(salvo);
     }
 
+    @Transactional
+    public CarrinhoResponseDTO decrementarProduto(Long idUsuario, Long idProduto) {
+
+        UsuarioModel usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        CarrinhoModel carrinho = carrinhoRepository
+                .findByUsuarioIdUsuario(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+
+        CarrinhoItemModel item = carrinho.getItens().stream()
+                .filter(i -> i.getProduto().getIdProduto().equals(idProduto))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Produto não está no carrinho"));
+
+        // Decrementa a quantidade
+        if (item.getQuantidade() > 1) {
+            item.setQuantidade(item.getQuantidade() - 1);
+        } else {
+            // Se quantidade é 1, remove o item
+            carrinho.getItens().remove(item);
+        }
+
+        CarrinhoModel salvo = carrinhoRepository.save(carrinho);
+        return toResponse(salvo);
+    }
+
     @Transactional(readOnly = true)
     public List<CarrinhoItemResponseDTO> listarItensDoCarrinho(Long idUsuario) {
 

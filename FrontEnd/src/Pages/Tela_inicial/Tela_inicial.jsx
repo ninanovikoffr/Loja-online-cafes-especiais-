@@ -44,7 +44,7 @@ function Tela_inicial() {
           <div className='secao'>
             <div className='cafes_text'>Café Gourmet Baunilha</div>
             <img src="/src/assets/cafe_baunilha.svg" className='foto_cafe' alt="Café gourmet baunilha" />
-            <button className='botao_comprar' onClick={() => addToCart(3)}>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart(1)}>Comprar</button>
           </div>
 
           <div className='secao'>
@@ -56,7 +56,7 @@ function Tela_inicial() {
           <div className='secao'>
             <div className='cafes_text'>Café 100% Arábica</div>
             <img src="/src/assets/cafe_arabica.svg" className='foto_cafe' alt="Café 100% arábica" />
-            <button className='botao_comprar' onClick={() => addToCart(1)}>Comprar</button>
+            <button className='botao_comprar' onClick={() => addToCart(3)}>Comprar</button>
           </div>
         </div>
       </div>

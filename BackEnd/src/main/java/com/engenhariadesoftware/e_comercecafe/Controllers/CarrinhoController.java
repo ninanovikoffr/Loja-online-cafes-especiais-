@@ -120,6 +120,20 @@ public class CarrinhoController {
     return ResponseEntity.ok(carrinho);
 }
 
+    @PatchMapping("/{idUsuario}/produtos/{idProduto}")
+    @Operation(summary = "Decrementar quantidade do produto", description = "Diminui a quantidade de um item no carrinho do usuário em 1 unidade.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Quantidade decrementada com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Item ou carrinho não encontrado")
+    })
+    public ResponseEntity<CarrinhoResponseDTO> decrementarProduto(
+        @PathVariable Long idUsuario,
+        @PathVariable Long idProduto) {
+
+    CarrinhoResponseDTO carrinho = carrinhoService.decrementarProduto(idUsuario, idProduto);
+    return ResponseEntity.ok(carrinho);
+}
+
     @GetMapping("/{idUsuario}/produtos")
     @Operation(summary = "Listar produtos do carrinho", description = "Retorna todos os itens do carrinho do usuário.")
     @ApiResponses(value = {
