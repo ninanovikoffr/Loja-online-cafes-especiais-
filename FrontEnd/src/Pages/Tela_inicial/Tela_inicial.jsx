@@ -71,13 +71,6 @@ function Tela_inicial() {
   return (
     <div className="tela_inicial">
      <Navbar />
-     
-     <div className="logout-container">
-       <button className="logout-btn" onClick={handleLogout}>
-         <FaSignOutAlt /> Sair
-       </button>
-     </div>
-
       <div className="fundo_titulo">
         <img src={fundo} className="fundo_imagem" alt="Fundo de café" />
         <h1 className="titulo_terroir">TERROIR</h1>

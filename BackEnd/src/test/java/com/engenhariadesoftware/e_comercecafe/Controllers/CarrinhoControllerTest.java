@@ -13,10 +13,12 @@ import com.engenhariadesoftware.e_comercecafe.ValueObjects.Preco;
 import com.engenhariadesoftware.e_comercecafe.ValueObjects.Senha;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,10 +30,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:h2:mem:carrinho_ctrl;DB_CLOSE_DELAY=-1;MODE=PostgreSQL",
+        "spring.datasource.url=jdbc:h2:mem:carrinho_controller_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL",
         "spring.datasource.driverClassName=org.h2.Driver",
         "spring.datasource.username=sa",
         "spring.datasource.password=",
@@ -98,6 +100,7 @@ class CarrinhoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void removerProdutoDeveManterApenasItensRestantes() throws Exception {
         UsuarioModel usuario = criarUsuario();
         ProdutoModel produtoA = criarProduto("Cafe A", 10.0);
@@ -123,6 +126,7 @@ class CarrinhoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void removerProdutoInexistenteRetornaErro() throws Exception {
         UsuarioModel usuario = criarUsuario();
         ProdutoModel produto = criarProduto("Cafe A", 10.0);
